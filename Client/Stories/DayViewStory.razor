@@ -1,0 +1,26 @@
+@page "/stories/dayview"
+@layout StoryLayout
+@using Client.Components.Today
+@using Client.Enums
+@using Client.Models
+
+<div style="display: flex; flex-direction: column; gap: 2rem; ">
+    <div class="mt-4">
+        <DayView UserId="7"
+                 Date="@DateTime.Today"
+                 />
+    </div>
+    
+    <div class="mt-4">
+        <DayView UserId="7"
+                 Date="@(DateTime.Today.AddDays(1))" />
+    </div>
+</div>
+
+@code {
+    
+    private void HandleDateChanged(DateTime newDate)
+    {
+        Console.WriteLine($"Date changed to: {newDate:yyyy-MM-dd}");
+    }
+}

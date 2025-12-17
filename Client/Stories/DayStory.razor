@@ -1,0 +1,28 @@
+@page "/stories/day"
+@layout StoryLayout
+@using Client.Components.Calendar
+
+<h3>Day component examples</h3>
+
+<div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+  <div>
+    <Day 
+      Date="@(new DateTime(2025, 10, 15))">
+      <div>Normal day</div>
+    </Day>
+  </div>
+  <div>
+    <Day 
+      Date="@(new DateTime(2025, 10, 18))" 
+      AdditionalCssClasses="weekend" >
+      <div>Weekend day</div>
+    </Day>
+  </div>
+  <div>
+    <Day 
+      Date="@(new DateTime(2025, 12, 25))" 
+      AdditionalCssClasses="holiday" >
+      <div>Holiday</div>
+    </Day>
+  </div>
+</div>

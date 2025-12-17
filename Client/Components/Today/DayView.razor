@@ -1,0 +1,187 @@
+@using Client.Enums
+@using Client.Components.Today
+@using Client.Models
+@using MudBlazor
+@using System.Linq
+@* Purpose of this component is to display a day view in a large div it works outside of the calendar view *@
+@if (formErrors.Any())
+{
+    <MudAlert Severity="Severity.Error"
+              Variant="Variant.Filled"
+              Class="validation-alert mb-3">
+        <MudText Typo="Typo.subtitle2">
+            @($"Please fix the following errors ({formErrors.Length}):")
+        </MudText>
+        <ul class="validation-list">
+            @foreach (var error in formErrors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </MudAlert>
+}
+
+<div class="day-view-wrapper">
+    <div class="day-view-container" style="min-height: @MinimumHeight; max-height: @MaximumHeight; min-width: @MinimumWidth; max-width: @MaximumWidth;">
+    @* Display day and date with navigation *@
+    <div class="day-view-header"> 
+        <div class="day-view-header-top">
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" 
+                           OnClick="NavigateToPreviousDay"
+                           Style="@($"color:{Colors.Shades.White};")"
+                           Size="Size.Medium"
+                           Class="day-view-nav-button" />
+            
+            <div class="day-view-header-info">
+                <div class="day-view-date">@DisplayDate</div>
+            </div>
+            
+            @if (IsNotToday)
+            {
+                <MudTooltip Text="Go to today">
+                    <MudIconButton Icon="@Icons.Material.Filled.Today" 
+                                   OnClick="NavigateToToday"
+                                   Style="@($"color:{Colors.Shades.White};")"                                   
+                                   Size="Size.Medium"/>
+                </MudTooltip>
+            }
+            
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" 
+                           OnClick="NavigateToNextDay"
+                           Style="@($"color:{Colors.Shades.White};")"
+                           Size="Size.Medium"
+                           Class="day-view-nav-button" />
+        </div>
+        
+        <div class="day-view-header-actions">
+            <MudButtonGroup Style="@($"color:{Colors.Shades.White};")" Variant="Variant.Outlined" Class="day-view-button-group">
+                <MudTooltip Text="Complete">
+                    <MudIconButton Icon="@Icons.Material.Filled.CheckCircleOutline"
+                                  OnClick="HandleBulkComplete"
+                                  Disabled="@(!_hasSelectedEvents)">
+                    </MudIconButton>
+                </MudTooltip>
+                
+                <MudTooltip Text="Postpone to tomorrow">
+                    <MudIconButton Icon="@Icons.Material.Filled.NextPlan"
+                                  OnClick="HandleBulkPostpone"
+                                  Disabled="@(!_hasSelectedEvents)">
+                    </MudIconButton>
+                </MudTooltip>
+                
+                <MudTooltip Text="Follow Up">
+                    <MudIconButton Icon="@Icons.Material.Filled.MoveUp"
+                                  OnClick="HandleBulkFollowUp"
+                                  Disabled="@(!_hasSelectedEvents)">
+                    </MudIconButton>
+                </MudTooltip>
+                
+                <MudTooltip Text="Reject">
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                  OnClick="HandleBulkReject"
+                                  Disabled="@(!_hasSelectedEvents)">
+                    </MudIconButton>
+                </MudTooltip>
+                
+                <MudTooltip Text="Add Event">
+                    <MudIconButton Icon="@Icons.Material.Filled.AddCircleOutline"
+                                  OnClick="HandleAddEventClick">
+                        @* TODO: Implement Add Event functionality *@
+                    </MudIconButton>
+                </MudTooltip>
+            </MudButtonGroup>
+        </div>
+    </div>
+    
+    <div class="day-view-content">
+        @if (Events != null && Events.Any())
+        {
+            @* Uncompleted events at the top *@
+            <div class="day-view-events-top">
+                @foreach (var evt in GetUncompletedEvents())
+                {
+                    <DayViewEvents @key="evt.Id"
+                                   EventType="@((Client.Enums.EventTypeEnums?)evt.EventType)" 
+                                   Title="@evt.Title"
+                                   Description="@evt.Description" 
+                                   CanBePostponed="@evt.CanBePostponed"
+                                   IsSelected="@evt.IsSelected"
+                                   IsCompleted="@evt.IsCompleted"
+                                   IsActive="@(SelectedEvent == evt)"
+                                   CheckboxSelected="EventCallback.Factory.Create<bool>(this, (bool isSelected) => HandlePostponedChanged(evt, isSelected))"
+                                   OnEventClick="@(() => HandleEventClick(evt))"
+                                   OnUndo="@(() => HandleUndo(evt))" />
+                }
+            </div>
+            
+            @* Spacer to push completed events to bottom *@
+            <div class="day-view-events-spacer"></div>
+            
+            @* Completed events at the bottom *@
+            <div class="day-view-events-bottom">
+                @foreach (var evt in GetCompletedEvents())
+                {
+                    <DayViewEvents @key="evt.Id"
+                                   EventType="@((Client.Enums.EventTypeEnums?)evt.EventType)" 
+                                   Title="@evt.Title"
+                                   Description="@evt.Description" 
+                                   CanBePostponed="@evt.CanBePostponed"
+                                   IsSelected="@evt.IsSelected"
+                                   IsCompleted="@evt.IsCompleted"
+                                   IsActive="@(SelectedEvent == evt)"
+                                   CheckboxSelected="EventCallback.Factory.Create<bool>(this, (bool isSelected) => HandlePostponedChanged(evt, isSelected))"
+                                   OnEventClick="@(() => HandleEventClick(evt))"
+                                   OnUndo="@(() => HandleUndo(evt))" />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="day-view-no-events">No events scheduled for this day</div>
+        }
+    </div>
+    </div>
+    
+    @if (SelectedEvent != null || CurrentMode == PageMode.Create)
+    {
+        <MudForm @ref="form" @bind-IsValid="@isFormValid" @bind-Errors="@formErrors">
+            <div class="event-description-with-actions">
+            <EventDescription Title="@GetEventTitle()"
+                               Description="@GetEventDescription()"
+                               StartDateTime="@GetEventStartDateTime()"
+                               EndDateTime="@GetEventEndDateTime()"
+                               StartDateTimeChanged="HandleStartDateTimeChanged"
+                               EndDateTimeChanged="HandleEndDateTimeChanged"
+                               EventType="@GetEventType()"
+                               CanBePostponed="@GetEventCanBePostponed()"
+                               TitleChanged="HandleTitleChanged"
+                               DescriptionChanged="HandleDescriptionChanged"
+                               EventTypeChanged="HandleEventTypeChanged"
+                               CanBePostponedChanged="HandleCanBePostponedChanged"
+                               MinimumHeight="@MinimumHeight"
+                               MaximumHeight="@MaximumHeight"
+                               DateTimeWidth="@DateTimeWidth"
+                               Mode="@CurrentMode"
+                               OnModeChanged="HandleModeChanged" />
+                @if (CurrentMode == PageMode.Create || CurrentMode == PageMode.Edit)
+                {
+                <div class="event-actions-vertical">
+                    <MudIconButton Icon="@Icons.Material.Filled.Save"
+                                   OnClick="@(() => HandleSave())"
+                                   Color="Color.Success"
+                                   Size="Size.Medium"
+                                   Variant="Variant.Filled"
+                                   Class="event-action-button" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Cancel"
+                                   OnClick="HandleCancel"
+                                   Color="Color.Error"
+                                   Size="Size.Medium"
+                                   Variant="Variant.Filled"
+                                   Class="event-action-button" />
+                </div>
+
+                }
+            </div>
+        </MudForm>
+    }
+</div>

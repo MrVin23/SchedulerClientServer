@@ -1,0 +1,296 @@
+@using MudBlazor
+
+@* Calendar container *@
+<div class="calendar-container">
+    @* Header with navigation and month/year selection *@
+    <div class="calendar-header d-flex align-items-center gap-2 mb-2">
+        <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" 
+                      Size="Size.Large"
+                      Variant="Variant.Text" 
+                      OnClick="GoToPreviousMonth" />
+
+        <MudSelect T="int"
+                   Value="@GetValidMonth()"
+                   ValueChanged="@(async (int month) => { _internalMonth = month; await OnMonthChanged(); })"
+                   Variant="Variant.Outlined"
+                   FitContent="true"
+                   Dense="true"
+                   Margin="Margin.None">
+            @foreach (var monthOption in GetMonthOptions())
+            {
+                <MudSelectItem 
+                    Value="@monthOption.Value"
+                    Dense="true"
+                    >@monthOption.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect T="int"
+                   Value="@GetValidYear()"
+                   ValueChanged="@(async (int year) => { _internalYear = year; await OnYearChanged(); })"
+                   Variant="Variant.Outlined"
+                   FitContent="true"
+                   Dense="true"
+                   Margin="Margin.None">
+            @foreach (var yearOption in GetYearOptions())
+            {
+                <MudSelectItem 
+                    Value="@yearOption"
+                    Dense="true"
+                    >@yearOption</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" 
+                      Size="Size.Large"
+                      Variant="Variant.Text" 
+                      OnClick="GoToNextMonth" />
+
+        <MudButton Variant="Variant.Outlined"
+                  Size="Size.Medium"
+                  StartIcon="@Icons.Material.Filled.Today"
+                  OnClick="GoToToday">
+            Go to today
+        </MudButton>
+
+    </div>
+
+    @* Weekday headers using DayHeader to match fit-content widths *@
+    <DayHeader StartOfWeek="@StartOfWeek"
+               UseShortNames="true"
+               CellCssClasses="text-center fw-semibold"
+               CellStyle="width:fit-content;"
+               MinimumWidth="@DayMinimumWidth"
+               MaximumWidth="@DayMaximumWidth" />
+
+    @* Weeks rendered as flex rows with 7 equal-width day cells *@
+    <div class="calendar-weeks">
+        @foreach (var week in GetCalendarWeeks())
+        {
+            <div class="calendar-week-row" style="display:flex; width:100%;">
+                @foreach (var day in week)
+                {
+                    var isOutOfMonth = day.Month != DisplayDate.Month;
+                    var extraClasses = isOutOfMonth ? "out-of-month" : string.Empty;
+                    <div style="width:fit-content;">
+                        <Day Date="@day"
+                             AdditionalCssClasses="@extraClasses"
+                             HeaderCssClasses="@DayHeaderCssClasses"
+                             ContentCssClasses="@DayContentCssClasses"
+                             MinimumHeight="@DayMinimumHeight"
+                             MaximumHeight="@DayMaximumHeight"
+                             MinimumWidth="@DayMinimumWidth"
+                             MaximumWidth="@DayMaximumWidth"
+                             IsSelected="@(SelectedDate.HasValue && SelectedDate.Value.Date == day.Date)"
+                             OnDayClick="HandleDayClick" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public DateTime DisplayDate { get; set; } = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    [Parameter] public DayOfWeek StartOfWeek { get; set; } = DayOfWeek.Monday;
+
+    [Parameter] public int YearRangeStart { get; set; } = DateTime.Today.Year - 5;
+    [Parameter] public int YearRangeEnd { get; set; } = DateTime.Today.Year + 5;
+
+    // Pass-through styling to Day components
+    [Parameter] public string DayHeaderCssClasses { get; set; } = string.Empty;
+    [Parameter] public string DayContentCssClasses { get; set; } = string.Empty;
+    [Parameter] public string DayMinimumHeight { get; set; } = "150px";
+    [Parameter] public string DayMaximumHeight { get; set; } = "150px";
+    [Parameter] public string DayMinimumWidth { get; set; } = "100px";
+    [Parameter] public string DayMaximumWidth { get; set; } = "100px";
+
+    [Parameter] public EventCallback<DateTime> DisplayDateChanged { get; set; }
+    
+    [Parameter] public DateTime? SelectedDate { get; set; }
+    [Parameter] public EventCallback<DateTime?> SelectedDateChanged { get; set; }
+
+    private int _internalMonth = DateTime.Today.Month;
+    private int _internalYear = DateTime.Today.Year;
+
+    protected override void OnInitialized()
+    {
+        _internalMonth = DisplayDate.Month;
+        _internalYear = DisplayDate.Year;
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Sync with DisplayDate when it changes externally
+        if (_internalMonth != DisplayDate.Month || _internalYear != DisplayDate.Year)
+        {
+            _internalMonth = DisplayDate.Month;
+            _internalYear = DisplayDate.Year;
+        }
+    }
+
+    private async Task HandleDayClick(DateTime clickedDate)
+    {
+        SelectedDate = clickedDate;
+        await SelectedDateChanged.InvokeAsync(SelectedDate);
+        StateHasChanged();
+    }
+
+    private async Task GoToPreviousMonth()
+    {
+        var newDate = DisplayDate.AddMonths(-1);
+        await DisplayDateChanged.InvokeAsync(new DateTime(newDate.Year, newDate.Month, 1));
+    }
+
+    private async Task GoToNextMonth()
+    {
+        var newDate = DisplayDate.AddMonths(1);
+        await DisplayDateChanged.InvokeAsync(new DateTime(newDate.Year, newDate.Month, 1));
+    }
+
+    private async Task GoToToday()
+    {
+        var today = DateTime.Today;
+        var firstOfCurrentMonth = new DateTime(today.Year, today.Month, 1);
+        _internalMonth = today.Month;
+        _internalYear = today.Year;
+        await DisplayDateChanged.InvokeAsync(firstOfCurrentMonth);
+    }
+
+    private async Task OnMonthChanged()
+    {
+        // Validate month and year before creating DateTime
+        if (_internalMonth < 1 || _internalMonth > 12)
+        {
+            _internalMonth = DisplayDate.Month;
+            return;
+        }
+            
+        if (_internalYear < YearRangeStart || _internalYear > YearRangeEnd)
+        {
+            _internalYear = Math.Clamp(_internalYear, YearRangeStart, YearRangeEnd);
+        }
+        
+        try
+        {
+            var newDate = new DateTime(_internalYear, _internalMonth, 1);
+            await DisplayDateChanged.InvokeAsync(newDate);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            // Reset to valid values if date creation fails
+            _internalMonth = DisplayDate.Month;
+            _internalYear = DisplayDate.Year;
+        }
+    }
+
+    private async Task OnYearChanged()
+    {
+        // Validate year and month before creating DateTime
+        if (_internalYear < YearRangeStart || _internalYear > YearRangeEnd)
+        {
+            _internalYear = Math.Clamp(_internalYear, YearRangeStart, YearRangeEnd);
+        }
+        
+        if (_internalMonth < 1 || _internalMonth > 12)
+        {
+            _internalMonth = DisplayDate.Month;
+        }
+        
+        try
+        {
+            var newDate = new DateTime(_internalYear, _internalMonth, 1);
+            await DisplayDateChanged.InvokeAsync(newDate);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            // Reset to valid values if date creation fails
+            _internalMonth = DisplayDate.Month;
+            _internalYear = DisplayDate.Year;
+        }
+    }
+
+    private int GetValidMonth()
+    {
+        if (_internalMonth < 1 || _internalMonth > 12)
+            return DisplayDate.Month;
+        return _internalMonth;
+    }
+
+    private int GetValidYear()
+    {
+        if (_internalYear < YearRangeStart || _internalYear > YearRangeEnd)
+            return DisplayDate.Year;
+        return _internalYear;
+    }
+
+    private List<(int Value, string Name)> GetMonthOptions()
+    {
+        var months = new List<(int, string)>();
+        var monthNames = new[] { "January", "February", "March", "April", "May", "June",
+                                 "July", "August", "September", "October", "November", "December" };
+        for (int m = 1; m <= 12; m++)
+        {
+            months.Add((m, monthNames[m - 1]));
+        }
+        return months;
+    }
+
+    private List<int> GetYearOptions()
+    {
+        // Calculate year range dynamically based on today's date
+        var today = DateTime.Today;
+        var currentYear = today.Year;
+        var startYear = YearRangeStart;
+        var endYear = YearRangeEnd;
+        
+        // Ensure the range is valid - recalculate if needed
+        if (startYear == 0 || endYear == 0 || endYear < startYear)
+        {
+            startYear = currentYear - 5;
+            endYear = currentYear + 5;
+        }
+        
+        var years = new List<int>();
+        
+        for (int y = startYear; y <= endYear; y++)
+        {
+            years.Add(y);
+        }
+        
+        return years;
+    }
+
+    private IEnumerable<string> GetWeekdayHeaders()
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            var dow = (DayOfWeek)(((int)StartOfWeek + i) % 7);
+            yield return new DateTime(2024, 1, 1 + (((int)dow + 6) % 7)).ToString("ddd");
+        }
+    }
+
+    private IEnumerable<DateTime> GetCalendarDays()
+    {
+        var firstOfMonth = new DateTime(DisplayDate.Year, DisplayDate.Month, 1);
+        var firstDayOffset = ((7 + ((int)firstOfMonth.DayOfWeek - (int)StartOfWeek)) % 7);
+        var firstCellDate = firstOfMonth.AddDays(-firstDayOffset);
+
+        // 6 weeks view (6 x 7 = 42 cells)
+        for (int i = 0; i < 42; i++)
+        {
+            yield return firstCellDate.AddDays(i);
+        }
+    }
+
+    private IEnumerable<List<DateTime>> GetCalendarWeeks()
+    {
+        var days = GetCalendarDays().ToList();
+        for (int i = 0; i < days.Count; i += 7)
+        {
+            var count = Math.Min(7, days.Count - i);
+            yield return days.GetRange(i, count);
+        }
+    }
+}

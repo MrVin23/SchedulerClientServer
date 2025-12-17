@@ -1,0 +1,153 @@
+/* Event Description Container */
+.event-description-container {
+    border-radius: 12px;
+    border: 1px solid var(--mud-palette-divider, #e0e0e0);
+    background-color: var(--mud-palette-surface, #ffffff);
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    flex-shrink: 0;
+}
+
+/* Event Description Header */
+.event-description-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--mud-palette-divider, #e0e0e0);
+}
+
+.event-description-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--mud-palette-text-primary, rgba(0, 0, 0, 0.87));
+    flex: 1;
+}
+
+.event-description-edit-button {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* Event Description Content */
+.event-description-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+}
+
+.event-description-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.event-description-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--mud-palette-text-secondary, rgba(0, 0, 0, 0.6));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-description-value {
+    font-size: 1rem;
+    color: var(--mud-palette-text-primary, rgba(0, 0, 0, 0.87));
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-type-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-type-icon {
+    flex-shrink: 0;
+}
+
+/* Keep icon colors visible even when disabled */
+.event-description-postpone-toggle ::deep .mud-icon-root {
+    /* color: inherit !important; */
+    opacity: 1 !important;
+}
+
+.event-description-postpone-toggle.mud-toggle-icon-button-toggled ::deep .mud-icon-root {
+    color: var(--mud-palette-success) !important;
+}
+
+.event-description-postpone-toggle:not(.mud-toggle-icon-button-toggled) ::deep .mud-icon-root {
+    color: var(--mud-palette-error) !important;
+}
+
+/* Date and Time Row - Use flex to control width */
+.event-description-date-time-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    max-width: var(--date-time-row-width, 100%);
+    width: var(--date-time-row-width, 100%);
+}
+
+.event-description-date-picker,
+.event-description-time-picker {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+}
+
+.event-description-date-picker ::deep .mud-input-root,
+.event-description-time-picker ::deep .mud-input-root {
+    width: 100%;
+    max-width: 100%;
+}
+
+.event-description-date-picker ::deep .mud-input-control,
+.event-description-time-picker ::deep .mud-input-control {
+    width: 100%;
+    max-width: 100%;
+}
+
+.event-description-date-picker ::deep .mud-input-root-outlined,
+.event-description-time-picker ::deep .mud-input-root-outlined {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Event Type and Can Be Postponed Row */
+.event-description-type-postpone-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+}
+
+.event-description-postpone-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.event-description-postpone-container ::deep .mud-switch.mud-disabled {
+    color: white !important;
+}
+
+.event-description-postpone-container ::deep .mud-switch-label {
+    color: white !important;
+}
+
+.event-description-postpone-container ::deep .mud-switch.mud-disabled .mud-switch-label {
+    color: white !important;
+}
+

@@ -1,0 +1,135 @@
+@using Client.Enums
+@using Client.Models
+@using MudBlazor
+
+<div class="day-view-events 
+            @GetEventTypeClass() 
+            @GetSelectedClass() 
+            @GetCompletedClass()" 
+            @onclick="HandleEventClick">
+            
+    <div class="day-view-event-content">
+        @* Display icon for the primary event type *@
+        @if (EventType != null)
+        {
+            <MudIcon Icon="@IconForEventType(EventType.Value)" 
+                     Color="@ColorForEventType(EventType.Value)" 
+                     Class="day-view-event-icon" />
+        }
+        
+        @* Display truncated title *@
+        <span class="day-view-event-description">@TruncateTitle(Title)</span>
+        
+        @if (IsCompleted)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Undo"
+                          OnClick="HandleUndoClick"
+                          Color="Color.Default"
+                          Size="Size.Small"
+                          Variant="Variant.Text"
+                          Class="day-view-event-undo-button" />
+        }
+        else
+        {
+            <MudCheckBox T="bool" 
+                        Value="@IsSelected"
+                        ValueChanged="CheckboxSelected"
+                        Color="Color.Dark"
+                        Size="Size.Small"
+                        Dense="true"/>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventTypeEnums? EventType { get; set; }
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public int MaxTitleLength { get; set; } = 100;
+    [Parameter] public bool CanBePostponed { get; set; } = true;
+    [Parameter] public EventCallback<bool> CheckboxSelected { get; set; }
+    [Parameter] public bool IsSelected { get; set; }
+    [Parameter] public EventCallback OnEventClick { get; set; }
+    [Parameter] public bool IsActive { get; set; }
+    [Parameter] public bool IsCompleted { get; set; } = false;
+    [Parameter] public EventCallback OnUndo { get; set; }
+    
+    public string TruncateTitle(string title)
+    {
+        if (string.IsNullOrEmpty(title))
+        {
+            return string.Empty;
+        }
+        
+        if (title.Length > MaxTitleLength)
+        {
+            return title.Substring(0, MaxTitleLength) + "...";
+        }
+        return title;
+    }
+
+    public string IconForEventType(EventTypeEnums eventType)
+    {
+        switch (eventType)
+        {
+            case EventTypeEnums.InternalMeeting:
+                return Icons.Material.Filled.MeetingRoom;
+            case EventTypeEnums.ExternalMeeting:
+                return Icons.Material.Filled.Business;
+            case EventTypeEnums.WebDemo:
+                return Icons.Material.Filled.VideoCall;
+            case EventTypeEnums.HomeConference:
+                return Icons.Material.Filled.Home;
+            case EventTypeEnums.AwayConference:
+                return Icons.Material.Filled.FlightTakeoff;
+            case EventTypeEnums.SchoolVisit:
+                return Icons.Material.Filled.School;
+            default:
+                return Icons.Material.Filled.Event;
+        }
+    }
+
+    public Color ColorForEventType(EventTypeEnums eventType)
+    {
+        return Color.Dark;
+    }
+
+    public string GetEventTypeClass()
+    {
+        if (EventType == null)
+        {
+            return "day-view-event-other";
+        }
+
+        return EventType.Value switch
+        {
+            EventTypeEnums.InternalMeeting => "day-view-event-internal-meeting",
+            EventTypeEnums.ExternalMeeting => "day-view-event-external-meeting",
+            EventTypeEnums.WebDemo => "day-view-event-web-demo",
+            EventTypeEnums.HomeConference => "day-view-event-home-conference",
+            EventTypeEnums.AwayConference => "day-view-event-away-conference",
+            EventTypeEnums.SchoolVisit => "day-view-event-school-visit",
+            _ => "day-view-event-other"
+        };
+    }
+
+    private string GetSelectedClass()
+    {
+        return IsActive ? "day-view-event-active" : string.Empty;
+    }
+
+    private string GetCompletedClass()
+    {
+        return IsCompleted ? "day-view-event-completed" : string.Empty;
+    }
+
+    private async Task HandleEventClick()
+    {
+        await OnEventClick.InvokeAsync();
+    }
+
+    private async Task HandleUndoClick()
+    {
+        await OnUndo.InvokeAsync();
+    }
+}

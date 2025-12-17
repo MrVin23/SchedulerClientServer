@@ -1,0 +1,62 @@
+<div class="day-header-row @AdditionalCssClasses" style="display:flex; width:100%;">
+    @foreach (var wd in GetWeekdayHeaders())
+    {
+        <div class="day-header-cell @CellCssClasses" style="@GetCellStyle()">
+            @wd
+        </div>
+    }
+    
+</div>
+
+@code {
+    [Parameter] public DayOfWeek StartOfWeek { get; set; } = DayOfWeek.Monday;
+    [Parameter] public bool UseShortNames { get; set; } = true;
+    [Parameter] public string AdditionalCssClasses { get; set; } = string.Empty;
+    [Parameter] public string CellCssClasses { get; set; } = string.Empty;
+    [Parameter] public string? CellStyle { get; set; }
+    [Parameter] public string? MinimumWidth { get; set; }
+    [Parameter] public string? MaximumWidth { get; set; }
+
+    private IEnumerable<string> GetWeekdayHeaders()
+    {
+        var format = UseShortNames ? "ddd" : "dddd";
+        for (int i = 0; i < 7; i++)
+        {
+            var dow = (DayOfWeek)(((int)StartOfWeek + i) % 7);
+            // Map DayOfWeek to a stable date to format name
+            var referenceDate = new DateTime(2024, 1, 1);
+            while (referenceDate.DayOfWeek != dow)
+            {
+                referenceDate = referenceDate.AddDays(1);
+            }
+            yield return referenceDate.ToString(format);
+        }
+    }
+
+    private string GetCellStyle()
+    {
+        var styles = new List<string>();
+
+        // By default, mirror flex flow; allow override via CellStyle
+        if (!string.IsNullOrWhiteSpace(CellStyle))
+        {
+            styles.Add(CellStyle!);
+        }
+        else
+        {
+            styles.Add("flex:1 1 0");
+        }
+
+        // Match Day sizing by applying min/max widths
+        if (!string.IsNullOrWhiteSpace(MinimumWidth)) styles.Add($"min-width: {MinimumWidth}");
+        if (!string.IsNullOrWhiteSpace(MaximumWidth)) styles.Add($"max-width: {MaximumWidth}");
+
+        // Add invisible border to match Day border box sizing
+        styles.Add("border: 1px solid transparent");
+        styles.Add("box-sizing: border-box");
+
+        return string.Join("; ", styles);
+    }
+}
+
+

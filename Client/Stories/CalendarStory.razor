@@ -1,0 +1,40 @@
+@page "/stories/calendar"
+@layout StoryLayout
+@using Client.Components.Calendar
+
+<h3>Calendar component examples</h3>
+
+<Calendar DisplayDate="@currentMonth"
+          DisplayDateChanged="OnDisplayDateChanged"
+          StartOfWeek="DayOfWeek.Monday"
+          DayMinimumHeight="85px"
+          DayMaximumHeight="85px"
+          DayMinimumWidth="150px"
+          DayMaximumWidth="150px" />
+
+@code {
+    private DateTime currentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    private Task OnDisplayDateChanged(DateTime newDate)
+    {
+        currentMonth = newDate;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private Task Prev()
+    {
+        currentMonth = currentMonth.AddMonths(-1);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private Task Next()
+    {
+        currentMonth = currentMonth.AddMonths(1);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}
+
+

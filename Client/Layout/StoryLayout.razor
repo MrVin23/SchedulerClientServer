@@ -1,0 +1,84 @@
+@using MudBlazor
+@using Client.Components.Validation
+@inherits LayoutComponentBase
+
+@* Required *@
+<ThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0" Position="AppBarPosition.Bottom">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudText>@WelcomeMessage</MudText>
+        <MudSpacer />
+        @if (!string.IsNullOrWhiteSpace(_username))
+        {
+            <MudMenu Variant="Variant.Filled" Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Secondary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                <ActivatorContent>
+                    <MudButton Variant="Variant.Text" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.PersonOutline">
+                        @_username
+                    </MudButton>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem OnClick="@HandleAccount" Style="min-height: 36px; padding: 8px 16px;">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Size="Size.Small" />
+                            <MudText Typo="Typo.body2">Account</MudText>
+                        </MudStack>
+                    </MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem OnClick="@HandleLogout" Style="min-height: 36px; padding: 8px 16px;">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" />
+                            <MudText Typo="Typo.body2">Sign Out</MudText>
+                        </MudStack>
+                    </MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+        }
+        else
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Login" OnClick="@HandleLogin">
+                Login
+            </MudButton>
+        }
+        <MudText Typo="Typo.caption" Class="ml-4">Version 1.0.0</MudText>
+    </MudAppBar>
+    
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGray.Darken4};")" Elevation="25">
+        <NavMenu />
+    </MudDrawer>
+    
+    <MudMainContent>
+        @* Global Alert - displays at the top of the page *@
+        @if (_alertVisible)
+        {
+            <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 9999; padding: 0;">
+                <CustomAlert @bind-IsVisible="_alertVisible"
+                             Message="@_alertMessage"
+                             Severity="@_alertSeverity"
+                             Variant="@_alertVariant"
+                             OnClose="HandleAlertClosed" />
+            </div>
+        }
+        
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" 
+        Style="position: relative; 
+                background-image: url('/Images/BooksImage.jpg'); 
+                background-size: cover; 
+                background-position: center; 
+                background-repeat: no-repeat; 
+                min-height: 100vh;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.7); z-index: 0; border-radius: 8px;"></div>
+            <div style="position: relative; z-index: 1; padding-top: @(_alertVisible ? "56px" : "0");">
+                @Body
+            </div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>

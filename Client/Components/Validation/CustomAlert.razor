@@ -1,0 +1,24 @@
+@using MudBlazor
+
+@if (IsVisible)
+{
+    <MudAlert Severity="@Severity"
+              Variant="@Variant"
+              ContentAlignment="@ContentAlignment"
+              ShowCloseIcon="true"
+              CloseIconClicked="HandleClose"
+              Dense="@Dense"
+              Elevation="@Elevation"
+              Square="@Square"
+              Class="@Class">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @Message
+        }
+    </MudAlert>
+}
+

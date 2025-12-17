@@ -1,0 +1,71 @@
+﻿@page "/home"
+@using Client.Dtos
+@using MudBlazor
+
+<PageTitle>Home</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+    @if (isLoading)
+    {
+        <MudProgressCircular Indeterminate="true" Class="mx-auto d-block" />
+        <MudText Align="Align.Center" Class="mt-4">Loading user data...</MudText>
+    }
+    else if (isVerifying)
+    {
+        <MudProgressCircular Indeterminate="true" Class="mx-auto d-block" />
+        <MudText Align="Align.Center" Class="mt-4">Verifying authentication...</MudText>
+    }
+    else if (currentUser == null)
+    {
+        <MudAlert Severity="Severity.Warning" Class="mb-4">
+            No user information found. Please <MudLink Href="/login">login</MudLink> to continue.
+        </MudAlert>
+    }
+    else
+    {
+        <MudText Typo="Typo.h4" GutterBottom="true">Welcome, @currentUser.FirstName @currentUser.LastName!</MudText>
+        
+        <MudPaper Elevation="2" Class="pa-4 mb-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">User Information</MudText>
+            
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Username:</MudText>
+                    <MudText Typo="Typo.body1">@currentUser.Username</MudText>
+                </MudItem>
+                
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Email:</MudText>
+                    <MudText Typo="Typo.body1">@currentUser.Email</MudText>
+                </MudItem>
+                
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">User ID:</MudText>
+                    <MudText Typo="Typo.body1">@currentUser.Id</MudText>
+                </MudItem>
+                
+                <MudItem xs="12">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary" GutterBottom="true">Roles:</MudText>
+                    @if (currentUser.Roles != null && currentUser.Roles.Any())
+                    {
+                        @foreach (var role in currentUser.Roles)
+                        {
+                            <MudChip T="string" Size="Size.Small" Color="Color.Primary" Variant="Variant.Filled" Class="ma-1">@role</MudChip>
+                        }
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">No roles assigned</MudText>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+        
+        <MudButton Variant="Variant.Filled" 
+                  Color="Color.Error" 
+                  OnClick="HandleLogout"
+                  StartIcon="@Icons.Material.Filled.Logout">
+            Logout
+        </MudButton>
+    }
+</MudContainer>

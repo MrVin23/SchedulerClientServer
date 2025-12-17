@@ -1,0 +1,35 @@
+.calendar-container {
+  margin: 16px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Target MudSelect internal elements with ::deep */
+.calendar-header ::deep .mud-input-control {
+    padding: 8px 8px !important;
+}
+
+.calendar-header ::deep .mud-input-root-outlined {
+    padding: 8px 8px !important;
+}
+
+.calendar-header ::deep .mud-input-slot {
+    padding: 8px 8px !important;
+}
+
+.calendar-header ::deep .mud-input-root {
+    padding: 8px 8px !important;
+}
+
+.calendar-header ::deep .mud-select .mud-input-control {
+    padding: 8px 8px !important;
+}
+
+.calendar-header ::deep .mud-select .mud-input-root-outlined {
+    padding: 8px 8px !important;
+}

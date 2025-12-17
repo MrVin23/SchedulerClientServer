@@ -1,0 +1,32 @@
+﻿<MudNavMenu Color="@Color.Secondary">
+    @foreach (var item in NavigationItems)
+    {
+        <MudNavLink Href="@item.Href" 
+                    Match="@item.Match" 
+                    Icon="@item.Icon">
+            @item.Label
+        </MudNavLink>
+    }
+</MudNavMenu>
+
+@code {
+    private List<NavItem> NavigationItems { get; set; } = new()
+    {
+        new() { Href = "", Label = "Home", Icon = Icons.Material.Filled.Home, Match = NavLinkMatch.All },
+        new() { Href = "authorization-diagram", Label = "Authorization Guide", Icon = Icons.Material.Filled.Security, Match = NavLinkMatch.Prefix },
+        new() { Href = "test-authorization", Label = "Auth Test (No Restrictions)", Icon = Icons.Material.Filled.BugReport, Match = NavLinkMatch.Prefix },
+        new() { Href = "test-role-access", Label = "Test Role Access", Icon = Icons.Material.Filled.Badge, Match = NavLinkMatch.Prefix },
+        new() { Href = "test-permission-access", Label = "Test Permission Access", Icon = Icons.Material.Filled.Key, Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/calendar", Label = "Calendar View", Icon = Icons.Material.Filled.CalendarToday, Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/day", Label = "Day", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/dayview", Label = "Day View", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix }
+    };
+
+    public class NavItem
+    {
+        public string Href { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+        public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+    }
+}

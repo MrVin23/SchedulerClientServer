@@ -1,0 +1,203 @@
+@page "/test-role-access"
+@layout StoryLayout
+@using MudBlazor
+@using Client.Interfaces.Authorisation
+@using Client.Interfaces
+
+<PageTitle>Test Role Access</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+    <MudPaper Elevation="3" Class="pa-6 mb-4">
+        <MudStack AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.Badge" Size="Size.Large" Color="Color.Primary" Style="font-size: 48px;" />
+            <MudText Typo="Typo.h4" Align="Align.Center">Test Role-Based Access</MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary">
+                Test authentication and role-based authorization
+            </MudText>
+        </MudStack>
+    </MudPaper>
+
+    @* Authentication Status Card *@
+    <MudPaper Elevation="2" Class="pa-4 mb-4">
+        <MudText Typo="Typo.h6" Class="mb-3">
+            <MudIcon Icon="@Icons.Material.Filled.VerifiedUser" Class="mr-2" Color="Color.Info" />
+            Authentication Status
+        </MudText>
+        
+        @if (_isLoading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+        }
+        else if (_isAuthenticated)
+        {
+            <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="mb-3">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
+                Authenticated as: <strong>@_username</strong>
+            </MudAlert>
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.body2"><strong>User ID:</strong> @_userId</MudText>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.body2"><strong>Email:</strong> @_email</MudText>
+                </MudItem>
+            </MudGrid>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Class="mb-3">
+                <MudIcon Icon="@Icons.Material.Filled.Warning" Class="mr-2" />
+                Not Authenticated
+            </MudAlert>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToLogin" StartIcon="@Icons.Material.Filled.Login">
+                Go to Login
+            </MudButton>
+        }
+    </MudPaper>
+
+    @* Role Access Tests *@
+    @if (_isAuthenticated)
+    {
+        <MudPaper Elevation="2" Class="pa-4 mb-4">
+            <MudText Typo="Typo.h6" Class="mb-3">
+                <MudIcon Icon="@Icons.Material.Filled.Science" Class="mr-2" Color="Color.Secondary" />
+                Test Role Access Endpoints
+            </MudText>
+            
+            <MudText Typo="Typo.body2" Class="mb-4">
+                Click each button to test if your user has the required role/permission to access the endpoint.
+            </MudText>
+
+            <MudStack Spacing="3">
+                @* Admin Test *@
+                <MudCard Elevation="1" Class="test-card">
+                    <MudCardContent>
+                        <MudGrid AlignItems="Center">
+                            <MudItem xs="12" sm="6">
+                                <MudText Typo="Typo.subtitle1"><strong>Administrator Role</strong></MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    Policy: "Admin" | Permission: "Admin"
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudButton Variant="Variant.Filled" 
+                                           Color="Color.Error" 
+                                           OnClick="@(() => TestRoleEndpoint("admin"))"
+                                           Disabled="@_testingAdmin"
+                                           FullWidth="true">
+                                    @if (_testingAdmin)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                    }
+                                    Test Admin
+                                </MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                @if (_adminResult != null)
+                                {
+                                    <MudChip T="string" Color="@(_adminResult.Value ? Color.Success : Color.Error)" Size="Size.Small">
+                                        @(_adminResult.Value ? "✓ Access" : "✗ Denied")
+                                    </MudChip>
+                                }
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+
+                @* Viewer Test *@
+                <MudCard Elevation="1" Class="test-card">
+                    <MudCardContent>
+                        <MudGrid AlignItems="Center">
+                            <MudItem xs="12" sm="6">
+                                <MudText Typo="Typo.subtitle1"><strong>User Role</strong></MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    Policy: "Viewer" | Permission: "Viewer"
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudButton Variant="Variant.Filled" 
+                                           Color="Color.Info" 
+                                           OnClick="@(() => TestRoleEndpoint("viewer"))"
+                                           Disabled="@_testingViewer"
+                                           FullWidth="true">
+                                    @if (_testingViewer)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                    }
+                                    Test Viewer
+                                </MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                @if (_viewerResult != null)
+                                {
+                                    <MudChip T="string" Color="@(_viewerResult.Value ? Color.Success : Color.Error)" Size="Size.Small">
+                                        @(_viewerResult.Value ? "✓ Access" : "✗ Denied")
+                                    </MudChip>
+                                }
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+
+                @* ActiveUser Test *@
+                <MudCard Elevation="1" Class="test-card">
+                    <MudCardContent>
+                        <MudGrid AlignItems="Center">
+                            <MudItem xs="12" sm="6">
+                                <MudText Typo="Typo.subtitle1"><strong>VerifiedUser Role</strong></MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    Policy: "ActiveUser" | Permission: "ActiveUser"
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                <MudButton Variant="Variant.Filled" 
+                                           Color="Color.Success" 
+                                           OnClick="@(() => TestRoleEndpoint("active-user"))"
+                                           Disabled="@_testingActiveUser"
+                                           FullWidth="true">
+                                    @if (_testingActiveUser)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                    }
+                                    Test Active
+                                </MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="3">
+                                @if (_activeUserResult != null)
+                                {
+                                    <MudChip T="string" Color="@(_activeUserResult.Value ? Color.Success : Color.Error)" Size="Size.Small">
+                                        @(_activeUserResult.Value ? "✓ Access" : "✗ Denied")
+                                    </MudChip>
+                                }
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudStack>
+
+            <MudButton Variant="Variant.Outlined" 
+                       Color="Color.Primary" 
+                       OnClick="TestAllRoles" 
+                       Class="mt-4"
+                       FullWidth="true"
+                       StartIcon="@Icons.Material.Filled.PlayArrow">
+                Test All Roles
+            </MudButton>
+        </MudPaper>
+
+        @* Results Summary *@
+        @if (_lastTestMessage != null)
+        {
+            <MudPaper Elevation="2" Class="pa-4">
+                <MudText Typo="Typo.h6" Class="mb-3">
+                    <MudIcon Icon="@Icons.Material.Filled.Assignment" Class="mr-2" Color="Color.Warning" />
+                    Last Test Result
+                </MudText>
+                <MudAlert Severity="@_lastTestSeverity" Variant="Variant.Outlined">
+                    @_lastTestMessage
+                </MudAlert>
+            </MudPaper>
+        }
+    }
+</MudContainer>
+

@@ -1,0 +1,309 @@
+@using Client.Enums
+@using MudBlazor
+@* Serves as a div to view edit and create a new event and description *@
+<div class="event-description-container" style="@GetContainerStyle()">
+    <div class="event-description-header">
+        @if (Mode == PageMode.Read)
+        {
+            <div class="event-description-title">@Title</div>
+        }
+        else
+        {
+            <MudTextField T="string"
+                         @bind-Value="Title"
+                         @bind-Value:after="OnTitleChanged"
+                         Label="Title"
+                         Required="true"
+                         RequiredError="Title is required"
+                         Variant="Variant.Outlined"
+                         Dense="true"
+                         Margin="Margin.None"
+                         Class="event-description-title-input" />
+        }
+        @if (Mode == PageMode.Read)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                           OnClick="HandleEditClick"
+                           Color="Color.Default"
+                           Size="Size.Medium"
+                           Class="event-description-edit-button" />
+        }
+    </div>
+    
+    <div class="event-description-content">
+        <div class="event-description-section">
+            <div class="event-description-value">
+                <MudTextField T="string"
+                             @bind-Value="Description"
+                             @bind-Value:after="OnDescriptionChanged"
+                             Label="Description"
+                             Variant="Variant.Outlined"
+                             ReadOnly="@(Mode == PageMode.Read)"
+                             Dense="true"
+                             Margin="Margin.None"
+                             Lines="4" />
+            </div>
+        </div>
+        
+        <div class="event-description-section">
+            <div class="event-description-value event-description-date-time-row" style="@GetDateTimeRowStyle()">
+                <MudDatePicker Date="@GetDisplayDate()"
+                              DateChanged="@OnDateChanged"
+                              Label="Date"
+                              Variant="Variant.Outlined"
+                              ReadOnly="@(Mode == PageMode.Read)"
+                              Dense="true"
+                              Margin="Margin.None"
+                              DateFormat="M/d/yyyy"
+                              MinDate="@DateTime.Today"
+                              Class="event-description-date-picker" />
+                <MudTimePicker Label="Start Time"
+                              AmPm="true"
+                              @bind-Time="@StartTime"
+                              Required="true"
+                              RequiredError="Start time is required"
+                              Variant="Variant.Outlined"
+                              ReadOnly="@(Mode == PageMode.Read)"
+                              Dense="true"
+                              Margin="Margin.None"
+                              Class="event-description-time-picker" />
+                <MudTimePicker Label="End Time"
+                              AmPm="true"
+                              @bind-Time="@EndTime"
+                              Required="true"
+                              RequiredError="End time is required"
+                              Variant="Variant.Outlined"
+                              ReadOnly="@(Mode == PageMode.Read)"
+                              Dense="true"
+                              Margin="Margin.None"
+                              Class="event-description-time-picker" />
+            </div>
+        </div>
+        
+        <div class="event-description-section">
+            <div class="event-description-value event-description-type-postpone-row">
+                <MudSelect T="EventTypeEnums?"
+                          @bind-Value="EventType"
+                          @bind-Value:after="OnEventTypeChanged"
+                          Label="Event Type"
+                          Variant="Variant.Outlined"
+                          ReadOnly="@(Mode == PageMode.Read)"
+                          Dense="true"
+                          Margin="Margin.None">
+                    @foreach (var eventType in GetAllEventTypes())
+                    {
+                        <MudSelectItem Value="@eventType">
+                            @if (eventType.HasValue)
+                            {
+                                <MudIcon Icon="@IconForEventType(eventType.Value)" 
+                                         Style="@($"color:{Colors.Shades.White};")" 
+                                         Size="Size.Small"
+                                         Class="mr-2" />
+                                @GetEventTypeName(eventType.Value)
+                            }
+                            else
+                            {
+                                <text>Not specified</text>
+                            }
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <div class="event-description-postpone-container">
+                    <span class="mr-2">Can be postponed:</span>
+                    <MudSwitch Color="Color.Secondary"
+                              @bind-Value="CanBePostponed"
+                              @bind-Value:after="OnCanBePostponedChanged"
+                              Label="@(CanBePostponed ? "true" : "false")"
+                              Disabled="@(Mode == PageMode.Read)" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public DateTime? StartDateTime { get; set; }
+    [Parameter] public DateTime? EndDateTime { get; set; }
+    [Parameter] public EventTypeEnums? EventType { get; set; }
+    [Parameter] public bool CanBePostponed { get; set; } = true;
+    [Parameter] public string MinimumHeight { get; set; } = string.Empty;
+    [Parameter] public string MaximumHeight { get; set; } = string.Empty;
+    [Parameter] public string DateTimeWidth { get; set; } = string.Empty;
+    [Parameter] public PageMode Mode { get; set; } = PageMode.Read;
+    [Parameter] public EventCallback OnEdit { get; set; }
+    [Parameter] public EventCallback<PageMode> OnModeChanged { get; set; } // EventCallback for parent and internal use
+    [Parameter] public EventCallback<DateTime?> StartDateTimeChanged { get; set; } // EventCallback for parent and internal use
+    [Parameter] public EventCallback<DateTime?> EndDateTimeChanged { get; set; } // EventCallback for parent and internal use
+    [Parameter] public EventCallback<string> TitleChanged { get; set; } // EventCallback for parent
+    [Parameter] public EventCallback<string> DescriptionChanged { get; set; } // EventCallback for parent
+    [Parameter] public EventCallback<EventTypeEnums?> EventTypeChanged { get; set; } // EventCallback for parent
+    [Parameter] public EventCallback<bool> CanBePostponedChanged { get; set; } // EventCallback for parent
+
+    private TimeSpan? StartTime
+    {
+        get => StartDateTime?.TimeOfDay;
+        set
+        {
+            if (value.HasValue)
+            {
+                var date = StartDateTime?.Date ?? DateTime.Today;
+                StartDateTime = date + value.Value;
+
+                // Automatically set end time to 30 minutes after start time
+                EndDateTime = StartDateTime?.AddMinutes(30);
+
+                if (StartDateTimeChanged.HasDelegate)
+                {
+                    StartDateTimeChanged.InvokeAsync(StartDateTime);
+                }
+                if (EndDateTimeChanged.HasDelegate)
+                {
+                    EndDateTimeChanged.InvokeAsync(EndDateTime);
+                }
+            }
+        }
+    }
+
+    private TimeSpan? EndTime
+    {
+        get => EndDateTime?.TimeOfDay;
+        set
+        {
+            if (value.HasValue)
+            {
+                var date = EndDateTime?.Date ?? StartDateTime?.Date ?? DateTime.Today;
+                EndDateTime = date + value.Value;
+                if (EndDateTimeChanged.HasDelegate)
+                {
+                    EndDateTimeChanged.InvokeAsync(EndDateTime);
+                }
+            }
+        }
+    }
+
+    private async Task HandleEditClick()
+    {
+        await OnModeChanged.InvokeAsync(PageMode.Edit);
+    }
+
+    private async Task OnDateChanged(DateTime? newDate)
+    {
+        if (newDate.HasValue)
+        {
+            var startTimeOfDay = StartDateTime?.TimeOfDay ?? TimeSpan.FromHours(9); // Default to 9 AM if no start time
+
+            StartDateTime = newDate.Value.Date + startTimeOfDay;
+            // Automatically set end time to 30 minutes after start time
+            EndDateTime = StartDateTime?.AddMinutes(30);
+
+            if (StartDateTimeChanged.HasDelegate)
+            {
+                await StartDateTimeChanged.InvokeAsync(StartDateTime);
+            }
+            if (EndDateTimeChanged.HasDelegate)
+            {
+                await EndDateTimeChanged.InvokeAsync(EndDateTime);
+            }
+        }
+    }
+
+    private async Task OnTitleChanged()
+    {
+        if (TitleChanged.HasDelegate)
+        {
+            await TitleChanged.InvokeAsync(Title);
+        }
+    }
+
+    private async Task OnDescriptionChanged()
+    {
+        if (DescriptionChanged.HasDelegate)
+        {
+            await DescriptionChanged.InvokeAsync(Description);
+        }
+    }
+
+    private async Task OnEventTypeChanged()
+    {
+        if (EventTypeChanged.HasDelegate)
+        {
+            await EventTypeChanged.InvokeAsync(EventType);
+        }
+    }
+
+    private async Task OnCanBePostponedChanged()
+    {
+        if (CanBePostponedChanged.HasDelegate)
+        {
+            await CanBePostponedChanged.InvokeAsync(CanBePostponed);
+        }
+    }
+
+    private string GetContainerStyle()
+    {
+        var styles = new List<string>();
+        if (!string.IsNullOrEmpty(MinimumHeight))
+        {
+            styles.Add($"min-height: {MinimumHeight}");
+        }
+        if (!string.IsNullOrEmpty(MaximumHeight))
+        {
+            styles.Add($"max-height: {MaximumHeight}");
+        }
+        return string.Join("; ", styles);
+    }
+
+    private string GetDateTimeRowStyle()
+    {
+        if (!string.IsNullOrEmpty(DateTimeWidth))
+        {
+            return $"--date-time-row-width: {DateTimeWidth};";
+        }
+        return string.Empty;
+    }
+
+    private DateTime? GetDisplayDate()
+    {
+        return StartDateTime?.Date;
+    }
+
+    public string IconForEventType(EventTypeEnums eventType)
+    {
+        return eventType switch
+        {
+            EventTypeEnums.InternalMeeting => Icons.Material.Filled.MeetingRoom,
+            EventTypeEnums.ExternalMeeting => Icons.Material.Filled.Business,
+            EventTypeEnums.WebDemo => Icons.Material.Filled.VideoCall,
+            EventTypeEnums.HomeConference => Icons.Material.Filled.Home,
+            EventTypeEnums.AwayConference => Icons.Material.Filled.FlightTakeoff,
+            EventTypeEnums.SchoolVisit => Icons.Material.Filled.School,
+            _ => Icons.Material.Filled.Event
+        };
+    }
+
+    public Color ColorForEventType(EventTypeEnums eventType)
+    {
+        return Color.Dark;
+    }
+
+    public string GetEventTypeName(EventTypeEnums eventType)
+    {
+        return eventType switch
+        {
+            EventTypeEnums.InternalMeeting => "Internal Meeting",
+            EventTypeEnums.ExternalMeeting => "External Meeting",
+            EventTypeEnums.WebDemo => "Web Demo",
+            EventTypeEnums.HomeConference => "Home Conference",
+            EventTypeEnums.AwayConference => "Away Conference",
+            EventTypeEnums.SchoolVisit => "School Visit",
+            _ => "Other"
+        };
+    }
+
+    private IEnumerable<EventTypeEnums?> GetAllEventTypes()
+    {
+        return Enum.GetValues<EventTypeEnums>().Select(e => (EventTypeEnums?)e);
+    }
+}
