@@ -1,35 +1,49 @@
 .calendar-container {
-  margin: 16px;
+    margin: 16px;
 }
 
 .calendar-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
-/* Target MudSelect internal elements with ::deep */
-.calendar-header ::deep .mud-input-control {
-    padding: 8px 8px !important;
+/* Style the select dropdowns */
+.calendar-header .form-select {
+    padding: 0.375rem 2rem 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border-color: var(--app-border, #dee2e6);
+    border-radius: var(--app-radius-sm, 4px);
 }
 
-.calendar-header ::deep .mud-input-root-outlined {
-    padding: 8px 8px !important;
+.calendar-header .form-select:focus {
+    border-color: var(--app-primary, #667eea);
+    box-shadow: 0 0 0 0.2rem rgba(var(--app-primary-rgb, 102, 126, 234), 0.25);
 }
 
-.calendar-header ::deep .mud-input-slot {
-    padding: 8px 8px !important;
+/* Style the navigation buttons */
+.calendar-header .btn {
+    padding: 0.5rem 0.75rem;
 }
 
-.calendar-header ::deep .mud-input-root {
-    padding: 8px 8px !important;
+.calendar-header .btn-outline-secondary {
+    border-color: var(--app-border, #dee2e6);
+    color: var(--app-text-secondary, #495057);
 }
 
-.calendar-header ::deep .mud-select .mud-input-control {
-    padding: 8px 8px !important;
+.calendar-header .btn-outline-secondary:hover {
+    background-color: var(--app-surface-alt, #f8f9fa);
+    color: var(--app-text-primary, #212529);
 }
 
-.calendar-header ::deep .mud-select .mud-input-root-outlined {
-    padding: 8px 8px !important;
+.calendar-header .btn-outline-primary {
+    border-color: var(--app-primary, #667eea);
+    color: var(--app-primary, #667eea);
+}
+
+.calendar-header .btn-outline-primary:hover {
+    background-color: var(--app-primary, #667eea);
+    color: white;
 }

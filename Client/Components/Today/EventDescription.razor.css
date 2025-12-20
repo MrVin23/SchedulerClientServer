@@ -1,10 +1,10 @@
 /* Event Description Container */
 .event-description-container {
-    border-radius: 12px;
-    border: 1px solid var(--mud-palette-divider, #e0e0e0);
-    background-color: var(--mud-palette-surface, #ffffff);
+    border-radius: var(--app-radius-md, 12px);
+    border: 1px solid var(--app-border, #dee2e6);
+    background-color: var(--app-surface, #ffffff);
     padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--app-shadow, 0 2px 4px rgba(0, 0, 0, 0.1));
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -18,14 +18,29 @@
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--mud-palette-divider, #e0e0e0);
+    border-bottom: 1px solid var(--app-border, #dee2e6);
 }
 
 .event-description-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--mud-palette-text-primary, rgba(0, 0, 0, 0.87));
+    color: var(--app-text-primary, #212529);
     flex: 1;
+}
+
+.event-description-title-input {
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: none;
+    border-bottom: 2px solid var(--app-primary, #667eea);
+    background: transparent;
+    padding: 0.25rem 0;
+    width: 100%;
+}
+
+.event-description-title-input:focus {
+    outline: none;
+    border-bottom-color: var(--app-primary-dark, #764ba2);
 }
 
 .event-description-edit-button {
@@ -50,14 +65,14 @@
 .event-description-label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--mud-palette-text-secondary, rgba(0, 0, 0, 0.6));
+    color: var(--app-text-secondary, #495057);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .event-description-value {
     font-size: 1rem;
-    color: var(--mud-palette-text-primary, rgba(0, 0, 0, 0.87));
+    color: var(--app-text-primary, #212529);
     word-wrap: break-word;
     display: flex;
     align-items: center;
@@ -72,20 +87,7 @@
 
 .event-type-icon {
     flex-shrink: 0;
-}
-
-/* Keep icon colors visible even when disabled */
-.event-description-postpone-toggle ::deep .mud-icon-root {
-    /* color: inherit !important; */
-    opacity: 1 !important;
-}
-
-.event-description-postpone-toggle.mud-toggle-icon-button-toggled ::deep .mud-icon-root {
-    color: var(--mud-palette-success) !important;
-}
-
-.event-description-postpone-toggle:not(.mud-toggle-icon-button-toggled) ::deep .mud-icon-root {
-    color: var(--mud-palette-error) !important;
+    color: var(--app-text-secondary, #495057);
 }
 
 /* Date and Time Row - Use flex to control width */
@@ -105,24 +107,6 @@
     max-width: none;
 }
 
-.event-description-date-picker ::deep .mud-input-root,
-.event-description-time-picker ::deep .mud-input-root {
-    width: 100%;
-    max-width: 100%;
-}
-
-.event-description-date-picker ::deep .mud-input-control,
-.event-description-time-picker ::deep .mud-input-control {
-    width: 100%;
-    max-width: 100%;
-}
-
-.event-description-date-picker ::deep .mud-input-root-outlined,
-.event-description-time-picker ::deep .mud-input-root-outlined {
-    width: 100%;
-    max-width: 100%;
-}
-
 /* Event Type and Can Be Postponed Row */
 .event-description-type-postpone-row {
     display: flex;
@@ -139,15 +123,21 @@
     margin-left: auto;
 }
 
-.event-description-postpone-container ::deep .mud-switch.mud-disabled {
-    color: white !important;
+/* Form Controls in Event Description */
+.event-description-container .form-control,
+.event-description-container .form-select {
+    border-color: var(--app-border, #dee2e6);
+    border-radius: var(--app-radius-sm, 4px);
 }
 
-.event-description-postpone-container ::deep .mud-switch-label {
-    color: white !important;
+.event-description-container .form-control:focus,
+.event-description-container .form-select:focus {
+    border-color: var(--app-primary, #667eea);
+    box-shadow: 0 0 0 0.2rem rgba(var(--app-primary-rgb, 102, 126, 234), 0.25);
 }
 
-.event-description-postpone-container ::deep .mud-switch.mud-disabled .mud-switch-label {
-    color: white !important;
+.event-description-container .form-control:disabled,
+.event-description-container .form-select:disabled {
+    background-color: var(--app-surface-alt, #f8f9fa);
+    color: var(--app-text-secondary, #495057);
 }
-

@@ -2,10 +2,58 @@
 @using Client.Enums
 @inherits LayoutComponentBase
 
-@* Global Alert - displays at the top of the page *@
+@* Top Navbar *@
+<nav class="navbar navbar-expand navbar-dark fixed-top" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 1040;">
+    <div class="container-fluid">
+        <button class="btn btn-outline-light me-3" type="button" @onclick="ToggleDrawer">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <a class="navbar-brand d-flex align-items-center" href="">
+            <i class="bi bi-calendar-week me-2"></i>
+            <span class="d-none d-sm-inline">School Scheduler</span>
+        </a>
+        
+        <span class="navbar-text text-light me-auto d-none d-md-inline">
+            @WelcomeMessage
+        </span>
+
+        @if (!string.IsNullOrWhiteSpace(_username))
+        {
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <span class="d-none d-sm-inline">@_username</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <button class="dropdown-item" @onclick="HandleAccount">
+                            <i class="bi bi-person me-2"></i>Account
+                        </button>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <button class="dropdown-item" @onclick="HandleLogout">
+                            <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <button class="btn btn-light" @onclick="HandleLogin">
+                <i class="bi bi-box-arrow-in-right me-1"></i>
+                <span class="d-none d-sm-inline">Login</span>
+            </button>
+        }
+    </div>
+</nav>
+
+@* Global Alert - displays below the navbar *@
 @if (_alertVisible)
 {
-    <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; padding: 0;">
+    <div style="position: fixed; top: 56px; left: 0; right: 0; z-index: 1035; padding: 0;">
         <CustomAlert @bind-IsVisible="_alertVisible"
                      Message="@_alertMessage"
                      Severity="@_alertSeverity"
@@ -18,11 +66,11 @@
 <div class="offcanvas offcanvas-start @(_drawerOpen ? "show" : "")" 
      tabindex="-1" 
      id="sidebar"
-     style="visibility: @(_drawerOpen ? "visible" : "hidden"); background-color: #37474f; width: 280px;"
+     style="visibility: @(_drawerOpen ? "visible" : "hidden"); background-color: var(--app-sidebar-bg, #37474f); width: 280px; top: 56px;"
      data-bs-backdrop="false">
     <div class="offcanvas-header border-bottom border-secondary">
         <h5 class="offcanvas-title text-light">
-            <i class="bi bi-calendar-week me-2"></i>School Scheduler
+            <i class="bi bi-compass me-2"></i>Navigation
         </h5>
         <button type="button" class="btn-close btn-close-white" @onclick="ToggleDrawer"></button>
     </div>
@@ -31,69 +79,27 @@
     </div>
 </div>
 
-@* Main content area with margin for sidebar *@
-<div class="d-flex flex-column min-vh-100" style="@(_drawerOpen ? "margin-left: 280px;" : "")">
-    @* Main Content *@
+@* Main content area *@
+<div class="d-flex flex-column min-vh-100">
     <main class="flex-grow-1 position-relative" 
-          style="background-image: url('/Images/BooksImage.jpg'); 
+          style="margin-top: 56px; @(_drawerOpen ? "margin-left: 280px;" : "")
+                 background-image: url('/Images/BooksImage.jpg'); 
                  background-size: cover; 
                  background-position: center; 
-                 background-repeat: no-repeat;">
+                 background-repeat: no-repeat;
+                 transition: margin-left 0.3s ease;">
         <div class="position-absolute top-0 start-0 end-0 bottom-0" 
-             style="background-color: rgba(255, 255, 255, 0.7); z-index: 0;"></div>
+             style="background-color: rgba(255, 255, 255, 0.85); z-index: 0;"></div>
         <div class="container-fluid position-relative py-4" style="z-index: 1; padding-top: @(_alertVisible ? "70px" : "1.5rem") !important;">
             @Body
         </div>
     </main>
 
-    @* Bottom Navbar *@
-    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-bottom" style="z-index: 1040;">
-        <div class="container-fluid">
-            <button class="btn btn-outline-light me-3" type="button" @onclick="ToggleDrawer">
-                <i class="bi bi-list"></i>
-            </button>
-            
-            <span class="navbar-text text-light me-auto">
-                @WelcomeMessage
-            </span>
-
-            @if (!string.IsNullOrWhiteSpace(_username))
-            {
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle me-1"></i>
-                        @_username
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <button class="dropdown-item" @onclick="HandleAccount">
-                                <i class="bi bi-person me-2"></i>Account
-                            </button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <button class="dropdown-item" @onclick="HandleLogout">
-                                <i class="bi bi-box-arrow-right me-2"></i>Sign Out
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            }
-            else
-            {
-                <button class="btn btn-primary" @onclick="HandleLogin">
-                    <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                </button>
-            }
-            
-            <span class="navbar-text text-muted ms-3 small">Version 1.0.0</span>
-        </div>
-    </nav>
+    @* Footer *@
+    <footer class="text-center py-2 text-muted small border-top" 
+            style="background-color: var(--app-surface, #fff); @(_drawerOpen ? "margin-left: 280px;" : "") transition: margin-left 0.3s ease;">
+        <span>School Scheduler &copy; @DateTime.Now.Year</span>
+        <span class="mx-2">|</span>
+        <span>Version 1.0.0</span>
+    </footer>
 </div>
-
-@* Add padding at bottom for fixed navbar *@
-<style>
-    body {
-        padding-bottom: 60px;
-    }
-</style>
