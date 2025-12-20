@@ -1,26 +1,40 @@
-<MudNavMenu Color="@Color.Secondary">
+@using Microsoft.AspNetCore.Components.Routing
+
+<nav class="nav flex-column py-2">
     @foreach (var item in NavigationItems)
     {
-        <MudNavLink Href="@item.Href" 
-                    Match="@item.Match" 
-                    Icon="@item.Icon">
+        <NavLink class="nav-link text-light px-3 py-2" 
+                 href="@item.Href" 
+                 Match="@item.Match"
+                 ActiveClass="active bg-secondary">
+            <i class="bi @item.Icon me-2"></i>
             @item.Label
-        </MudNavLink>
+        </NavLink>
     }
-</MudNavMenu>
+</nav>
+
+<style>
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        font-weight: 500;
+    }
+</style>
 
 @code {
     private List<NavItem> NavigationItems { get; set; } = new()
     {
-        new() { Href = "", Label = "Home", Icon = Icons.Material.Filled.Home, Match = NavLinkMatch.All },
-        new() { Href = "authorization-diagram", Label = "Authorization Guide", Icon = Icons.Material.Filled.Security, Match = NavLinkMatch.Prefix },
-        new() { Href = "test-authorization", Label = "Auth Test (No Restrictions)", Icon = Icons.Material.Filled.BugReport, Match = NavLinkMatch.Prefix },
-        new() { Href = "test-role-access", Label = "Test Role Access", Icon = Icons.Material.Filled.Badge, Match = NavLinkMatch.Prefix },
-        new() { Href = "test-permission-access", Label = "Test Permission Access", Icon = Icons.Material.Filled.Key, Match = NavLinkMatch.Prefix },
-        new() { Href = "stories/calendar", Label = "Calendar View", Icon = Icons.Material.Filled.CalendarToday, Match = NavLinkMatch.Prefix },
-        new() { Href = "stories/day", Label = "Day", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix },
-        new() { Href = "stories/dayview", Label = "Day View", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix },
-        new() { Href = "stories/week", Label = "Week Schedule", Icon = Icons.Material.Filled.ViewWeek, Match = NavLinkMatch.Prefix }
+        new() { Href = "", Label = "Home", Icon = "bi-house-door", Match = NavLinkMatch.All },
+        new() { Href = "authorization-diagram", Label = "Authorization Guide", Icon = "bi-shield-lock", Match = NavLinkMatch.Prefix },
+        new() { Href = "test-authorization", Label = "Auth Test (No Restrictions)", Icon = "bi-bug", Match = NavLinkMatch.Prefix },
+        new() { Href = "test-role-access", Label = "Test Role Access", Icon = "bi-person-badge", Match = NavLinkMatch.Prefix },
+        new() { Href = "test-permission-access", Label = "Test Permission Access", Icon = "bi-key", Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/calendar", Label = "Calendar View", Icon = "bi-calendar", Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/day", Label = "Day", Icon = "bi-journal", Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/dayview", Label = "Day View", Icon = "bi-calendar-day", Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/week", Label = "Week Schedule", Icon = "bi-calendar-week", Match = NavLinkMatch.Prefix }
     };
 
     public class NavItem

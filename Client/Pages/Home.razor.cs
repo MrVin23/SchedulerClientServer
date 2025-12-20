@@ -1,7 +1,7 @@
 using Client.Dtos;
+using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace Client.Pages
 {
@@ -10,7 +10,7 @@ namespace Client.Pages
         [Inject] private IAuthService AuthService { get; set; } = null!;
         [Inject] private ISecureStorageService SecureStorage { get; set; } = null!;
         [Inject] private NavigationManager Navigation { get; set; } = null!;
-        [Inject] private ISnackbar Snackbar { get; set; } = null!;
+        [Inject] private IAlertService AlertService { get; set; } = null!;
 
         protected LoginResponse? currentUser;
         private bool isLoading = true;
@@ -49,7 +49,7 @@ namespace Client.Pages
                 // If we have stored data, use it even if verification fails
                 if (currentUser == null)
                 {
-                    Snackbar.Add($"Error loading user data: {ex.Message}", Severity.Error);
+                    AlertService.ShowError($"Error loading user data: {ex.Message}");
                     Navigation.NavigateTo("/login");
                 }
             }
@@ -134,17 +134,16 @@ namespace Client.Pages
                 // Remove stored user data
                 await SecureStorage.RemoveAsync("currentUser");
                 
-                Snackbar.Add("Logged out successfully", Severity.Success);
+                AlertService.ShowSuccess("Logged out successfully");
                 Navigation.NavigateTo("/login");
             }
             catch (Exception ex)
             {
                 // Even if server logout fails, clear local data
                 await SecureStorage.RemoveAsync("currentUser");
-                Snackbar.Add($"Error during logout: {ex.Message}", Severity.Error);
+                AlertService.ShowError($"Error during logout: {ex.Message}");
                 Navigation.NavigateTo("/login");
             }
         }
     }
 }
-

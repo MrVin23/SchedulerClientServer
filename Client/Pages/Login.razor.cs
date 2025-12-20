@@ -1,8 +1,8 @@
 using Client.Dtos;
+using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Client.Services.Authorisation;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace Client.Pages
 {
@@ -11,15 +11,12 @@ namespace Client.Pages
         [Inject] private IAuthService AuthService { get; set; } = null!;
         [Inject] private ISecureStorageService SecureStorage { get; set; } = null!;
         [Inject] private NavigationManager Navigation { get; set; } = null!;
-        [Inject] private ISnackbar Snackbar { get; set; } = null!;
+        [Inject] private IAlertService AlertService { get; set; } = null!;
         [Inject] private TokenRefreshService TokenRefreshService { get; set; } = null!;
 
         private LoginRequest loginRequest = new();
         private bool isLoading = false;
         private string errorMessage = string.Empty;
-        private MudForm? form;
-        private bool isValid;
-        private string[] errors = Array.Empty<string>();
         private bool showPassword = false;
 
         protected override async Task OnInitializedAsync()
@@ -39,12 +36,6 @@ namespace Client.Pages
         private async Task HandleLogin()
         {
             errorMessage = string.Empty;
-            
-            if (!isValid)
-            {
-                errorMessage = "Please fix validation errors";
-                return;
-            }
 
             isLoading = true;
             try
@@ -62,19 +53,19 @@ namespace Client.Pages
                     // Start token refresh monitoring
                     TokenRefreshService.StartMonitoring();
                     
-                    Snackbar.Add("Login successful!", Severity.Success);
+                    AlertService.ShowSuccess("Login successful!");
                     Navigation.NavigateTo("/home");
                 }
                 else
                 {
                     errorMessage = response?.Message ?? "Login failed. Please check your credentials.";
-                    Snackbar.Add(errorMessage, Severity.Error);
+                    AlertService.ShowError(errorMessage);
                 }
             }
             catch (Exception ex)
             {
                 errorMessage = $"An error occurred: {ex.Message}";
-                Snackbar.Add(errorMessage, Severity.Error);
+                AlertService.ShowError(errorMessage);
             }
             finally
             {

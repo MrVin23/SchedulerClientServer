@@ -2,9 +2,7 @@ using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
-using MudBlazor;
 using System.Net;
-using System.Text.Json;
 
 namespace Client.Tests
 {
@@ -334,14 +332,14 @@ namespace Client.Tests
             };
         }
 
-        private Color GetStatusColor(string statusCode)
+        private string GetStatusColorClass(string statusCode)
         {
-            if (statusCode.StartsWith("2")) return Color.Success;
-            if (statusCode == "401") return Color.Warning;
-            if (statusCode == "403") return Color.Info;
-            if (statusCode.StartsWith("4")) return Color.Error;
-            if (statusCode.StartsWith("5")) return Color.Error;
-            return Color.Default;
+            if (statusCode.StartsWith("2")) return "bg-success";
+            if (statusCode == "401") return "bg-warning";
+            if (statusCode == "403") return "bg-info";
+            if (statusCode.StartsWith("4")) return "bg-danger";
+            if (statusCode.StartsWith("5")) return "bg-danger";
+            return "bg-secondary";
         }
 
         // Helper classes
@@ -366,4 +364,3 @@ namespace Client.Tests
         }
     }
 }
-

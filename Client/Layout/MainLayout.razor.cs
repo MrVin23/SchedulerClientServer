@@ -1,9 +1,9 @@
+using Client.Enums;
 using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Client.Services.Authorisation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using MudBlazor;
 
 namespace Client.Layout
 {
@@ -13,7 +13,6 @@ namespace Client.Layout
         [Inject] private IAuthService AuthService { get; set; } = null!;
         [Inject] private ISecureStorageService SecureStorage { get; set; } = null!;
         [Inject] private NavigationManager Navigation { get; set; } = null!;
-        [Inject] private ISnackbar Snackbar { get; set; } = null!;
         [Inject] private IAlertService AlertService { get; set; } = null!;
         [Inject] private TokenRefreshService TokenRefreshService { get; set; } = null!;
 
@@ -24,8 +23,8 @@ namespace Client.Layout
         // Alert state
         private bool _alertVisible = false;
         private string _alertMessage = string.Empty;
-        private Severity _alertSeverity = Severity.Info;
-        private Variant _alertVariant = Variant.Filled;
+        private AlertSeverity _alertSeverity = AlertSeverity.Info;
+        private AlertVariant _alertVariant = AlertVariant.Filled;
 
         protected override async Task OnInitializedAsync()
         {
@@ -99,7 +98,7 @@ namespace Client.Layout
                 _username = string.Empty;
                 _welcomeMessage = "Welcome User";
                 
-                Snackbar.Add("Logged out successfully", Severity.Success);
+                AlertService.ShowSuccess("Logged out successfully");
                 Navigation.NavigateTo("/login");
             }
             catch (Exception ex)
@@ -110,7 +109,7 @@ namespace Client.Layout
                 _username = string.Empty;
                 _welcomeMessage = "Welcome User";
                 
-                Snackbar.Add($"Error during logout: {ex.Message}", Severity.Error);
+                AlertService.ShowError($"Error during logout: {ex.Message}");
                 Navigation.NavigateTo("/login");
             }
         }

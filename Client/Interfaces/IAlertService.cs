@@ -1,4 +1,4 @@
-using MudBlazor;
+using Client.Enums;
 
 namespace Client.Interfaces
 {
@@ -24,7 +24,7 @@ namespace Client.Interfaces
         /// <param name="message">The message to display.</param>
         /// <param name="severity">The severity level of the alert.</param>
         /// <param name="variant">The visual variant of the alert.</param>
-        void ShowAlert(string message, Severity severity = Severity.Info, Variant variant = Variant.Filled);
+        void ShowAlert(string message, AlertSeverity severity = AlertSeverity.Info, AlertVariant variant = AlertVariant.Filled);
 
         /// <summary>
         /// Shows an error alert. Use for server errors, API failures, and critical issues.
@@ -62,8 +62,7 @@ namespace Client.Interfaces
     public class AlertMessage
     {
         public string Message { get; set; } = string.Empty;
-        public Severity Severity { get; set; } = Severity.Info;
-        public Variant Variant { get; set; } = Variant.Filled;
+        public AlertSeverity Severity { get; set; } = AlertSeverity.Info;
+        public AlertVariant Variant { get; set; } = AlertVariant.Filled;
     }
 }
-

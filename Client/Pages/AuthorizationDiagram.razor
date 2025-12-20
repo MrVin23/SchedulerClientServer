@@ -1,811 +1,261 @@
 @page "/authorization-diagram"
 @layout StoryLayout
-@using MudBlazor
 
 <PageTitle>Authorization System Diagram</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
-    <MudPaper Elevation="3" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-2">Dynamic Role-Based Authorization</MudText>
-        <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Success">with Policy-Based Authentication</MudText>
-    </MudPaper>
+<div class="container-fluid py-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body text-center">
+            <h3 class="mb-2">Dynamic Role-Based Authorization</h3>
+            <h6 class="text-success">with Policy-Based Authentication</h6>
+        </div>
+    </div>
 
     @* Overview Section *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6 overview-section">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" Color="Color.Success" />
-            Overview
-        </MudText>
-        <MudText Typo="Typo.body1">
-            This system combines role-based and policy-based authentication to create a flexible, 
-            database-driven authorization system where admins can manage user roles and permissions 
-            without requiring code changes.
-        </MudText>
-    </MudPaper>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-3">
+                <i class="bi bi-info-circle text-success me-2"></i>
+                Overview
+            </h5>
+            <p class="mb-0">
+                This system combines role-based and policy-based authentication to create a flexible, 
+                database-driven authorization system where admins can manage user roles and permissions 
+                without requiring code changes.
+            </p>
+        </div>
+    </div>
 
     @* Benefits Section *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" Color="Color.Success" />
-            Architecture Benefits
-        </MudText>
-        <MudGrid>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.Tune" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Flexibility</strong></MudText>
-                    <MudText Typo="Typo.body2">Admins can change permissions without code changes</MudText>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Architecture Benefits
+            </h5>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-sliders text-success fs-2"></i>
+                        <h6 class="mt-2 mb-1">Flexibility</h6>
+                        <small class="text-muted">Admins can change permissions without code changes</small>
+                    </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Scalability</strong></MudText>
-                    <MudText Typo="Typo.body2">Easy to add new roles and permissions</MudText>
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-graph-up text-success fs-2"></i>
+                        <h6 class="mt-2 mb-1">Scalability</h6>
+                        <small class="text-muted">Easy to add new roles and permissions</small>
+                    </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.Security" Size="Size.Large" Color="Color.Error" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Security</strong></MudText>
-                    <MudText Typo="Typo.body2">Centralized permission management</MudText>
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-shield-lock text-danger fs-2"></i>
+                        <h6 class="mt-2 mb-1">Security</h6>
+                        <small class="text-muted">Centralized permission management</small>
+                    </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.Build" Size="Size.Large" Color="Color.Warning" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Maintainability</strong></MudText>
-                    <MudText Typo="Typo.body2">Clear separation between roles and permissions</MudText>
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-tools text-warning fs-2"></i>
+                        <h6 class="mt-2 mb-1">Maintainability</h6>
+                        <small class="text-muted">Clear separation between roles and permissions</small>
+                    </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.Speed" Size="Size.Large" Color="Color.Info" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Performance</strong></MudText>
-                    <MudText Typo="Typo.body2">Database queries optimized and cacheable</MudText>
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-speedometer2 text-info fs-2"></i>
+                        <h6 class="mt-2 mb-1">Performance</h6>
+                        <small class="text-muted">Database queries optimized and cacheable</small>
+                    </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <div class="benefit-card">
-                    <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle1" Class="mt-2"><strong>Real-time</strong></MudText>
-                    <MudText Typo="Typo.body2">Changes take effect immediately</MudText>
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="text-center p-3">
+                        <i class="bi bi-lightning text-success fs-2"></i>
+                        <h6 class="mt-2 mb-1">Real-time</h6>
+                        <small class="text-muted">Changes take effect immediately</small>
+                    </div>
                 </div>
-            </MudItem>
-        </MudGrid>
-    </MudPaper>
+            </div>
+        </div>
+    </div>
 
     @* Database Structure Diagram *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.Storage" Class="mr-2" Color="Color.Success" />
-            Database Structure
-        </MudText>
-        
-        <div class="database-diagram">
-            @* User Entity *@
-            <div class="entity user-entity">
-                <div class="entity-header user-header">
-                    <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" />
-                    <span>User</span>
-                </div>
-                <div class="entity-body">
-                    <div class="entity-field">Username</div>
-                    <div class="entity-field">Email</div>
-                    <div class="entity-field">Password</div>
-                    <div class="entity-field relation">UserRoles</div>
-                </div>
-            </div>
-
-            @* Connection Line *@
-            <div class="connection-container">
-                <div class="connection-line horizontal"></div>
-                <div class="connection-label">Many-to-Many</div>
-            </div>
-
-            @* UserRole Junction *@
-            <div class="entity junction-entity">
-                <div class="entity-header junction-header">
-                    <MudIcon Icon="@Icons.Material.Filled.Link" Color="Color.Inherit" />
-                    <span>UserRole</span>
-                </div>
-                <div class="entity-body">
-                    <div class="entity-field fk">UserId (FK)</div>
-                    <div class="entity-field fk">RoleId (FK)</div>
-                </div>
-            </div>
-
-            @* Connection Line *@
-            <div class="connection-container">
-                <div class="connection-line horizontal"></div>
-                <div class="connection-label">Many-to-Many</div>
-            </div>
-
-            @* Role Entity *@
-            <div class="entity role-entity">
-                <div class="entity-header role-header">
-                    <MudIcon Icon="@Icons.Material.Filled.Badge" Color="Color.Inherit" />
-                    <span>Role</span>
-                </div>
-                <div class="entity-body">
-                    <div class="entity-field">Name</div>
-                    <div class="entity-field">Description</div>
-                    <div class="entity-field relation">UserRoles</div>
-                    <div class="entity-field relation">RolePermissions</div>
-                </div>
-            </div>
-
-            @* Connection Line *@
-            <div class="connection-container">
-                <div class="connection-line horizontal"></div>
-                <div class="connection-label">Many-to-Many</div>
-            </div>
-
-            @* RolePermission Junction *@
-            <div class="entity junction-entity">
-                <div class="entity-header junction-header">
-                    <MudIcon Icon="@Icons.Material.Filled.Link" Color="Color.Inherit" />
-                    <span>RolePermission</span>
-                </div>
-                <div class="entity-body">
-                    <div class="entity-field fk">RoleId (FK)</div>
-                    <div class="entity-field fk">PermissionId (FK)</div>
-                </div>
-            </div>
-
-            @* Connection Line *@
-            <div class="connection-container">
-                <div class="connection-line horizontal"></div>
-                <div class="connection-label">Many-to-Many</div>
-            </div>
-
-            @* Permission Entity *@
-            <div class="entity permission-entity">
-                <div class="entity-header permission-header">
-                    <MudIcon Icon="@Icons.Material.Filled.Key" Color="Color.Inherit" />
-                    <span>Permission</span>
-                </div>
-                <div class="entity-body">
-                    <div class="entity-field">Name</div>
-                    <div class="entity-field">Description</div>
-                    <div class="entity-field relation">RolePermissions</div>
-                </div>
-            </div>
-        </div>
-    </MudPaper>
-
-    @* Authorization Flow Diagram *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="mr-2" Color="Color.Success" />
-            Authorization Flow
-        </MudText>
-        
-        <div class="flow-diagram">
-            @* Step 1: User Request *@
-            <div class="flow-step">
-                <div class="step-number">1</div>
-                <div class="step-box request-box">
-                    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle1"><strong>User Request</strong></MudText>
-                    <MudText Typo="Typo.caption">User sends request to protected endpoint</MudText>
-                </div>
-            </div>
-
-            <div class="flow-arrow">
-                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Large" Color="Color.Success" />
-            </div>
-
-            @* Step 2: Policy Check *@
-            <div class="flow-step">
-                <div class="step-number">2</div>
-                <div class="step-box policy-box">
-                    <MudIcon Icon="@Icons.Material.Filled.Policy" Size="Size.Large" Color="Color.Error" />
-                    <MudText Typo="Typo.subtitle1"><strong>Policy Attribute</strong></MudText>
-                    <MudText Typo="Typo.caption">[Authorize(Policy = "CanEditPosts")]</MudText>
-                </div>
-            </div>
-
-            <div class="flow-arrow">
-                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Large" Color="Color.Success" />
-            </div>
-
-            @* Step 3: Handler *@
-            <div class="flow-step">
-                <div class="step-number">3</div>
-                <div class="step-box handler-box">
-                    <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle1"><strong>Permission Handler</strong></MudText>
-                    <MudText Typo="Typo.caption">Checks if user is authenticated</MudText>
-                    <MudText Typo="Typo.caption">Extracts UserId from claims</MudText>
-                </div>
-            </div>
-
-            <div class="flow-arrow">
-                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Large" Color="Color.Success" />
-            </div>
-
-            @* Step 4: Database Query *@
-            <div class="flow-step">
-                <div class="step-number">4</div>
-                <div class="step-box database-box">
-                    <MudIcon Icon="@Icons.Material.Filled.Storage" Size="Size.Large" Color="Color.Info" />
-                    <MudText Typo="Typo.subtitle1"><strong>Database Query</strong></MudText>
-                    <MudText Typo="Typo.caption">User → UserRoles → Roles → RolePermissions → Permissions</MudText>
-                </div>
-            </div>
-
-            <div class="flow-arrow">
-                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Large" Color="Color.Success" />
-            </div>
-
-            @* Step 5: Decision *@
-            <div class="flow-step decision-step">
-                <div class="step-number">5</div>
-                <div class="step-box decision-box">
-                    <MudIcon Icon="@Icons.Material.Filled.Help" Size="Size.Large" Color="Color.Warning" />
-                    <MudText Typo="Typo.subtitle1"><strong>Has Permission?</strong></MudText>
-                </div>
-            </div>
-
-            @* Decision Branches *@
-            <div class="decision-branches">
-                <div class="branch success-branch">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Large" Color="Color.Success" />
-                    <div class="branch-box success-box">
-                        <MudText Typo="Typo.subtitle2"><strong>YES</strong></MudText>
-                        <MudText Typo="Typo.caption">Access Granted</MudText>
-                        <MudText Typo="Typo.caption">Request proceeds</MudText>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-database text-success me-2"></i>
+                Database Structure
+            </h5>
+            
+            <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
+                @* User Entity *@
+                <div class="card border-primary" style="min-width: 120px;">
+                    <div class="card-header bg-primary text-white py-2">
+                        <i class="bi bi-person me-1"></i> User
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div>Username</div>
+                        <div>Email</div>
+                        <div>Password</div>
+                        <div class="text-primary">UserRoles</div>
                     </div>
                 </div>
-                <div class="branch failure-branch">
-                    <MudIcon Icon="@Icons.Material.Filled.Cancel" Size="Size.Large" Color="Color.Error" />
-                    <div class="branch-box failure-box">
-                        <MudText Typo="Typo.subtitle2"><strong>NO</strong></MudText>
-                        <MudText Typo="Typo.caption">Access Denied</MudText>
-                        <MudText Typo="Typo.caption">401/403 Response</MudText>
+
+                <div class="text-center">
+                    <i class="bi bi-arrow-right"></i>
+                    <div class="small text-muted">Many-to-Many</div>
+                </div>
+
+                @* UserRole Junction *@
+                <div class="card border-secondary" style="min-width: 100px;">
+                    <div class="card-header bg-secondary text-white py-2">
+                        <i class="bi bi-link me-1"></i> UserRole
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div class="text-muted">UserId (FK)</div>
+                        <div class="text-muted">RoleId (FK)</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <i class="bi bi-arrow-right"></i>
+                    <div class="small text-muted">Many-to-Many</div>
+                </div>
+
+                @* Role Entity *@
+                <div class="card border-success" style="min-width: 120px;">
+                    <div class="card-header bg-success text-white py-2">
+                        <i class="bi bi-person-badge me-1"></i> Role
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div>Name</div>
+                        <div>Description</div>
+                        <div class="text-success">UserRoles</div>
+                        <div class="text-success">RolePermissions</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <i class="bi bi-arrow-right"></i>
+                    <div class="small text-muted">Many-to-Many</div>
+                </div>
+
+                @* RolePermission Junction *@
+                <div class="card border-secondary" style="min-width: 120px;">
+                    <div class="card-header bg-secondary text-white py-2">
+                        <i class="bi bi-link me-1"></i> RolePermission
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div class="text-muted">RoleId (FK)</div>
+                        <div class="text-muted">PermissionId (FK)</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <i class="bi bi-arrow-right"></i>
+                    <div class="small text-muted">Many-to-Many</div>
+                </div>
+
+                @* Permission Entity *@
+                <div class="card border-warning" style="min-width: 120px;">
+                    <div class="card-header bg-warning text-dark py-2">
+                        <i class="bi bi-key me-1"></i> Permission
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div>Name</div>
+                        <div>Description</div>
+                        <div class="text-warning">RolePermissions</div>
                     </div>
                 </div>
             </div>
         </div>
-    </MudPaper>
+    </div>
 
-    @* Admin Management Section *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Class="mr-2" Color="Color.Warning" />
-            Admin Management Operations
-        </MudText>
-        
-        <MudGrid>
-            <MudItem xs="12" md="4">
-                <div class="admin-card">
-                    <div class="admin-icon">
-                        <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Size="Size.Large" Color="Color.Success" />
-                    </div>
-                    <MudText Typo="Typo.h6">Assign Role to User</MudText>
-                    <div class="admin-flow">
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Select User</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Select Role</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Save</MudChip>
+    @* Authorization Flow *@
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-diagram-3 text-success me-2"></i>
+                Authorization Flow
+            </h5>
+            
+            <div class="row text-center">
+                <div class="col">
+                    <div class="badge bg-primary fs-6 mb-2">1</div>
+                    <div class="p-3 border rounded">
+                        <i class="bi bi-person text-success fs-4"></i>
+                        <h6 class="mt-2">User Request</h6>
+                        <small class="text-muted">User sends request to protected endpoint</small>
                     </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" md="4">
-                <div class="admin-card">
-                    <div class="admin-icon">
-                        <MudIcon Icon="@Icons.Material.Filled.ManageAccounts" Size="Size.Large" Color="Color.Success" />
-                    </div>
-                    <MudText Typo="Typo.h6">Update Role Permissions</MudText>
-                    <div class="admin-flow">
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Select Role</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Warning" Size="Size.Small">Edit Permissions</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Save</MudChip>
+                <div class="col-auto d-flex align-items-center">
+                    <i class="bi bi-arrow-right fs-4"></i>
+                </div>
+                <div class="col">
+                    <div class="badge bg-danger fs-6 mb-2">2</div>
+                    <div class="p-3 border rounded">
+                        <i class="bi bi-shield-check text-danger fs-4"></i>
+                        <h6 class="mt-2">Policy Check</h6>
+                        <small class="text-muted">[Authorize(Policy = "...")]</small>
                     </div>
                 </div>
-            </MudItem>
-            <MudItem xs="12" md="4">
-                <div class="admin-card">
-                    <div class="admin-icon">
-                        <MudIcon Icon="@Icons.Material.Filled.AddCircle" Size="Size.Large" Color="Color.Success" />
-                    </div>
-                    <MudText Typo="Typo.h6">Create New Permission</MudText>
-                    <div class="admin-flow">
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Enter Name</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Info" Size="Size.Small">Add Description</MudChip>
-                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" Color="Color.Dark" />
-                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Create</MudChip>
+                <div class="col-auto d-flex align-items-center">
+                    <i class="bi bi-arrow-right fs-4"></i>
+                </div>
+                <div class="col">
+                    <div class="badge bg-info fs-6 mb-2">3</div>
+                    <div class="p-3 border rounded">
+                        <i class="bi bi-database text-info fs-4"></i>
+                        <h6 class="mt-2">Database Query</h6>
+                        <small class="text-muted">User → Roles → Permissions</small>
                     </div>
                 </div>
-            </MudItem>
-        </MudGrid>
-    </MudPaper>
-
-    @* Implementation Phases *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.Timeline" Class="mr-2" Color="Color.Info" />
-            Implementation Phases
-        </MudText>
-        
-        <MudTimeline TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Start">
-            <MudTimelineItem Color="Color.Success" Variant="Variant.Filled">
-                <ItemContent>
-                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                        <MudText Typo="Typo.subtitle1"><strong>Phase 1: Database Models</strong></MudText>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Info">Create Role, Permission, UserRole, RolePermission models</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Info">Update User model with UserRoles collection</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Info">Configure DbContext relationships</MudListItem>
-                        </MudList>
-                    </MudAlert>
-                </ItemContent>
-            </MudTimelineItem>
-            <MudTimelineItem Color="Color.Success" Variant="Variant.Filled">
-                <ItemContent>
-                    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">
-                        <MudText Typo="Typo.subtitle1"><strong>Phase 2: Authorization Infrastructure</strong></MudText>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Warning">Create PermissionRequirement class</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Warning">Implement PermissionAuthorizationHandler</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Warning">Register policies and handlers</MudListItem>
-                        </MudList>
-                    </MudAlert>
-                </ItemContent>
-            </MudTimelineItem>
-            <MudTimelineItem Color="Color.Success" Variant="Variant.Filled">
-                <ItemContent>
-                    <MudAlert Severity="Severity.Success" Variant="Variant.Outlined">
-                        <MudText Typo="Typo.subtitle1"><strong>Phase 3: Controller Implementation</strong></MudText>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Success">Add authorization attributes to controllers</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Success">Test the authorization system</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Success">Create admin management endpoints</MudListItem>
-                        </MudList>
-                    </MudAlert>
-                </ItemContent>
-            </MudTimelineItem>
-            <MudTimelineItem Color="Color.Warning" Variant="Variant.Filled">
-                <ItemContent>
-                    <MudAlert Severity="Severity.Normal" Variant="Variant.Outlined">
-                        <MudText Typo="Typo.subtitle1"><strong>Phase 4: Admin Interface</strong></MudText>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Dark">Create admin controllers</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Dark">Implement user role assignment</MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline" IconColor="Color.Dark">Add permission management features</MudListItem>
-                        </MudList>
-                    </MudAlert>
-                </ItemContent>
-            </MudTimelineItem>
-        </MudTimeline>
-    </MudPaper>
-
-    @* Testing Authorization Section *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.Science" Class="mr-2" Color="Color.Success" />
-            Testing Authorization (TestController)
-        </MudText>
-        
-        <MudText Typo="Typo.body1" Class="mb-4">
-            The TestController tests both <strong>roles</strong> AND <strong>permissions</strong> through different mechanisms:
-        </MudText>
-
-        <MudGrid Spacing="4">
-            @* Direct Permission Testing *@
-            <MudItem xs="12" md="6">
-                <MudCard Elevation="2" Class="testing-card">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Success">
-                                <MudIcon Icon="@Icons.Material.Filled.Key" />
-                            </MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Direct Permission Testing</MudText>
-                            <MudText Typo="Typo.caption">/api/test/permission/{permissionName}</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircle" IconColor="Color.Success">
-                                <MudText><strong>What it tests:</strong> Direct permission checking</MudText>
-                            </MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.Settings" IconColor="Color.Info">
-                                <MudText><strong>How:</strong> Uses PermissionRequirement and IAuthorizationService.AuthorizeAsync()</MudText>
-                            </MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.Verified" IconColor="Color.Success">
-                                <MudText><strong>Result:</strong> Tests if user has ANY role containing the specified permission</MudText>
-                            </MudListItem>
-                        </MudList>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-
-            @* Policy-Based Testing *@
-            <MudItem xs="12" md="6">
-                <MudCard Elevation="2" Class="testing-card">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Success">
-                                <MudIcon Icon="@Icons.Material.Filled.Policy" />
-                            </MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Policy-Based Testing</MudText>
-                            <MudText Typo="Typo.caption">[Authorize(Policy = "...")]</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudList T="string" Dense="true">
-                            <MudListItem Icon="@Icons.Material.Filled.CheckCircle" IconColor="Color.Success">
-                                <MudText><strong>What it tests:</strong> Policies mapped to specific permissions</MudText>
-                            </MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.Settings" IconColor="Color.Info">
-                                <MudText><strong>How:</strong> PermissionAuthorizationHandler gets user roles → checks permissions</MudText>
-                            </MudListItem>
-                            <MudListItem Icon="@Icons.Material.Filled.Verified" IconColor="Color.Success">
-                                <MudText><strong>Result:</strong> Grants/denies access based on role-permission mapping</MudText>
-                            </MudListItem>
-                        </MudList>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-
-        @* Policy Configuration *@
-        <MudText Typo="Typo.h6" Class="mt-6 mb-3">
-            <MudIcon Icon="@Icons.Material.Filled.Code" Class="mr-2" Color="Color.Warning" />
-            Policy Configuration (Program.cs)
-        </MudText>
-        
-        <div class="policy-config-diagram">
-            <div class="policy-mapping">
-                <div class="policy-item">
-                    <MudChip T="string" Color="Color.Error" Size="Size.Small" Variant="Variant.Filled">Policy: "Admin"</MudChip>
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined">PermissionRequirement("Admin")</MudChip>
+                <div class="col-auto d-flex align-items-center">
+                    <i class="bi bi-arrow-right fs-4"></i>
                 </div>
-                <div class="policy-item">
-                    <MudChip T="string" Color="Color.Info" Size="Size.Small" Variant="Variant.Filled">Policy: "Viewer"</MudChip>
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined">PermissionRequirement("Viewer")</MudChip>
-                </div>
-                <div class="policy-item">
-                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled">Policy: "ActiveUser"</MudChip>
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined">PermissionRequirement("ActiveUser")</MudChip>
-                </div>
-            </div>
-        </div>
-
-        @* Example Flow *@
-        <MudText Typo="Typo.h6" Class="mt-6 mb-3">
-            <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Class="mr-2" Color="Color.Success" />
-            Example: GET /api/test/admin
-        </MudText>
-
-        <div class="example-flow">
-            <MudStepper Linear="true" Color="Color.Success" Variant="Variant.Outlined" Class="example-stepper">
-                <MudStep Title="Request" Icon="@Icons.Material.Filled.Http">
-                    <MudText Typo="Typo.body2">ASP.NET checks [Authorize(Policy = "Admin")] attribute</MudText>
-                </MudStep>
-                <MudStep Title="Handler" Icon="@Icons.Material.Filled.Settings">
-                    <MudText Typo="Typo.body2">PermissionAuthorizationHandler runs</MudText>
-                </MudStep>
-                <MudStep Title="Query" Icon="@Icons.Material.Filled.Storage">
-                    <MudText Typo="Typo.body2">User → UserRoles → Roles → RolePermissions → Permissions</MudText>
-                </MudStep>
-                <MudStep Title="Check" Icon="@Icons.Material.Filled.Search">
-                    <MudText Typo="Typo.body2">Looks for any permission named "Admin"</MudText>
-                </MudStep>
-                <MudStep Title="Result" Icon="@Icons.Material.Filled.CheckCircle">
-                    <MudText Typo="Typo.body2">If user has ANY role with "Admin" permission → ✅ Access granted</MudText>
-                </MudStep>
-            </MudStepper>
-        </div>
-
-        @* Connection Summary *@
-        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-6">
-            <MudText Typo="Typo.subtitle1"><strong>The Connection: Roles + Permissions</strong></MudText>
-            <MudGrid Class="mt-2">
-                <MudItem xs="12" md="4">
-                    <div class="connection-item">
-                        <MudIcon Icon="@Icons.Material.Filled.Badge" Color="Color.Success" Size="Size.Large" />
-                        <MudText Typo="Typo.body2" Class="mt-2"><strong>Roles Tested:</strong></MudText>
-                        <MudText Typo="Typo.caption">Administrator, User, VerifiedUser</MudText>
-                    </div>
-                </MudItem>
-                <MudItem xs="12" md="4">
-                    <div class="connection-item">
-                        <MudIcon Icon="@Icons.Material.Filled.Key" Color="Color.Success" Size="Size.Large" />
-                        <MudText Typo="Typo.body2" Class="mt-2"><strong>Permissions Mapped:</strong></MudText>
-                        <MudText Typo="Typo.caption">"Admin", "Viewer", "ActiveUser"</MudText>
-                    </div>
-                </MudItem>
-                <MudItem xs="12" md="4">
-                    <div class="connection-item">
-                        <MudIcon Icon="@Icons.Material.Filled.Link" Color="Color.Success" Size="Size.Large" />
-                        <MudText Typo="Typo.body2" Class="mt-2"><strong>Access Logic:</strong></MudText>
-                        <MudText Typo="Typo.caption">User gets access if they have ANY role containing the required permission</MudText>
-                    </div>
-                </MudItem>
-            </MudGrid>
-        </MudAlert>
-
-        @* Summary Box *@
-        <MudPaper Elevation="1" Class="pa-4 mt-4 summary-box">
-            <MudText Typo="Typo.body1" Align="Align.Center">
-                <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Color="Color.Warning" Class="mr-2" />
-                <strong>Summary:</strong> When you test <code>/api/test/admin</code>, you're verifying that the user has a role 
-                (like "Administrator") that contains the "Admin" permission. The same logic applies to all test endpoints.
-            </MudText>
-        </MudPaper>
-    </MudPaper>
-
-    @* Access Grant Methods Section *@
-    <MudPaper Elevation="2" Class="pa-6 mb-6">
-        <MudText Typo="Typo.h5" Class="mb-4">
-            <MudIcon Icon="@Icons.Material.Filled.LockOpen" Class="mr-2" Color="Color.Success" />
-            Three Ways to Grant Access
-        </MudText>
-        
-        <MudText Typo="Typo.body1" Class="mb-4">
-            This authorization system is <strong>flexible</strong> - you can grant access based on <strong>Role</strong>, <strong>Permission</strong>, or <strong>Both</strong>:
-        </MudText>
-
-        <MudGrid Spacing="4">
-            @* Method 1: Role-Based *@
-            <MudItem xs="12" md="4">
-                <MudCard Elevation="2" Class="access-method-card role-method">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Success" Size="Size.Large">
-                                <MudIcon Icon="@Icons.Material.Filled.Badge" />
-                            </MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Role-Based Access</MudText>
-                            <MudText Typo="Typo.caption">Check user's assigned roles</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2" Class="mb-3">
-                            Grant access if user has a <strong>specific role</strong> assigned.
-                        </MudText>
-                        <div class="access-example">
-                            <MudText Typo="Typo.caption"><strong>Example:</strong></MudText>
-                            <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined">
-                                [Authorize(Roles = "Administrator")]
-                            </MudChip>
+                <div class="col">
+                    <div class="badge bg-warning fs-6 mb-2">4</div>
+                    <div class="p-3 border rounded">
+                        <i class="bi bi-question-circle text-warning fs-4"></i>
+                        <h6 class="mt-2">Has Permission?</h6>
+                        <div class="mt-2">
+                            <span class="badge bg-success me-1"><i class="bi bi-check"></i> Yes: Access</span>
+                            <span class="badge bg-danger"><i class="bi bi-x"></i> No: Denied</span>
                         </div>
-                        <MudDivider Class="my-3" />
-                        <MudText Typo="Typo.caption" Color="Color.Success">
-                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" Class="mr-1" />
-                            User must have "Administrator" role
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-
-            @* Method 2: Permission-Based *@
-            <MudItem xs="12" md="4">
-                <MudCard Elevation="2" Class="access-method-card permission-method">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Success" Size="Size.Large">
-                                <MudIcon Icon="@Icons.Material.Filled.Key" />
-                            </MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Permission-Based Access</MudText>
-                            <MudText Typo="Typo.caption">Check specific permissions</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2" Class="mb-3">
-                            Grant access if user has ANY role containing the <strong>required permission</strong>.
-                        </MudText>
-                        <div class="access-example">
-                            <MudText Typo="Typo.caption"><strong>Example:</strong></MudText>
-                            <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Outlined">
-                                [Authorize(Policy = "CanEditPosts")]
-                            </MudChip>
-                        </div>
-                        <MudDivider Class="my-3" />
-                        <MudText Typo="Typo.caption" Color="Color.Success">
-                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" Class="mr-1" />
-                            Any role with "CanEditPosts" permission works
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-
-            @* Method 3: Role + Permission Combined *@
-            <MudItem xs="12" md="4">
-                <MudCard Elevation="2" Class="access-method-card combined-method">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Tertiary" Size="Size.Large">
-                                <MudIcon Icon="@Icons.Material.Filled.Link" />
-                            </MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Role + Permission</MudText>
-                            <MudText Typo="Typo.caption">Combined checking</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2" Class="mb-3">
-                            Grant access if user's role <strong>contains</strong> the mapped permission.
-                        </MudText>
-                        <div class="access-example">
-                            <MudText Typo="Typo.caption"><strong>Example:</strong></MudText>
-                            <MudChip T="string" Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Outlined">
-                                [Authorize(Policy = "Admin")]
-                            </MudChip>
-                        </div>
-                        <MudDivider Class="my-3" />
-                        <MudText Typo="Typo.caption" Color="Color.Success">
-                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" Class="mr-1" />
-                            "Administrator" role → has "Admin" permission
-                        </MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-
-        @* How It Works Diagram *@
-        <MudText Typo="Typo.h6" Class="mt-6 mb-3">
-            <MudIcon Icon="@Icons.Material.Filled.Schema" Class="mr-2" Color="Color.Info" />
-            How the Connection Works
-        </MudText>
-
-        <div class="connection-flow-diagram">
-            <div class="connection-flow-row">
-                <div class="flow-entity user-flow">
-                    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle2"><strong>User</strong></MudText>
-                    <MudText Typo="Typo.caption">"john.doe"</MudText>
-                </div>
-                
-                <div class="flow-connector">
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudText Typo="Typo.caption">has</MudText>
-                </div>
-                
-                <div class="flow-entity role-flow">
-                    <MudIcon Icon="@Icons.Material.Filled.Badge" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle2"><strong>Role</strong></MudText>
-                    <MudText Typo="Typo.caption">"Administrator"</MudText>
-                </div>
-                
-                <div class="flow-connector">
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudText Typo="Typo.caption">contains</MudText>
-                </div>
-                
-                <div class="flow-entity permission-flow">
-                    <MudIcon Icon="@Icons.Material.Filled.Key" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle2"><strong>Permission</strong></MudText>
-                    <MudText Typo="Typo.caption">"Admin"</MudText>
-                </div>
-                
-                <div class="flow-connector">
-                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Dark" />
-                    <MudText Typo="Typo.caption">grants</MudText>
-                </div>
-                
-                <div class="flow-entity access-flow">
-                    <MudIcon Icon="@Icons.Material.Filled.LockOpen" Size="Size.Large" Color="Color.Success" />
-                    <MudText Typo="Typo.subtitle2"><strong>Access</strong></MudText>
-                    <MudText Typo="Typo.caption">✅ Granted</MudText>
+                    </div>
                 </div>
             </div>
         </div>
-
-        @* Practical Examples Table *@
-        <MudText Typo="Typo.h6" Class="mt-6 mb-3">
-            <MudIcon Icon="@Icons.Material.Filled.TableChart" Class="mr-2" Color="Color.Warning" />
-            Practical Examples
-        </MudText>
-
-        <MudSimpleTable Hover="true" Dense="true" Class="examples-table">
-            <thead>
-                <tr>
-                    <th>Scenario</th>
-                    <th>User's Role</th>
-                    <th>Role's Permissions</th>
-                    <th>Policy Required</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Admin accessing admin panel</td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">Administrator</MudChip></td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">Admin, Viewer</MudChip></td>
-                    <td><code>"Admin"</code></td>
-                    <td><MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" /> Granted</td>
-                </tr>
-                <tr>
-                    <td>User viewing content</td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Info">User</MudChip></td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">Viewer</MudChip></td>
-                    <td><code>"Viewer"</code></td>
-                    <td><MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" /> Granted</td>
-                </tr>
-                <tr>
-                    <td>User trying admin panel</td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Info">User</MudChip></td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">Viewer</MudChip></td>
-                    <td><code>"Admin"</code></td>
-                    <td><MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" /> Denied</td>
-                </tr>
-                <tr>
-                    <td>Verified user editing</td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">VerifiedUser</MudChip></td>
-                    <td><MudChip T="string" Size="Size.Small" Color="Color.Success">ActiveUser, Viewer</MudChip></td>
-                    <td><code>"ActiveUser"</code></td>
-                    <td><MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" /> Granted</td>
-                </tr>
-            </tbody>
-        </MudSimpleTable>
-
-        @* Key Point Box *@
-        <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mt-4" Icon="@Icons.Material.Filled.Lightbulb">
-            <MudText Typo="Typo.subtitle1"><strong>Key Point:</strong></MudText>
-            <MudText Typo="Typo.body2">
-                The system is <strong>flexible by design</strong>. You can:
-            </MudText>
-            <MudList T="string" Dense="true">
-                <MudListItem Icon="@Icons.Material.Filled.Check" IconColor="Color.Success">
-                    <MudText>Check <strong>roles directly</strong> using [Authorize(Roles = "..."")]</MudText>
-                </MudListItem>
-                <MudListItem Icon="@Icons.Material.Filled.Check" IconColor="Color.Success">
-                    <MudText>Check <strong>permissions</strong> using policies that map to PermissionRequirement</MudText>
-                </MudListItem>
-                <MudListItem Icon="@Icons.Material.Filled.Check" IconColor="Color.Success">
-                    <MudText>Combine both: Assign roles to users, assign permissions to roles, then check permissions</MudText>
-                </MudListItem>
-            </MudList>
-            <MudText Typo="Typo.body2" Class="mt-2">
-                This means <strong>multiple roles</strong> can share the same permission, and <strong>one role</strong> can have multiple permissions!
-            </MudText>
-        </MudAlert>
-    </MudPaper>
+    </div>
 
     @* Key Takeaways *@
-    <MudPaper Elevation="3" Class="pa-6 key-takeaways">
-        <MudText Typo="Typo.h5" Class="mb-4" Align="Align.Center">
-            <MudIcon Icon="@Icons.Material.Filled.Star" Class="mr-2" Color="Color.Warning" />
-            Key Takeaways
-        </MudText>
-        <MudGrid Justify="Justify.Center">
-            <MudItem xs="12" sm="6" md="4">
-                <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Dense="true" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
-                    Dynamic: No code changes needed
-                </MudAlert>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Dense="true" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.Group" Class="mr-2" />
-                    Flexible: Multiple roles per user
-                </MudAlert>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="4">
-                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.Bolt" Class="mr-2" />
-                    Real-time: Immediate effect
-                </MudAlert>
-            </MudItem>
-        </MudGrid>
-    </MudPaper>
-</MudContainer>
-
+    <div class="card shadow-sm mb-4 bg-light">
+        <div class="card-body">
+            <h5 class="text-center mb-4">
+                <i class="bi bi-star text-warning me-2"></i>
+                Key Takeaways
+            </h5>
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-6 col-md-4 mb-2">
+                    <div class="alert alert-success mb-0">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Dynamic: No code changes needed
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 mb-2">
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-people me-2"></i>
+                        Flexible: Multiple roles per user
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 mb-2">
+                    <div class="alert alert-warning mb-0">
+                        <i class="bi bi-lightning me-2"></i>
+                        Real-time: Immediate effect
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

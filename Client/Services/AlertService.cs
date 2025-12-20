@@ -1,5 +1,5 @@
+using Client.Enums;
 using Client.Interfaces;
-using MudBlazor;
 
 namespace Client.Services
 {
@@ -12,7 +12,7 @@ namespace Client.Services
         public event Action<AlertMessage>? OnAlert;
         public event Action? OnClear;
 
-        public void ShowAlert(string message, Severity severity = Severity.Info, Variant variant = Variant.Filled)
+        public void ShowAlert(string message, AlertSeverity severity = AlertSeverity.Info, AlertVariant variant = AlertVariant.Filled)
         {
             OnAlert?.Invoke(new AlertMessage
             {
@@ -24,22 +24,22 @@ namespace Client.Services
 
         public void ShowError(string message)
         {
-            ShowAlert(message, Severity.Error, Variant.Filled);
+            ShowAlert(message, AlertSeverity.Error, AlertVariant.Filled);
         }
 
         public void ShowWarning(string message)
         {
-            ShowAlert(message, Severity.Warning, Variant.Filled);
+            ShowAlert(message, AlertSeverity.Warning, AlertVariant.Filled);
         }
 
         public void ShowSuccess(string message)
         {
-            ShowAlert(message, Severity.Success, Variant.Filled);
+            ShowAlert(message, AlertSeverity.Success, AlertVariant.Filled);
         }
 
         public void ShowInfo(string message)
         {
-            ShowAlert(message, Severity.Info, Variant.Filled);
+            ShowAlert(message, AlertSeverity.Info, AlertVariant.Filled);
         }
 
         public void ClearAlert()
@@ -48,4 +48,3 @@ namespace Client.Services
         }
     }
 }
-

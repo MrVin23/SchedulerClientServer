@@ -1,8 +1,8 @@
+using Client.Enums;
 using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
-using MudBlazor;
 using System.Net.Http.Json;
 
 namespace Client.Tests
@@ -34,7 +34,7 @@ namespace Client.Tests
 
         // Result message
         private string? _lastTestMessage = null;
-        private Severity _lastTestSeverity = Severity.Info;
+        private AlertSeverity _lastTestSeverity = AlertSeverity.Info;
 
         protected override async Task OnInitializedAsync()
         {
@@ -75,6 +75,17 @@ namespace Client.Tests
         private void NavigateToLogin()
         {
             Navigation.NavigateTo("/login");
+        }
+
+        private string GetAlertClass(AlertSeverity severity)
+        {
+            return severity switch
+            {
+                AlertSeverity.Success => "alert-success",
+                AlertSeverity.Warning => "alert-warning",
+                AlertSeverity.Error => "alert-danger",
+                _ => "alert-info"
+            };
         }
 
         private async Task TestRoleEndpoint(string endpoint)
@@ -127,29 +138,29 @@ namespace Client.Tests
                 if (success)
                 {
                     _lastTestMessage = $"✓ Access granted to {roleName} endpoint!";
-                    _lastTestSeverity = Severity.Success;
+                    _lastTestSeverity = AlertSeverity.Success;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
                     _lastTestMessage = $"✗ Access denied to {roleName} endpoint. You don't have the required permission.";
-                    _lastTestSeverity = Severity.Warning;
+                    _lastTestSeverity = AlertSeverity.Warning;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     _lastTestMessage = $"✗ Unauthorized. Please log in again.";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                     _isAuthenticated = false;
                 }
                 else
                 {
                     _lastTestMessage = $"✗ Error testing {roleName}: {response.StatusCode}";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                 }
             }
             catch (Exception ex)
             {
                 _lastTestMessage = $"Error: {ex.Message}";
-                _lastTestSeverity = Severity.Error;
+                _lastTestSeverity = AlertSeverity.Error;
                 AlertService.ShowError($"Error testing endpoint: {ex.Message}");
             }
             finally
@@ -184,8 +195,7 @@ namespace Client.Tests
             // Summary message
             var passed = (_adminResult == true ? 1 : 0) + (_viewerResult == true ? 1 : 0) + (_activeUserResult == true ? 1 : 0);
             _lastTestMessage = $"Test complete: {passed}/3 role tests passed";
-            _lastTestSeverity = passed == 3 ? Severity.Success : (passed > 0 ? Severity.Warning : Severity.Error);
+            _lastTestSeverity = passed == 3 ? AlertSeverity.Success : (passed > 0 ? AlertSeverity.Warning : AlertSeverity.Error);
         }
     }
 }
-

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor.Services;
 using Client;
 using Client.Interfaces;
 using Client.Interfaces.Authorisation;
@@ -11,8 +10,6 @@ using Client.Services.HttpServices;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
-builder.Services.AddMudServices();
 
 // Configure HttpClient for cookie authentication
 // In Blazor WebAssembly, cookies need credentials to be included for cross-origin requests

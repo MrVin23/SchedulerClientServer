@@ -1,24 +1,19 @@
 @using Client.Enums
 @using Client.Components.Today
 @using Client.Models
-@using MudBlazor
 @using System.Linq
 @* Purpose of this component is to display a day view in a large div it works outside of the calendar view *@
 @if (formErrors.Any())
 {
-    <MudAlert Severity="Severity.Error"
-              Variant="Variant.Filled"
-              Class="validation-alert mb-3">
-        <MudText Typo="Typo.subtitle2">
-            @($"Please fix the following errors ({formErrors.Length}):")
-        </MudText>
-        <ul class="validation-list">
+    <div class="alert alert-danger mb-3">
+        <strong>Please fix the following errors (@formErrors.Length):</strong>
+        <ul class="mb-0 mt-2">
             @foreach (var error in formErrors)
             {
                 <li>@error</li>
             }
         </ul>
-    </MudAlert>
+    </div>
 }
 
 <div class="day-view-wrapper">
@@ -26,70 +21,48 @@
     @* Display day and date with navigation *@
     <div class="day-view-header"> 
         <div class="day-view-header-top">
-            <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" 
-                           OnClick="NavigateToPreviousDay"
-                           Style="@($"color:{Colors.Shades.White};")"
-                           Size="Size.Medium"
-                           Class="day-view-nav-button" />
+            <button class="btn btn-outline-light btn-sm day-view-nav-button" @onclick="NavigateToPreviousDay" title="Previous day">
+                <i class="bi bi-chevron-left"></i>
+            </button>
             
             <div class="day-view-header-info">
-                <div class="day-view-date">@DisplayDate</div>
+                <div class="day-view-date text-white">@DisplayDate</div>
             </div>
             
             @if (IsNotToday)
             {
-                <MudTooltip Text="Go to today">
-                    <MudIconButton Icon="@Icons.Material.Filled.Today" 
-                                   OnClick="NavigateToToday"
-                                   Style="@($"color:{Colors.Shades.White};")"                                   
-                                   Size="Size.Medium"/>
-                </MudTooltip>
+                <button class="btn btn-outline-light btn-sm" @onclick="NavigateToToday" title="Go to today">
+                    <i class="bi bi-calendar-check"></i>
+                </button>
             }
             
-            <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" 
-                           OnClick="NavigateToNextDay"
-                           Style="@($"color:{Colors.Shades.White};")"
-                           Size="Size.Medium"
-                           Class="day-view-nav-button" />
+            <button class="btn btn-outline-light btn-sm day-view-nav-button" @onclick="NavigateToNextDay" title="Next day">
+                <i class="bi bi-chevron-right"></i>
+            </button>
         </div>
         
         <div class="day-view-header-actions">
-            <MudButtonGroup Style="@($"color:{Colors.Shades.White};")" Variant="Variant.Outlined" Class="day-view-button-group">
-                <MudTooltip Text="Complete">
-                    <MudIconButton Icon="@Icons.Material.Filled.CheckCircleOutline"
-                                  OnClick="HandleBulkComplete"
-                                  Disabled="@(!_hasSelectedEvents)">
-                    </MudIconButton>
-                </MudTooltip>
+            <div class="btn-group day-view-button-group" role="group">
+                <button class="btn btn-outline-light btn-sm" @onclick="HandleBulkComplete" disabled="@(!_hasSelectedEvents)" title="Complete">
+                    <i class="bi bi-check-circle"></i>
+                </button>
                 
-                <MudTooltip Text="Postpone to tomorrow">
-                    <MudIconButton Icon="@Icons.Material.Filled.NextPlan"
-                                  OnClick="HandleBulkPostpone"
-                                  Disabled="@(!_hasSelectedEvents)">
-                    </MudIconButton>
-                </MudTooltip>
+                <button class="btn btn-outline-light btn-sm" @onclick="HandleBulkPostpone" disabled="@(!_hasSelectedEvents)" title="Postpone to tomorrow">
+                    <i class="bi bi-arrow-right-circle"></i>
+                </button>
                 
-                <MudTooltip Text="Follow Up">
-                    <MudIconButton Icon="@Icons.Material.Filled.MoveUp"
-                                  OnClick="HandleBulkFollowUp"
-                                  Disabled="@(!_hasSelectedEvents)">
-                    </MudIconButton>
-                </MudTooltip>
+                <button class="btn btn-outline-light btn-sm" @onclick="HandleBulkFollowUp" disabled="@(!_hasSelectedEvents)" title="Follow Up">
+                    <i class="bi bi-arrow-up-circle"></i>
+                </button>
                 
-                <MudTooltip Text="Reject">
-                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                  OnClick="HandleBulkReject"
-                                  Disabled="@(!_hasSelectedEvents)">
-                    </MudIconButton>
-                </MudTooltip>
+                <button class="btn btn-outline-light btn-sm" @onclick="HandleBulkReject" disabled="@(!_hasSelectedEvents)" title="Reject">
+                    <i class="bi bi-trash"></i>
+                </button>
                 
-                <MudTooltip Text="Add Event">
-                    <MudIconButton Icon="@Icons.Material.Filled.AddCircleOutline"
-                                  OnClick="HandleAddEventClick">
-                        @* TODO: Implement Add Event functionality *@
-                    </MudIconButton>
-                </MudTooltip>
-            </MudButtonGroup>
+                <button class="btn btn-outline-light btn-sm" @onclick="HandleAddEventClick" title="Add Event">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+            </div>
         </div>
     </div>
     
@@ -144,8 +117,7 @@
     
     @if (SelectedEvent != null || CurrentMode == PageMode.Create)
     {
-        <MudForm @ref="form" @bind-IsValid="@isFormValid" @bind-Errors="@formErrors">
-            <div class="event-description-with-actions">
+        <div class="event-description-with-actions">
             <EventDescription Title="@GetEventTitle()"
                                Description="@GetEventDescription()"
                                StartDateTime="@GetEventStartDateTime()"
@@ -163,25 +135,17 @@
                                DateTimeWidth="@DateTimeWidth"
                                Mode="@CurrentMode"
                                OnModeChanged="HandleModeChanged" />
-                @if (CurrentMode == PageMode.Create || CurrentMode == PageMode.Edit)
-                {
+            @if (CurrentMode == PageMode.Create || CurrentMode == PageMode.Edit)
+            {
                 <div class="event-actions-vertical">
-                    <MudIconButton Icon="@Icons.Material.Filled.Save"
-                                   OnClick="@(() => HandleSave())"
-                                   Color="Color.Success"
-                                   Size="Size.Medium"
-                                   Variant="Variant.Filled"
-                                   Class="event-action-button" />
-                    <MudIconButton Icon="@Icons.Material.Filled.Cancel"
-                                   OnClick="HandleCancel"
-                                   Color="Color.Error"
-                                   Size="Size.Medium"
-                                   Variant="Variant.Filled"
-                                   Class="event-action-button" />
+                    <button class="btn btn-success event-action-button" @onclick="HandleSave" title="Save">
+                        <i class="bi bi-check-lg"></i>
+                    </button>
+                    <button class="btn btn-danger event-action-button" @onclick="HandleCancel" title="Cancel">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 </div>
-
-                }
-            </div>
-        </MudForm>
+            }
+        </div>
     }
 </div>

@@ -1,6 +1,5 @@
 @using Client.Enums
 @using Client.Models
-@using MudBlazor
 
 <div class="day-view-events 
             @GetEventTypeClass() 
@@ -12,9 +11,7 @@
         @* Display icon for the primary event type *@
         @if (EventType != null)
         {
-            <MudIcon Icon="@IconForEventType(EventType.Value)" 
-                     Color="@ColorForEventType(EventType.Value)" 
-                     Class="day-view-event-icon" />
+            <i class="bi @IconForEventType(EventType.Value) day-view-event-icon"></i>
         }
         
         @* Display truncated title *@
@@ -22,21 +19,19 @@
         
         @if (IsCompleted)
         {
-            <MudIconButton Icon="@Icons.Material.Filled.Undo"
-                          OnClick="HandleUndoClick"
-                          Color="Color.Default"
-                          Size="Size.Small"
-                          Variant="Variant.Text"
-                          Class="day-view-event-undo-button" />
+            <button type="button" class="btn btn-sm btn-link day-view-event-undo-button p-0" 
+                    @onclick="HandleUndoClick" @onclick:stopPropagation="true"
+                    title="Undo">
+                <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
         }
         else
         {
-            <MudCheckBox T="bool" 
-                        Value="@IsSelected"
-                        ValueChanged="CheckboxSelected"
-                        Color="Color.Dark"
-                        Size="Size.Small"
-                        Dense="true"/>
+            <div class="form-check" @onclick:stopPropagation="true">
+                <input type="checkbox" class="form-check-input" 
+                       checked="@IsSelected"
+                       @onchange="HandleCheckboxChange" />
+            </div>
         }
     </div>
 </div>
@@ -70,28 +65,16 @@
 
     public string IconForEventType(EventTypeEnums eventType)
     {
-        switch (eventType)
+        return eventType switch
         {
-            case EventTypeEnums.InternalMeeting:
-                return Icons.Material.Filled.MeetingRoom;
-            case EventTypeEnums.ExternalMeeting:
-                return Icons.Material.Filled.Business;
-            case EventTypeEnums.WebDemo:
-                return Icons.Material.Filled.VideoCall;
-            case EventTypeEnums.HomeConference:
-                return Icons.Material.Filled.Home;
-            case EventTypeEnums.AwayConference:
-                return Icons.Material.Filled.FlightTakeoff;
-            case EventTypeEnums.SchoolVisit:
-                return Icons.Material.Filled.School;
-            default:
-                return Icons.Material.Filled.Event;
-        }
-    }
-
-    public Color ColorForEventType(EventTypeEnums eventType)
-    {
-        return Color.Dark;
+            EventTypeEnums.InternalMeeting => "bi-door-open",
+            EventTypeEnums.ExternalMeeting => "bi-building",
+            EventTypeEnums.WebDemo => "bi-camera-video",
+            EventTypeEnums.HomeConference => "bi-house",
+            EventTypeEnums.AwayConference => "bi-airplane",
+            EventTypeEnums.SchoolVisit => "bi-mortarboard",
+            _ => "bi-calendar-event"
+        };
     }
 
     public string GetEventTypeClass()
@@ -131,5 +114,11 @@
     private async Task HandleUndoClick()
     {
         await OnUndo.InvokeAsync();
+    }
+
+    private async Task HandleCheckboxChange(ChangeEventArgs e)
+    {
+        var isChecked = (bool)(e.Value ?? false);
+        await CheckboxSelected.InvokeAsync(isChecked);
     }
 }

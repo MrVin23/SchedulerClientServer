@@ -1,219 +1,208 @@
 @page "/test-permission-access"
 @layout StoryLayout
-@using MudBlazor
 @using Client.Interfaces.Authorisation
 @using Client.Interfaces
+@using Client.Enums
 
 <PageTitle>Test Permission Access</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
-    <MudPaper Elevation="3" Class="pa-6 mb-4">
-        <MudStack AlignItems="AlignItems.Center" Spacing="2">
-            <MudIcon Icon="@Icons.Material.Filled.Key" Size="Size.Large" Color="Color.Secondary" Style="font-size: 48px;" />
-            <MudText Typo="Typo.h4" Align="Align.Center">Test Permission Access</MudText>
-            <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary">
-                Test dynamic permission-based authorization
-            </MudText>
-        </MudStack>
-    </MudPaper>
+<div class="container py-4" style="max-width: 800px;">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body text-center">
+            <i class="bi bi-key text-secondary fs-1"></i>
+            <h4 class="mt-3">Test Permission Access</h4>
+            <p class="text-muted mb-0">Test dynamic permission-based authorization</p>
+        </div>
+    </div>
 
     @* Authentication Status Card *@
-    <MudPaper Elevation="2" Class="pa-4 mb-4">
-        <MudText Typo="Typo.h6" Class="mb-3">
-            <MudIcon Icon="@Icons.Material.Filled.VerifiedUser" Class="mr-2" Color="Color.Info" />
-            Authentication Status
-        </MudText>
-        
-        @if (_isLoading)
-        {
-            <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
-        }
-        else if (_isAuthenticated)
-        {
-            <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="mb-3">
-                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
-                Authenticated as: <strong>@_username</strong>
-            </MudAlert>
-            <MudGrid>
-                <MudItem xs="6">
-                    <MudText Typo="Typo.body2"><strong>User ID:</strong> @_userId</MudText>
-                </MudItem>
-                <MudItem xs="6">
-                    <MudText Typo="Typo.body2"><strong>Email:</strong> @_email</MudText>
-                </MudItem>
-            </MudGrid>
-        }
-        else
-        {
-            <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Class="mb-3">
-                <MudIcon Icon="@Icons.Material.Filled.Warning" Class="mr-2" />
-                Not Authenticated
-            </MudAlert>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToLogin" StartIcon="@Icons.Material.Filled.Login">
-                Go to Login
-            </MudButton>
-        }
-    </MudPaper>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h6 class="card-title">
+                <i class="bi bi-person-check text-info me-2"></i>
+                Authentication Status
+            </h6>
+            
+            @if (_isLoading)
+            {
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+            }
+            else if (_isAuthenticated)
+            {
+                <div class="alert alert-success mb-3">
+                    <i class="bi bi-check-circle me-2"></i>
+                    Authenticated as: <strong>@_username</strong>
+                </div>
+                <div class="row">
+                    <div class="col-6"><strong>User ID:</strong> @_userId</div>
+                    <div class="col-6"><strong>Email:</strong> @_email</div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning mb-3">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Not Authenticated
+                </div>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Go to Login
+                </button>
+            }
+        </div>
+    </div>
 
     @* Permission Tests *@
     @if (_isAuthenticated)
     {
-        <MudPaper Elevation="2" Class="pa-4 mb-4">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                <MudIcon Icon="@Icons.Material.Filled.Science" Class="mr-2" Color="Color.Secondary" />
-                Test Custom Permission
-            </MudText>
-            
-            <MudText Typo="Typo.body2" Class="mb-4">
-                Enter any permission name to test if your user has access through any of their assigned roles.
-            </MudText>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="bi bi-flask text-secondary me-2"></i>
+                    Test Custom Permission
+                </h6>
+                
+                <p class="small text-muted mb-3">
+                    Enter any permission name to test if your user has access through any of their assigned roles.
+                </p>
 
-            <MudGrid>
-                <MudItem xs="12" sm="8">
-                    <MudTextField @bind-Value="_customPermission"
-                                  Label="Permission Name"
-                                  Placeholder="e.g., Admin, Viewer, ActiveUser, CanEditPosts"
-                                  Variant="Variant.Outlined"
-                                  Adornment="Adornment.Start"
-                                  AdornmentIcon="@Icons.Material.Filled.Key"
-                                  HelperText="Enter the exact permission name from the database" />
-                </MudItem>
-                <MudItem xs="12" sm="4" Class="d-flex align-center">
-                    <MudButton Variant="Variant.Filled" 
-                               Color="Color.Primary" 
-                               OnClick="TestCustomPermission"
-                               Disabled="@(string.IsNullOrWhiteSpace(_customPermission) || _testingCustom)"
-                               FullWidth="true"
-                               StartIcon="@Icons.Material.Filled.PlayArrow">
-                        @if (_testingCustom)
+                <div class="row g-2 mb-3">
+                    <div class="col-12 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input type="text" class="form-control" @bind="_customPermission" 
+                                   placeholder="e.g., Admin, Viewer, ActiveUser, CanEditPosts" />
+                        </div>
+                        <small class="text-muted">Enter the exact permission name from the database</small>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <button class="btn btn-primary w-100" @onclick="TestCustomPermission"
+                                disabled="@(string.IsNullOrWhiteSpace(_customPermission) || _testingCustom)">
+                            @if (_testingCustom)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="bi bi-play me-1"></i>Test Permission
+                        </button>
+                    </div>
+                </div>
+
+                @if (_customPermissionResult != null)
+                {
+                    <div class="alert @(_customPermissionResult.Value ? "alert-success" : "alert-warning")">
+                        @if (_customPermissionResult.Value)
                         {
-                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                            <i class="bi bi-check-circle me-2"></i>
+                            <text>You have the "<strong>@_testedPermission</strong>" permission!</text>
                         }
-                        Test Permission
-                    </MudButton>
-                </MudItem>
-            </MudGrid>
-
-            @if (_customPermissionResult != null)
-            {
-                <MudAlert Severity="@(_customPermissionResult.Value ? Severity.Success : Severity.Warning)" 
-                          Variant="Variant.Outlined" 
-                          Class="mt-4">
-                    @if (_customPermissionResult.Value)
-                    {
-                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
-                        <text>You have the "<strong>@_testedPermission</strong>" permission!</text>
-                    }
-                    else
-                    {
-                        <MudIcon Icon="@Icons.Material.Filled.Cancel" Class="mr-2" />
-                        <text>You do NOT have the "<strong>@_testedPermission</strong>" permission.</text>
-                    }
-                </MudAlert>
-            }
-        </MudPaper>
+                        else
+                        {
+                            <i class="bi bi-x-circle me-2"></i>
+                            <text>You do NOT have the "<strong>@_testedPermission</strong>" permission.</text>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
 
         @* Predefined Permission Tests *@
-        <MudPaper Elevation="2" Class="pa-4 mb-4">
-            <MudText Typo="Typo.h6" Class="mb-3">
-                <MudIcon Icon="@Icons.Material.Filled.List" Class="mr-2" Color="Color.Info" />
-                Quick Permission Tests
-            </MudText>
-            
-            <MudText Typo="Typo.body2" Class="mb-4">
-                Test common permissions defined in your system:
-            </MudText>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="bi bi-list-check text-info me-2"></i>
+                    Quick Permission Tests
+                </h6>
+                
+                <p class="small text-muted mb-3">Test common permissions defined in your system:</p>
 
-            <MudStack Spacing="3">
                 @foreach (var permission in _predefinedPermissions)
                 {
-                    <MudCard Elevation="1" Class="test-card">
-                        <MudCardContent>
-                            <MudGrid AlignItems="Center">
-                                <MudItem xs="12" sm="5">
-                                    <MudText Typo="Typo.subtitle1"><strong>@permission.Name</strong></MudText>
-                                    <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                        @permission.Description
-                                    </MudText>
-                                </MudItem>
-                                <MudItem xs="12" sm="4">
-                                    <MudButton Variant="Variant.Filled" 
-                                               Color="@permission.Color" 
-                                               OnClick="@(() => TestPredefinedPermission(permission.Name))"
-                                               Disabled="@permission.IsTesting"
-                                               FullWidth="true"
-                                               Size="Size.Small">
+                    <div class="card mb-2">
+                        <div class="card-body py-2">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-sm-5">
+                                    <strong>@permission.Name</strong>
+                                    <small class="d-block text-muted">@permission.Description</small>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <button class="btn btn-sm @GetButtonClass(permission.ColorName) w-100" 
+                                            @onclick="@(() => TestPredefinedPermission(permission.Name))"
+                                            disabled="@permission.IsTesting">
                                         @if (permission.IsTesting)
                                         {
-                                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                            <span class="spinner-border spinner-border-sm me-2"></span>
                                         }
                                         Test @permission.Name
-                                    </MudButton>
-                                </MudItem>
-                                <MudItem xs="12" sm="3" Class="d-flex justify-center">
+                                    </button>
+                                </div>
+                                <div class="col-12 col-sm-3 text-center">
                                     @if (permission.Result != null)
                                     {
-                                        <MudChip T="string" Color="@(permission.Result.Value ? Color.Success : Color.Error)" Size="Size.Small">
+                                        <span class="badge @(permission.Result.Value ? "bg-success" : "bg-danger")">
                                             @(permission.Result.Value ? "✓ Has Permission" : "✗ No Permission")
-                                        </MudChip>
+                                        </span>
                                     }
-                                </MudItem>
-                            </MudGrid>
-                        </MudCardContent>
-                    </MudCard>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
-            </MudStack>
 
-            <MudButton Variant="Variant.Outlined" 
-                       Color="Color.Primary" 
-                       OnClick="TestAllPermissions" 
-                       Class="mt-4"
-                       FullWidth="true"
-                       StartIcon="@Icons.Material.Filled.PlayArrow">
-                Test All Permissions
-            </MudButton>
-        </MudPaper>
+                <button class="btn btn-outline-primary w-100 mt-3" @onclick="TestAllPermissions">
+                    <i class="bi bi-play me-1"></i>Test All Permissions
+                </button>
+            </div>
+        </div>
 
         @* Results Summary *@
         @if (_lastTestMessage != null)
         {
-            <MudPaper Elevation="2" Class="pa-4">
-                <MudText Typo="Typo.h6" Class="mb-3">
-                    <MudIcon Icon="@Icons.Material.Filled.Assignment" Class="mr-2" Color="Color.Warning" />
-                    Test Results
-                </MudText>
-                <MudAlert Severity="@_lastTestSeverity" Variant="Variant.Outlined">
-                    @_lastTestMessage
-                </MudAlert>
-                
-                @if (_permissionDetails != null)
-                {
-                    <MudSimpleTable Hover="true" Dense="true" Class="mt-3">
-                        <thead>
-                            <tr>
-                                <th>Permission</th>
-                                <th>Has Access</th>
-                                <th>Message</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var detail in _permissionDetails)
-                            {
-                                <tr>
-                                    <td><strong>@detail.Permission</strong></td>
-                                    <td>
-                                        <MudIcon Icon="@(detail.HasAccess ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)" 
-                                                 Color="@(detail.HasAccess ? Color.Success : Color.Error)" 
-                                                 Size="Size.Small" />
-                                    </td>
-                                    <td>@detail.Message</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </MudSimpleTable>
-                }
-            </MudPaper>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="bi bi-clipboard-check text-warning me-2"></i>
+                        Test Results
+                    </h6>
+                    <div class="alert @GetAlertClass(_lastTestSeverity) mb-3">
+                        @_lastTestMessage
+                    </div>
+                    
+                    @if (_permissionDetails != null && _permissionDetails.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Permission</th>
+                                        <th>Has Access</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var detail in _permissionDetails)
+                                    {
+                                        <tr>
+                                            <td><strong>@detail.Permission</strong></td>
+                                            <td>
+                                                @if (detail.HasAccess)
+                                                {
+                                                    <i class="bi bi-check-circle text-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-x-circle text-danger"></i>
+                                                }
+                                            </td>
+                                            <td>@detail.Message</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
         }
     }
-</MudContainer>
-
+</div>

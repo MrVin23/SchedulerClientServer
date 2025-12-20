@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
+using Client.Enums;
 
 namespace Client.Components.Validation
 {
@@ -12,22 +12,16 @@ namespace Client.Components.Validation
         public string Message { get; set; } = string.Empty;
 
         /// <summary>
-        /// The severity of the alert (Normal, Info, Success, Warning, Error).
+        /// The severity of the alert (Info, Success, Warning, Error).
         /// </summary>
         [Parameter]
-        public Severity Severity { get; set; } = Severity.Info;
+        public AlertSeverity Severity { get; set; } = AlertSeverity.Info;
 
         /// <summary>
         /// The variant style of the alert (Text, Filled, Outlined).
         /// </summary>
         [Parameter]
-        public Variant Variant { get; set; } = Variant.Filled;
-
-        /// <summary>
-        /// The horizontal alignment of the alert content.
-        /// </summary>
-        [Parameter]
-        public HorizontalAlignment ContentAlignment { get; set; } = HorizontalAlignment.Left;
+        public AlertVariant Variant { get; set; } = AlertVariant.Filled;
 
         /// <summary>
         /// Whether the alert is currently visible.
@@ -46,24 +40,6 @@ namespace Client.Components.Validation
         /// </summary>
         [Parameter]
         public EventCallback OnClose { get; set; }
-
-        /// <summary>
-        /// Uses less vertical padding.
-        /// </summary>
-        [Parameter]
-        public bool Dense { get; set; } = false;
-
-        /// <summary>
-        /// The elevation (shadow depth) of the alert.
-        /// </summary>
-        [Parameter]
-        public int Elevation { get; set; } = 0;
-
-        /// <summary>
-        /// If true, disables rounded corners.
-        /// </summary>
-        [Parameter]
-        public bool Square { get; set; } = false;
 
         /// <summary>
         /// Additional CSS classes to apply to the alert.
@@ -105,4 +81,3 @@ namespace Client.Components.Validation
         }
     }
 }
-

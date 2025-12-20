@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Client.Enums;
 using Client.Components.Today;
 using Client.Models;
-using MudBlazor;
 using System.Linq;
 using Client.Interfaces;
 using Client.Dtos;
@@ -26,7 +25,7 @@ public partial class DayView : ComponentBase
     [Parameter] public string DateTimeWidth { get; set; } = "500px";
 
     [Inject] private IEventsService EventsService { get; set; } = null!;
-    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IAlertService AlertService { get; set; } = null!;
 
     public List<UserEventModel> Events { get; set; } = []; // Events will be loaded from API
     private UserEventModel? SelectedEvent { get; set; }
@@ -42,7 +41,6 @@ public partial class DayView : ComponentBase
     private bool _hasSelectedEvents = false;
 
     // Form validation
-    private MudForm form = null!;
     private bool isFormValid = false;
     private string[] formErrors = Array.Empty<string>();
     private CreateEventWithUserRequestValidator _createValidator = new();
@@ -200,19 +198,19 @@ public partial class DayView : ComponentBase
                     Events[index] = MapToUserEventModel(response.Data);
                 }
 
-                Snackbar.Add("Event marked as incomplete successfully.", MudBlazor.Severity.Success);
+                AlertService.ShowSuccess("Event marked as incomplete successfully.");
                 
                 // Reload events to ensure we have the latest data
                 await LoadEventsAsync();
             }
             else
             {
-                Snackbar.Add($"Failed to undo event completion: {response?.Message ?? "Unknown error"}", MudBlazor.Severity.Error);
+                AlertService.ShowError($"Failed to undo event completion: {response?.Message ?? "Unknown error"}");
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error undoing event completion: {ex.Message}", MudBlazor.Severity.Error);
+            AlertService.ShowError($"Error undoing event completion: {ex.Message}");
         }
     }
 
@@ -413,16 +411,7 @@ public partial class DayView : ComponentBase
     {
         if (CurrentMode == PageMode.Create && _createEvent != null)
         {
-            // For create mode, use both MudForm and FluentValidation
-            await form.Validate();
-
-            if (!isFormValid)
-            {
-                return; // Let MudForm handle the validation display
-            }
-
-            // Additional server-side validation using FluentValidation
-            // Validate with local time values (before UTC conversion) so validation matches what user sees
+            // Validate with FluentValidation
             var validationRequest = new CreateEventWithUserRequest
             {
                 EventTypeId = MapEventTypeEnumToId(_createEvent.EventType),
@@ -430,8 +419,8 @@ public partial class DayView : ComponentBase
                 Description = _createEvent.Description,
                 CanBePostponed = _createEvent.CanBePostponed,
                 IsCompleted = _createEvent.IsCompleted,
-                StartDateTime = _createEvent.StartDateTime, // Use local time for validation
-                EndDateTime = _createEvent.EndDateTime, // Use local time for validation
+                StartDateTime = _createEvent.StartDateTime,
+                EndDateTime = _createEvent.EndDateTime,
                 UserId = UserId
             };
             var validationResult = await _createValidator.ValidateAsync(validationRequest);
@@ -450,11 +439,7 @@ public partial class DayView : ComponentBase
         }
         else if (CurrentMode == PageMode.Edit && _createEvent != null)
         {
-            // For edit mode, skip MudForm validation (can be unreliable with parameter binding)
-            // and rely on FluentValidation which validates the actual _createEvent data
-
             // Validate the edit data using FluentValidation
-            // Validate with local time values (before UTC conversion) so validation matches what user sees
             var validationRequest = new UpdateEventRequest
             {
                 EventTypeId = MapEventTypeEnumToId(_createEvent.EventType),
@@ -462,8 +447,8 @@ public partial class DayView : ComponentBase
                 Description = _createEvent.Description,
                 CanBePostponed = _createEvent.CanBePostponed,
                 IsCompleted = _createEvent.IsCompleted,
-                StartDateTime = _createEvent.StartDateTime, // Use local time for validation
-                EndDateTime = _createEvent.EndDateTime // Use local time for validation
+                StartDateTime = _createEvent.StartDateTime,
+                EndDateTime = _createEvent.EndDateTime
             };
             var validationResult = await _updateValidator.ValidateAsync(validationRequest);
 
@@ -509,14 +494,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                // TODO: Handle error - show error message to user
-                Console.WriteLine($"Failed to create event: {response?.Message}");
+                AlertService.ShowError($"Failed to create event: {response?.Message}");
             }
         }
         catch (Exception ex)
         {
-            // TODO: Handle error - show error message to user
-            Console.WriteLine($"Error creating event: {ex.Message}");
+            AlertService.ShowError($"Error creating event: {ex.Message}");
         }
     }
 
@@ -585,14 +568,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                // TODO: Handle error - show error message to user
-                Console.WriteLine($"Failed to update event: {response?.Message}");
+                AlertService.ShowError($"Failed to update event: {response?.Message}");
             }
         }
         catch (Exception ex)
         {
-            // TODO: Handle error - show error message to user
-            Console.WriteLine($"Error updating event: {ex.Message}");
+            AlertService.ShowError($"Error updating event: {ex.Message}");
         }
     }
 
@@ -632,7 +613,7 @@ public partial class DayView : ComponentBase
         
         if (selectedEvents.Count == 0)
         {
-            Snackbar.Add("Please select at least one event that can be postponed.", MudBlazor.Severity.Warning);
+            AlertService.ShowWarning("Please select at least one event that can be postponed.");
             return;
         }
 
@@ -667,16 +648,11 @@ public partial class DayView : ComponentBase
                 // Show feedback
                 if (failCount == 0)
                 {
-                    Snackbar.Add($"Successfully postponed {successCount} event(s).", MudBlazor.Severity.Success);
+                    AlertService.ShowSuccess($"Successfully postponed {successCount} event(s).");
                 }
                 else
                 {
-                    Snackbar.Add($"Postponed {successCount} event(s). {failCount} event(s) failed.", MudBlazor.Severity.Warning);
-                    // Log failed events
-                    foreach (var failedEvent in result.FailedEvents)
-                    {
-                        Snackbar.Add($"Event {failedEvent.EventId}: {failedEvent.ErrorMessage}", MudBlazor.Severity.Error);
-                    }
+                    AlertService.ShowWarning($"Postponed {successCount} event(s). {failCount} event(s) failed.");
                 }
 
                 // Reload events to ensure we have the latest data
@@ -684,12 +660,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                Snackbar.Add($"Failed to postpone events: {response?.Message ?? "Unknown error"}", MudBlazor.Severity.Error);
+                AlertService.ShowError($"Failed to postpone events: {response?.Message ?? "Unknown error"}");
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error postponing events: {ex.Message}", MudBlazor.Severity.Error);
+            AlertService.ShowError($"Error postponing events: {ex.Message}");
         }
     }
 
@@ -699,7 +675,7 @@ public partial class DayView : ComponentBase
         
         if (selectedEvents.Count == 0)
         {
-            Snackbar.Add("Please select at least one event to follow up.", MudBlazor.Severity.Warning);
+            AlertService.ShowWarning("Please select at least one event to follow up.");
             return;
         }
 
@@ -734,16 +710,11 @@ public partial class DayView : ComponentBase
                 // Show feedback
                 if (failCount == 0)
                 {
-                    Snackbar.Add($"Successfully followed up {successCount} event(s).", MudBlazor.Severity.Success);
+                    AlertService.ShowSuccess($"Successfully followed up {successCount} event(s).");
                 }
                 else
                 {
-                    Snackbar.Add($"Followed up {successCount} event(s). {failCount} event(s) failed.", MudBlazor.Severity.Warning);
-                    // Log failed events
-                    foreach (var failedEvent in result.FailedEvents)
-                    {
-                        Snackbar.Add($"Event {failedEvent.EventId}: {failedEvent.ErrorMessage}", MudBlazor.Severity.Error);
-                    }
+                    AlertService.ShowWarning($"Followed up {successCount} event(s). {failCount} event(s) failed.");
                 }
 
                 // Reload events to ensure we have the latest data
@@ -751,12 +722,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                Snackbar.Add($"Failed to follow up events: {response?.Message ?? "Unknown error"}", MudBlazor.Severity.Error);
+                AlertService.ShowError($"Failed to follow up events: {response?.Message ?? "Unknown error"}");
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error following up events: {ex.Message}", MudBlazor.Severity.Error);
+            AlertService.ShowError($"Error following up events: {ex.Message}");
         }
     }
 
@@ -766,7 +737,7 @@ public partial class DayView : ComponentBase
         
         if (selectedEvents.Count == 0)
         {
-            Snackbar.Add("Please select at least one event to complete.", MudBlazor.Severity.Warning);
+            AlertService.ShowWarning("Please select at least one event to complete.");
             return;
         }
 
@@ -801,16 +772,11 @@ public partial class DayView : ComponentBase
                 // Show feedback
                 if (failCount == 0)
                 {
-                    Snackbar.Add($"Successfully completed {successCount} event(s).", MudBlazor.Severity.Success);
+                    AlertService.ShowSuccess($"Successfully completed {successCount} event(s).");
                 }
                 else
                 {
-                    Snackbar.Add($"Completed {successCount} event(s). {failCount} event(s) failed.", MudBlazor.Severity.Warning);
-                    // Log failed events
-                    foreach (var failedEvent in result.FailedCompletions)
-                    {
-                        Snackbar.Add($"Event {failedEvent.EventId}: {failedEvent.ErrorMessage}", MudBlazor.Severity.Error);
-                    }
+                    AlertService.ShowWarning($"Completed {successCount} event(s). {failCount} event(s) failed.");
                 }
 
                 // Reload events to ensure we have the latest data
@@ -818,12 +784,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                Snackbar.Add($"Failed to complete events: {response?.Message ?? "Unknown error"}", MudBlazor.Severity.Error);
+                AlertService.ShowError($"Failed to complete events: {response?.Message ?? "Unknown error"}");
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error completing events: {ex.Message}", MudBlazor.Severity.Error);
+            AlertService.ShowError($"Error completing events: {ex.Message}");
         }
     }
 
@@ -833,7 +799,7 @@ public partial class DayView : ComponentBase
         
         if (selectedEvents.Count == 0)
         {
-            Snackbar.Add("Please select at least one event to reject.", MudBlazor.Severity.Warning);
+            AlertService.ShowWarning("Please select at least one event to reject.");
             return;
         }
 
@@ -862,16 +828,11 @@ public partial class DayView : ComponentBase
                 // Show feedback
                 if (failCount == 0)
                 {
-                    Snackbar.Add($"Successfully rejected {successCount} event(s).", MudBlazor.Severity.Success);
+                    AlertService.ShowSuccess($"Successfully rejected {successCount} event(s).");
                 }
                 else
                 {
-                    Snackbar.Add($"Rejected {successCount} event(s). {failCount} event(s) failed.", MudBlazor.Severity.Warning);
-                    // Log failed events
-                    foreach (var failedEvent in result.FailedRejections)
-                    {
-                        Snackbar.Add($"Event {failedEvent.EventId}: {failedEvent.ErrorMessage}", MudBlazor.Severity.Error);
-                    }
+                    AlertService.ShowWarning($"Rejected {successCount} event(s). {failCount} event(s) failed.");
                 }
 
                 // Reload events to ensure we have the latest data
@@ -879,12 +840,12 @@ public partial class DayView : ComponentBase
             }
             else
             {
-                Snackbar.Add($"Failed to reject events: {response?.Message ?? "Unknown error"}", MudBlazor.Severity.Error);
+                AlertService.ShowError($"Failed to reject events: {response?.Message ?? "Unknown error"}");
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error rejecting events: {ex.Message}", MudBlazor.Severity.Error);
+            AlertService.ShowError($"Error rejecting events: {ex.Message}");
         }
     }
 }

@@ -1,27 +1,23 @@
 @page "/not-authorised"
 @layout StoryLayout
-@using MudBlazor
 
 <PageTitle>Not Authorised</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Small" Class="mt-8">
-    <MudPaper Elevation="3" Class="pa-8">
-        <MudStack AlignItems="AlignItems.Center" Spacing="4">
-            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Color="Color.Error" Style="font-size: 64px;" />
+<div class="container mt-5" style="max-width: 400px;">
+    <div class="card shadow">
+        <div class="card-body p-4 text-center">
+            <i class="bi bi-lock-fill text-danger" style="font-size: 4rem;"></i>
             
-            <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">Not Authorised</MudText>
+            <h4 class="mt-3 mb-3">Not Authorised</h4>
             
-            <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-4">
+            <p class="text-muted mb-4">
                 You do not have permission to access this resource.
-            </MudText>
+            </p>
             
-            <MudButton Variant="Variant.Filled"
-                      Color="Color.Primary"
-                      StartIcon="@Icons.Material.Filled.Login"
-                      OnClick="NavigateToLogin"
-                      Size="Size.Large">
+            <button class="btn btn-primary btn-lg" @onclick="NavigateToLogin">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
                 Go to Login
-            </MudButton>
-        </MudStack>
-    </MudPaper>
-</MudContainer>
+            </button>
+        </div>
+    </div>
+</div>

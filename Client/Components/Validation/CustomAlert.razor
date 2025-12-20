@@ -1,24 +1,46 @@
-@using MudBlazor
+@using Client.Enums
 
 @if (IsVisible)
 {
-    <MudAlert Severity="@Severity"
-              Variant="@Variant"
-              ContentAlignment="@ContentAlignment"
-              ShowCloseIcon="true"
-              CloseIconClicked="HandleClose"
-              Dense="@Dense"
-              Elevation="@Elevation"
-              Square="@Square"
-              Class="@Class">
-        @if (ChildContent != null)
-        {
-            @ChildContent
-        }
-        else
-        {
-            @Message
-        }
-    </MudAlert>
+    <div class="alert @GetAlertClass() @GetVariantClass() @Class alert-dismissible" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="bi @GetIcon() me-2"></i>
+            <div class="flex-grow-1">
+                @if (ChildContent != null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @Message
+                }
+            </div>
+            <button type="button" class="btn-close" @onclick="HandleClose" aria-label="Close"></button>
+        </div>
+    </div>
 }
 
+@code {
+    private string GetAlertClass() => Severity switch
+    {
+        AlertSeverity.Success => "alert-success",
+        AlertSeverity.Warning => "alert-warning",
+        AlertSeverity.Error => "alert-danger",
+        _ => "alert-info"
+    };
+
+    private string GetVariantClass() => Variant switch
+    {
+        AlertVariant.Outlined => "alert-outline",
+        AlertVariant.Text => "alert-text",
+        _ => ""
+    };
+
+    private string GetIcon() => Severity switch
+    {
+        AlertSeverity.Success => "bi-check-circle-fill",
+        AlertSeverity.Warning => "bi-exclamation-triangle-fill",
+        AlertSeverity.Error => "bi-x-circle-fill",
+        _ => "bi-info-circle-fill"
+    };
+}

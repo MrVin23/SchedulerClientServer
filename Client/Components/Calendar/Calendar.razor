@@ -1,58 +1,37 @@
-@using MudBlazor
-
 @* Calendar container *@
 <div class="calendar-container">
     @* Header with navigation and month/year selection *@
     <div class="calendar-header d-flex align-items-center gap-2 mb-2">
-        <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" 
-                      Size="Size.Large"
-                      Variant="Variant.Text" 
-                      OnClick="GoToPreviousMonth" />
+        <button class="btn btn-outline-secondary btn-lg" @onclick="GoToPreviousMonth" title="Previous month">
+            <i class="bi bi-chevron-left"></i>
+        </button>
 
-        <MudSelect T="int"
-                   Value="@GetValidMonth()"
-                   ValueChanged="@(async (int month) => { _internalMonth = month; await OnMonthChanged(); })"
-                   Variant="Variant.Outlined"
-                   FitContent="true"
-                   Dense="true"
-                   Margin="Margin.None">
+        <select class="form-select form-select-sm" style="width: auto;"
+                value="@GetValidMonth()"
+                @onchange="OnMonthSelectChanged">
             @foreach (var monthOption in GetMonthOptions())
             {
-                <MudSelectItem 
-                    Value="@monthOption.Value"
-                    Dense="true"
-                    >@monthOption.Name</MudSelectItem>
+                <option value="@monthOption.Value">@monthOption.Name</option>
             }
-        </MudSelect>
+        </select>
 
-        <MudSelect T="int"
-                   Value="@GetValidYear()"
-                   ValueChanged="@(async (int year) => { _internalYear = year; await OnYearChanged(); })"
-                   Variant="Variant.Outlined"
-                   FitContent="true"
-                   Dense="true"
-                   Margin="Margin.None">
+        <select class="form-select form-select-sm" style="width: auto;"
+                value="@GetValidYear()"
+                @onchange="OnYearSelectChanged">
             @foreach (var yearOption in GetYearOptions())
             {
-                <MudSelectItem 
-                    Value="@yearOption"
-                    Dense="true"
-                    >@yearOption</MudSelectItem>
+                <option value="@yearOption">@yearOption</option>
             }
-        </MudSelect>
+        </select>
 
-        <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" 
-                      Size="Size.Large"
-                      Variant="Variant.Text" 
-                      OnClick="GoToNextMonth" />
+        <button class="btn btn-outline-secondary btn-lg" @onclick="GoToNextMonth" title="Next month">
+            <i class="bi bi-chevron-right"></i>
+        </button>
 
-        <MudButton Variant="Variant.Outlined"
-                  Size="Size.Medium"
-                  StartIcon="@Icons.Material.Filled.Today"
-                  OnClick="GoToToday">
+        <button class="btn btn-outline-primary" @onclick="GoToToday">
+            <i class="bi bi-calendar-check me-1"></i>
             Go to today
-        </MudButton>
-
+        </button>
     </div>
 
     @* Weekday headers using DayHeader to match fit-content widths *@
@@ -156,6 +135,24 @@
         _internalMonth = today.Month;
         _internalYear = today.Year;
         await DisplayDateChanged.InvokeAsync(firstOfCurrentMonth);
+    }
+
+    private async Task OnMonthSelectChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int month))
+        {
+            _internalMonth = month;
+            await OnMonthChanged();
+        }
+    }
+
+    private async Task OnYearSelectChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int year))
+        {
+            _internalYear = year;
+            await OnYearChanged();
+        }
     }
 
     private async Task OnMonthChanged()

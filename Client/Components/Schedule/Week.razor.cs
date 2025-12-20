@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace Client.Components.Schedule;
 
@@ -133,17 +132,18 @@ public partial class Week : ComponentBase
 
     private string GetSubjectIcon(string iconName)
     {
+        // Map to Bootstrap Icons
         return iconName switch
         {
-            "Calculate" => Icons.Material.Filled.Calculate,
-            "MenuBook" => Icons.Material.Filled.MenuBook,
-            "Science" => Icons.Material.Filled.Science,
-            "HistoryEdu" => Icons.Material.Filled.HistoryEdu,
-            "Public" => Icons.Material.Filled.Public,
-            "Palette" => Icons.Material.Filled.Palette,
-            "MusicNote" => Icons.Material.Filled.MusicNote,
-            "FitnessCenter" => Icons.Material.Filled.FitnessCenter,
-            _ => Icons.Material.Filled.Book
+            "Calculate" => "bi-calculator",
+            "MenuBook" => "bi-book",
+            "Science" => "bi-mortarboard",
+            "HistoryEdu" => "bi-clock-history",
+            "Public" => "bi-globe",
+            "Palette" => "bi-palette",
+            "MusicNote" => "bi-music-note-beamed",
+            "FitnessCenter" => "bi-trophy",
+            _ => "bi-book"
         };
     }
 

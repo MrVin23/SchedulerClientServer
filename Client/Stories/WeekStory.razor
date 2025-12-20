@@ -1,104 +1,101 @@
 @page "/stories/week"
 @layout StoryLayout
 @using Client.Components.Schedule
-@using MudBlazor
 
-<MudText Typo="Typo.h4" Class="mb-4" Style="color: #495057;">Week Schedule View</MudText>
+<h4 class="mb-4" style="color: #495057;">Week Schedule View</h4>
 
-<MudText Typo="Typo.body1" Class="mb-6" Style="color: #6c757d;">
+<p class="mb-4 text-muted">
     A modern classroom week view displaying 8 subjects spread across 5 days (Monday - Friday).
     Click on any class to see details.
-</MudText>
+</p>
 
 <div class="story-container">
-    <MudPaper Elevation="0" Class="pa-4" Style="background: transparent;">
+    <div class="p-4">
         <Week ClassroomId="1"
               DisplayWeekStart="@_displayWeekStart"
               DisplayWeekStartChanged="HandleWeekChanged"
               OnEntryClick="HandleEntryClick" />
-    </MudPaper>
+    </div>
 </div>
 
 @if (_lastClickedEntry != null)
 {
-    <MudPaper Class="mt-4 pa-4" Elevation="2">
-        <MudText Typo="Typo.subtitle1" Class="mb-2">Last Clicked Entry:</MudText>
-        <MudText Typo="Typo.body2">
-            <strong>@_lastClickedEntry.SubjectName</strong> on @_lastClickedEntry.Day 
-            at @_lastClickedEntry.StartTime.ToString(@"hh\:mm") - @_lastClickedEntry.EndTime.ToString(@"hh\:mm")
-            in @_lastClickedEntry.RoomNumber with @_lastClickedEntry.TeacherName
-        </MudText>
-    </MudPaper>
+    <div class="card mt-4 shadow-sm">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2">Last Clicked Entry:</h6>
+            <p class="card-text mb-0">
+                <strong>@_lastClickedEntry.SubjectName</strong> on @_lastClickedEntry.Day 
+                at @_lastClickedEntry.StartTime.ToString(@"hh\:mm") - @_lastClickedEntry.EndTime.ToString(@"hh\:mm")
+                in @_lastClickedEntry.RoomNumber with @_lastClickedEntry.TeacherName
+            </p>
+        </div>
+    </div>
 }
 
-<MudDivider Class="my-6" />
+<hr class="my-4" />
 
-<MudText Typo="Typo.h5" Class="mb-4" Style="color: #495057;">Component Features</MudText>
+<h5 class="mb-4" style="color: #495057;">Component Features</h5>
 
-<MudGrid>
-    <MudItem xs="12" md="6">
-        <MudCard Elevation="2">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">
-                        <MudIcon Icon="@Icons.Material.Filled.Palette" Class="mr-2" />
-                        Visual Design
-                    </MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudList T="string" Dense="true">
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Color-coded subjects for easy recognition</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Subject icons for quick identification</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Today highlighting with gradient</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Smooth hover animations</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Break and lunch time indicators</MudListItem>
-                </MudList>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
+<div class="row">
+    <div class="col-12 col-md-6 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-palette me-2"></i>
+                    Visual Design
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><i class="bi bi-check text-success me-2"></i>Color-coded subjects for easy recognition</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Subject icons for quick identification</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Today highlighting with gradient</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Smooth hover animations</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Break and lunch time indicators</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <MudItem xs="12" md="6">
-        <MudCard Elevation="2">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">
-                        <MudIcon Icon="@Icons.Material.Filled.TouchApp" Class="mr-2" />
-                        Interactions
-                    </MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudList T="string" Dense="true">
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Week navigation (previous/next)</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">"This Week" quick navigation</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Click entries for details panel</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Subject legend with hover effects</MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Check">Responsive layout for all screens</MudListItem>
-                </MudList>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+    <div class="col-12 col-md-6 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-hand-index me-2"></i>
+                    Interactions
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><i class="bi bi-check text-success me-2"></i>Week navigation (previous/next)</li>
+                    <li><i class="bi bi-check text-success me-2"></i>"This Week" quick navigation</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Click entries for details panel</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Subject legend with hover effects</li>
+                    <li><i class="bi bi-check text-success me-2"></i>Responsive layout for all screens</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-<MudDivider Class="my-6" />
+<hr class="my-4" />
 
-<MudText Typo="Typo.h5" Class="mb-4" Style="color: #495057;">Subjects in Schedule</MudText>
+<h5 class="mb-4" style="color: #495057;">Subjects in Schedule</h5>
 
-<MudGrid>
+<div class="row">
     @foreach (var subject in WeekMockData.GetSubjects())
     {
-        <MudItem xs="6" sm="4" md="3">
-            <MudPaper Class="pa-3 d-flex align-center gap-3" Elevation="1" Style="@($"border-left: 4px solid {subject.Color};")">
-                <MudIcon Icon="@GetIcon(subject.Icon)" Style="@($"color: {subject.Color};")" />
+        <div class="col-6 col-sm-4 col-md-3 mb-3">
+            <div class="card shadow-sm p-3 d-flex flex-row align-items-center gap-3" style="border-left: 4px solid @subject.Color;">
+                <i class="bi @GetIcon(subject.Icon)" style="color: @subject.Color; font-size: 1.5rem;"></i>
                 <div>
-                    <MudText Typo="Typo.body2" Style="font-weight: 600;">@subject.Name</MudText>
-                    <MudText Typo="Typo.caption" Style="color: #868e96;">@subject.Code</MudText>
+                    <div class="fw-semibold">@subject.Name</div>
+                    <small class="text-muted">@subject.Code</small>
                 </div>
-            </MudPaper>
-        </MudItem>
+            </div>
+        </div>
     }
-</MudGrid>
+</div>
 
 @code {
     private DateTime _displayWeekStart = GetMondayOfWeek(DateTime.Today);
@@ -126,15 +123,15 @@
     {
         return iconName switch
         {
-            "Calculate" => Icons.Material.Filled.Calculate,
-            "MenuBook" => Icons.Material.Filled.MenuBook,
-            "Science" => Icons.Material.Filled.Science,
-            "HistoryEdu" => Icons.Material.Filled.HistoryEdu,
-            "Public" => Icons.Material.Filled.Public,
-            "Palette" => Icons.Material.Filled.Palette,
-            "MusicNote" => Icons.Material.Filled.MusicNote,
-            "FitnessCenter" => Icons.Material.Filled.FitnessCenter,
-            _ => Icons.Material.Filled.Book
+            "Calculate" => "bi-calculator",
+            "MenuBook" => "bi-book",
+            "Science" => "bi-mortarboard",
+            "HistoryEdu" => "bi-clock-history",
+            "Public" => "bi-globe",
+            "Palette" => "bi-palette",
+            "MusicNote" => "bi-music-note-beamed",
+            "FitnessCenter" => "bi-trophy",
+            _ => "bi-book"
         };
     }
 }

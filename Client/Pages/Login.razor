@@ -1,58 +1,55 @@
 @page "/"
 @page "/login"
 @using Client.Dtos
-@using MudBlazor
 
 <PageTitle>Login</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Small" Class="mt-8">
-    <MudPaper Elevation="3" Class="pa-8">
-        <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">Login</MudText>
-        
-        <MudForm @ref="form" @bind-IsValid="@isValid" @bind-Errors="@errors">
-            <MudTextField @bind-Value="@loginRequest.Username"
-                         Label="Username"
-                         Variant="Variant.Outlined"
-                         Required="true"
-                         RequiredError="Username is required"
-                         Class="mb-4" />
+<div class="container mt-5" style="max-width: 400px;">
+    <div class="card shadow">
+        <div class="card-body p-4">
+            <h4 class="card-title text-center mb-4">Login</h4>
             
-            <MudTextField @bind-Value="@loginRequest.Password"
-                         Label="Password"
-                         Variant="Variant.Outlined"
-                         InputType="@(showPassword ? InputType.Text : InputType.Password)"
-                         Required="true"
-                         RequiredError="Password is required"
-                         Class="mb-4">
-                <Adornment End>
-                    <MudIconButton Icon="@(showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
-                                   OnClick="TogglePasswordVisibility"
-                                   Color="Color.Default" />
-                </Adornment>
-            </MudTextField>
+            <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <InputText id="username" class="form-control" @bind-Value="loginRequest.Username" placeholder="Enter username" />
+                    <ValidationMessage For="@(() => loginRequest.Username)" class="text-danger small" />
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="@(showPassword ? "text" : "password")" 
+                               id="password" 
+                               class="form-control" 
+                               @bind="loginRequest.Password"
+                               placeholder="Enter password" />
+                        <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">
+                            <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginRequest.Password)" class="text-danger small" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Logging in...</span>
+                    }
+                    else
+                    {
+                        <span>Login</span>
+                    }
+                </button>
+            </EditForm>
             
-            
-            <MudButton Variant="Variant.Filled"
-                      Color="Color.Primary"
-                      FullWidth="true"
-                      Size="Size.Large"
-                      OnClick="HandleLogin"
-                      Disabled="@isLoading">
-                @if (isLoading)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    <MudText Class="ms-2">Logging in...</MudText>
-                }
-                else
-                {
-                    <MudText>Login</MudText>
-                }
-            </MudButton>
-        </MudForm>
-        
-        @if (!string.IsNullOrEmpty(errorMessage))
-        {
-            <MudAlert Severity="Severity.Error" Class="mt-4">@errorMessage</MudAlert>
-        }
-    </MudPaper>
-</MudContainer>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger mt-4 mb-0">@errorMessage</div>
+            }
+        </div>
+    </div>
+</div>

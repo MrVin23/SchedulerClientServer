@@ -1,8 +1,8 @@
+using Client.Enums;
 using Client.Interfaces;
 using Client.Interfaces.Authorisation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
-using MudBlazor;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -32,17 +32,17 @@ namespace Client.Tests
         // Predefined permissions
         private List<PermissionTest> _predefinedPermissions = new()
         {
-            new() { Name = "Admin", Description = "Administrator level access", Color = Color.Error },
-            new() { Name = "Viewer", Description = "View-only access", Color = Color.Info },
-            new() { Name = "ActiveUser", Description = "Active user features", Color = Color.Success },
-            new() { Name = "CanEditPosts", Description = "Permission to edit posts", Color = Color.Warning },
-            new() { Name = "CanDeleteUsers", Description = "Permission to delete users", Color = Color.Error },
-            new() { Name = "CanAccessAdminPanel", Description = "Access to admin panel", Color = Color.Secondary }
+            new() { Name = "Admin", Description = "Administrator level access", ColorName = "danger" },
+            new() { Name = "Viewer", Description = "View-only access", ColorName = "info" },
+            new() { Name = "ActiveUser", Description = "Active user features", ColorName = "success" },
+            new() { Name = "CanEditPosts", Description = "Permission to edit posts", ColorName = "warning" },
+            new() { Name = "CanDeleteUsers", Description = "Permission to delete users", ColorName = "danger" },
+            new() { Name = "CanAccessAdminPanel", Description = "Access to admin panel", ColorName = "secondary" }
         };
 
         // Result message
         private string? _lastTestMessage = null;
-        private Severity _lastTestSeverity = Severity.Info;
+        private AlertSeverity _lastTestSeverity = AlertSeverity.Info;
         private List<PermissionDetail>? _permissionDetails = null;
 
         protected override async Task OnInitializedAsync()
@@ -86,6 +86,22 @@ namespace Client.Tests
             Navigation.NavigateTo("/login");
         }
 
+        private string GetButtonClass(string colorName)
+        {
+            return $"btn-{colorName}";
+        }
+
+        private string GetAlertClass(AlertSeverity severity)
+        {
+            return severity switch
+            {
+                AlertSeverity.Success => "alert-success",
+                AlertSeverity.Warning => "alert-warning",
+                AlertSeverity.Error => "alert-danger",
+                _ => "alert-info"
+            };
+        }
+
         private async Task TestCustomPermission()
         {
             if (string.IsNullOrWhiteSpace(_customPermission))
@@ -97,7 +113,6 @@ namespace Client.Tests
 
             try
             {
-                // IMPORTANT: Must include credentials to send the authentication cookie!
                 var request = new HttpRequestMessage(HttpMethod.Get, $"api/test/permission/{Uri.EscapeDataString(_customPermission)}");
                 request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
                 var response = await HttpClient.SendAsync(request);
@@ -112,27 +127,27 @@ namespace Client.Tests
                     
                     _customPermissionResult = result?.Data?.HasAccess ?? false;
                     _lastTestMessage = result?.Data?.Message ?? "Permission test completed";
-                    _lastTestSeverity = _customPermissionResult == true ? Severity.Success : Severity.Warning;
+                    _lastTestSeverity = _customPermissionResult == true ? AlertSeverity.Success : AlertSeverity.Warning;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     _customPermissionResult = false;
                     _lastTestMessage = "Unauthorized. Please log in again.";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                     _isAuthenticated = false;
                 }
                 else
                 {
                     _customPermissionResult = false;
                     _lastTestMessage = $"Error: {response.StatusCode}";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                 }
             }
             catch (Exception ex)
             {
                 _customPermissionResult = false;
                 _lastTestMessage = $"Error: {ex.Message}";
-                _lastTestSeverity = Severity.Error;
+                _lastTestSeverity = AlertSeverity.Error;
                 AlertService.ShowError($"Error testing permission: {ex.Message}");
             }
             finally
@@ -152,7 +167,6 @@ namespace Client.Tests
 
             try
             {
-                // IMPORTANT: Must include credentials to send the authentication cookie!
                 var request = new HttpRequestMessage(HttpMethod.Get, $"api/test/permission/{Uri.EscapeDataString(permissionName)}");
                 request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
                 var response = await HttpClient.SendAsync(request);
@@ -167,20 +181,20 @@ namespace Client.Tests
                     
                     permission.Result = result?.Data?.HasAccess ?? false;
                     _lastTestMessage = result?.Data?.Message ?? "Permission test completed";
-                    _lastTestSeverity = permission.Result == true ? Severity.Success : Severity.Warning;
+                    _lastTestSeverity = permission.Result == true ? AlertSeverity.Success : AlertSeverity.Warning;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     permission.Result = false;
                     _lastTestMessage = "Unauthorized. Please log in again.";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                     _isAuthenticated = false;
                 }
                 else
                 {
                     permission.Result = false;
                     _lastTestMessage = $"Error testing {permissionName}: {response.StatusCode}";
-                    _lastTestSeverity = Severity.Error;
+                    _lastTestSeverity = AlertSeverity.Error;
                 }
             }
             catch (Exception ex)
@@ -222,7 +236,7 @@ namespace Client.Tests
             var passed = _predefinedPermissions.Count(p => p.Result == true);
             var total = _predefinedPermissions.Count;
             _lastTestMessage = $"Permission test complete: {passed}/{total} permissions granted";
-            _lastTestSeverity = passed == total ? Severity.Success : (passed > 0 ? Severity.Warning : Severity.Info);
+            _lastTestSeverity = passed == total ? AlertSeverity.Success : (passed > 0 ? AlertSeverity.Warning : AlertSeverity.Info);
         }
 
         // Helper classes
@@ -230,7 +244,7 @@ namespace Client.Tests
         {
             public string Name { get; set; } = string.Empty;
             public string Description { get; set; } = string.Empty;
-            public Color Color { get; set; } = Color.Default;
+            public string ColorName { get; set; } = "secondary";
             public bool IsTesting { get; set; } = false;
             public bool? Result { get; set; } = null;
         }
@@ -260,4 +274,3 @@ namespace Client.Tests
         }
     }
 }
-
