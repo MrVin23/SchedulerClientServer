@@ -2,7 +2,7 @@ using Server.Models;
 
 namespace Server.Models.Scheduler
 {
-    public class TargetStudents : ModelBase
+    public class TargetStudent : ModelBase
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
@@ -11,5 +11,9 @@ namespace Server.Models.Scheduler
         public bool IsShareable { get; set; } = false;
         public int LevelOfDisruption { get; set; } = 0;
         public int LevelOfSupport { get; set; } = 0;
+
+        // Navigation properties
+        public ICollection<QualificationTargetStudent> QualificationTargetStudents { get; set; } = new List<QualificationTargetStudent>();
+        public ICollection<RoomTargetStudent> RoomTargetStudents { get; set; } = new List<RoomTargetStudent>();
     }
 }

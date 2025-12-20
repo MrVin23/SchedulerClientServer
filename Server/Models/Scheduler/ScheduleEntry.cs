@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Server.Models;
 
 namespace Server.Models.Scheduler
@@ -8,6 +9,8 @@ namespace Server.Models.Scheduler
     /// Each row is one period of a subject in a specific room on a specific day.
     /// This design allows variable period lengths and frequencies per subject.
     /// </summary>
+    [Index(nameof(RoomId), nameof(DayOfWeek))]  // Fast lookup for room's daily schedule
+    [Index(nameof(RoomId), nameof(DayOfWeek), nameof(StartTime), IsUnique = true)]  // Prevent double-booking
     public class ScheduleEntry : ModelBase
     {
         // Foreign key to Room (the classroom/year combination)

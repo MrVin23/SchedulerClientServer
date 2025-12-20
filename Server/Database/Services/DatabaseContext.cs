@@ -4,6 +4,7 @@ using Server.Models;
 using Server.Models.Users;
 using Server.Models.UserPermissions;
 using Server.Models.Events;
+using Server.Models.Scheduler;
 
 namespace Server.Database.Services
 {
@@ -32,6 +33,49 @@ namespace Server.Database.Services
         public DbSet<EventsModel> Events { get; set; }
         public DbSet<UserEventsModel> UserEvents { get; set; }
         public DbSet<EventSettingsModel> EventSettings { get; set; }
+
+        // Scheduler-related DbSets
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<ScheduleEntry> ScheduleEntries { get; set; }
+        public DbSet<TargetStudent> TargetStudents { get; set; }
+        public DbSet<TeacherAide> TeacherAides { get; set; }
+        public DbSet<Qualification> Qualifications { get; set; }
+        public DbSet<QualificationTeacherAide> QualificationTeacherAides { get; set; }
+        public DbSet<QualificationTargetStudent> QualificationTargetStudents { get; set; }
+        public DbSet<RoomTargetStudent> RoomTargetStudents { get; set; }
+
+        // Override SaveChanges to auto-populate CreatedAt and UpdatedAt
+        public override int SaveChanges()
+        {
+            UpdateTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            UpdateTimestamps();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void UpdateTimestamps()
+        {
+            var entries = ChangeTracker.Entries<ModelBase>();
+            var now = DateTime.UtcNow;
+
+            foreach (var entry in entries)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedAt = now;
+                    entry.Entity.UpdatedAt = now;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedAt = now;
+                }
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -180,6 +224,84 @@ namespace Server.Database.Services
                 .WithMany()
                 .HasForeignKey(es => es.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // =========================================
+            // Scheduler Configuration
+            // =========================================
+
+            // ScheduleEntry relationships
+            modelBuilder.Entity<ScheduleEntry>()
+                .HasOne(se => se.Room)
+                .WithMany(r => r.ScheduleEntries)
+                .HasForeignKey(se => se.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ScheduleEntry>()
+                .HasOne(se => se.Subject)
+                .WithMany(s => s.ScheduleEntries)
+                .HasForeignKey(se => se.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // RoomTargetStudent many-to-many relationship
+            modelBuilder.Entity<RoomTargetStudent>()
+                .HasIndex(rts => new { rts.RoomId, rts.TargetStudentId })
+                .IsUnique();
+
+            modelBuilder.Entity<RoomTargetStudent>()
+                .HasOne(rts => rts.Room)
+                .WithMany(r => r.RoomTargetStudents)
+                .HasForeignKey(rts => rts.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<RoomTargetStudent>()
+                .HasOne(rts => rts.TargetStudent)
+                .WithMany(ts => ts.RoomTargetStudents)
+                .HasForeignKey(rts => rts.TargetStudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // QualificationTeacherAide many-to-many relationship
+            modelBuilder.Entity<QualificationTeacherAide>()
+                .HasIndex(qta => new { qta.QualificationId, qta.TeacherAideId })
+                .IsUnique();
+
+            modelBuilder.Entity<QualificationTeacherAide>()
+                .HasOne(qta => qta.Qualification)
+                .WithMany(q => q.QualificationTeacherAides)
+                .HasForeignKey(qta => qta.QualificationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<QualificationTeacherAide>()
+                .HasOne(qta => qta.TeacherAide)
+                .WithMany(ta => ta.QualificationTeacherAides)
+                .HasForeignKey(qta => qta.TeacherAideId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // QualificationTargetStudent many-to-many relationship
+            modelBuilder.Entity<QualificationTargetStudent>()
+                .HasIndex(qts => new { qts.QualificationId, qts.TargetStudentId })
+                .IsUnique();
+
+            modelBuilder.Entity<QualificationTargetStudent>()
+                .HasOne(qts => qts.Qualification)
+                .WithMany(q => q.QualificationTargetStudents)
+                .HasForeignKey(qts => qts.QualificationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<QualificationTargetStudent>()
+                .HasOne(qts => qts.TargetStudent)
+                .WithMany(ts => ts.QualificationTargetStudents)
+                .HasForeignKey(qts => qts.TargetStudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Subject unique name constraint
+            modelBuilder.Entity<Subject>()
+                .HasIndex(s => s.SubjectName)
+                .IsUnique();
+
+            // Qualification unique name constraint
+            modelBuilder.Entity<Qualification>()
+                .HasIndex(q => q.Name)
+                .IsUnique();
         }
     }
 }
