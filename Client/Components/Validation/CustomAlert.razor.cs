@@ -3,8 +3,10 @@ using Client.Enums;
 
 namespace Client.Components.Validation
 {
-    public partial class CustomAlert : ComponentBase
+    public partial class CustomAlert : ComponentBase, IDisposable
     {
+        private CancellationTokenSource? _autoCloseCts;
+
         /// <summary>
         /// The message to display in the alert. Ignored if ChildContent is provided.
         /// </summary>
@@ -53,8 +55,49 @@ namespace Client.Components.Validation
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
 
+        /// <summary>
+        /// If true, automatically closes the alert after 5 seconds.
+        /// </summary>
+        [Parameter]
+        public bool DelayedClose { get; set; } = false;
+
+        protected override void OnParametersSet()
+        {
+            // Cancel any existing auto-close timer
+            _autoCloseCts?.Cancel();
+            _autoCloseCts?.Dispose();
+            _autoCloseCts = null;
+
+            // Start new auto-close timer if enabled and visible
+            if (DelayedClose && IsVisible)
+            {
+                _autoCloseCts = new CancellationTokenSource();
+                _ = AutoCloseAsync(_autoCloseCts.Token);
+            }
+        }
+
+        private async Task AutoCloseAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await Task.Delay(5000, cancellationToken);
+                if (!cancellationToken.IsCancellationRequested && IsVisible)
+                {
+                    await HandleClose();
+                    StateHasChanged();
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Timer was cancelled, ignore
+            }
+        }
+
         private async Task HandleClose()
         {
+            // Cancel auto-close timer when manually closed
+            _autoCloseCts?.Cancel();
+            
             IsVisible = false;
             await IsVisibleChanged.InvokeAsync(false);
             await OnClose.InvokeAsync();
@@ -78,6 +121,12 @@ namespace Client.Components.Validation
             IsVisible = false;
             await IsVisibleChanged.InvokeAsync(false);
             StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+            _autoCloseCts?.Cancel();
+            _autoCloseCts?.Dispose();
         }
     }
 }

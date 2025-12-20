@@ -2,21 +2,21 @@
 
 @if (IsVisible)
 {
-    <div class="alert @GetAlertClass() @GetVariantClass() @Class alert-dismissible" role="alert">
-        <div class="d-flex align-items-center">
-            <i class="bi @GetIcon() me-2"></i>
-            <div class="flex-grow-1">
-                @if (ChildContent != null)
-                {
-                    @ChildContent
-                }
-                else
-                {
-                    @Message
-                }
-            </div>
-            <button type="button" class="btn-close" @onclick="HandleClose" aria-label="Close"></button>
+    <div class="alert @GetAlertClass() @GetVariantClass() @Class alert-dismissible d-flex align-items-center" role="alert">
+        <i class="bi @GetIcon() me-2 fs-5"></i>
+        <div class="flex-grow-1">
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @Message
+            }
         </div>
+        <button type="button" class="btn btn-sm ms-3 close-btn @GetCloseButtonClass()" @onclick="HandleClose" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+        </button>
     </div>
 }
 
@@ -42,5 +42,13 @@
         AlertSeverity.Warning => "bi-exclamation-triangle-fill",
         AlertSeverity.Error => "bi-x-circle-fill",
         _ => "bi-info-circle-fill"
+    };
+
+    private string GetCloseButtonClass() => Severity switch
+    {
+        AlertSeverity.Success => "btn-outline-success",
+        AlertSeverity.Warning => "btn-outline-warning",
+        AlertSeverity.Error => "btn-outline-danger",
+        _ => "btn-outline-info"
     };
 }

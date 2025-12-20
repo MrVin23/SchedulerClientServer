@@ -1,0 +1,38 @@
+/* CustomAlert Component Styles */
+
+.alert {
+    margin-bottom: 0;
+    border-radius: var(--app-radius, 8px);
+    box-shadow: var(--app-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+}
+
+.close-btn i {
+    font-size: 0.875rem;
+}
+
+/* Variant styles */
+.alert-outline {
+    background-color: transparent;
+    border-width: 2px;
+}
+
+.alert-text {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}

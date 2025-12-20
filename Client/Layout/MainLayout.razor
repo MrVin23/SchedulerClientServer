@@ -50,14 +50,17 @@
     </div>
 </nav>
 
-@* Global Alert - displays below the navbar *@
+@* Global Alert - displays below the navbar, adjusts for sidebar *@
 @if (_alertVisible)
 {
-    <div style="position: fixed; top: 56px; left: 0; right: 0; z-index: 1035; padding: 0;">
+    <div class="global-alert-container" 
+         style="position: fixed; top: 56px; right: 0; z-index: 1050; padding: 0.5rem 1rem;
+                left: @(_drawerOpen ? "280px" : "0"); transition: left 0.3s ease;">
         <CustomAlert @bind-IsVisible="_alertVisible"
                      Message="@_alertMessage"
                      Severity="@_alertSeverity"
                      Variant="@_alertVariant"
+                     DelayedClose="true"
                      OnClose="HandleAlertClosed" />
     </div>
 }
