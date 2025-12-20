@@ -4,15 +4,16 @@
 <PageTitle>Authorization System Diagram</PageTitle>
 
 <div class="container-fluid py-4">
+    @* Header *@
     <div class="card shadow-sm mb-4">
-        <div class="card-body text-center">
+        <div class="card-body text-center py-4">
             <h3 class="mb-2">Dynamic Role-Based Authorization</h3>
-            <h6 class="text-success">with Policy-Based Authentication</h6>
+            <h6 class="text-success mb-0">with Policy-Based Authentication</h6>
         </div>
     </div>
 
     @* Overview Section *@
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm mb-4 border-start border-4 border-success">
         <div class="card-body">
             <h5 class="mb-3">
                 <i class="bi bi-info-circle text-success me-2"></i>
@@ -33,46 +34,46 @@
                 <i class="bi bi-check-circle text-success me-2"></i>
                 Architecture Benefits
             </h5>
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-sliders text-success fs-2"></i>
-                        <h6 class="mt-2 mb-1">Flexibility</h6>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-sliders text-success fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Flexibility</strong></h6>
                         <small class="text-muted">Admins can change permissions without code changes</small>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-graph-up text-success fs-2"></i>
-                        <h6 class="mt-2 mb-1">Scalability</h6>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-graph-up text-success fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Scalability</strong></h6>
                         <small class="text-muted">Easy to add new roles and permissions</small>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-shield-lock text-danger fs-2"></i>
-                        <h6 class="mt-2 mb-1">Security</h6>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-shield-lock text-danger fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Security</strong></h6>
                         <small class="text-muted">Centralized permission management</small>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-tools text-warning fs-2"></i>
-                        <h6 class="mt-2 mb-1">Maintainability</h6>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-tools text-warning fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Maintainability</strong></h6>
                         <small class="text-muted">Clear separation between roles and permissions</small>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-speedometer2 text-info fs-2"></i>
-                        <h6 class="mt-2 mb-1">Performance</h6>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-speedometer2 text-info fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Performance</strong></h6>
                         <small class="text-muted">Database queries optimized and cacheable</small>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="text-center p-3">
-                        <i class="bi bi-lightning text-success fs-2"></i>
-                        <h6 class="mt-2 mb-1">Real-time</h6>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="benefit-card">
+                        <i class="bi bi-lightning text-success fs-1"></i>
+                        <h6 class="mt-2 mb-1"><strong>Real-time</strong></h6>
                         <small class="text-muted">Changes take effect immediately</small>
                     </div>
                 </div>
@@ -88,91 +89,96 @@
                 Database Structure
             </h5>
             
-            <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
+            <div class="database-diagram">
                 @* User Entity *@
-                <div class="card border-primary" style="min-width: 120px;">
-                    <div class="card-header bg-primary text-white py-2">
-                        <i class="bi bi-person me-1"></i> User
+                <div class="entity">
+                    <div class="entity-header user-header">
+                        <i class="bi bi-person me-1"></i>
+                        <span>User</span>
                     </div>
-                    <div class="card-body py-2 small">
-                        <div>Username</div>
-                        <div>Email</div>
-                        <div>Password</div>
-                        <div class="text-primary">UserRoles</div>
+                    <div class="entity-body">
+                        <div class="entity-field">Username</div>
+                        <div class="entity-field">Email</div>
+                        <div class="entity-field">Password</div>
+                        <div class="entity-field relation">UserRoles</div>
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <i class="bi bi-arrow-right"></i>
-                    <div class="small text-muted">Many-to-Many</div>
+                <div class="connection-container">
+                    <div class="connection-line"></div>
+                    <div class="connection-label">Many-to-Many</div>
                 </div>
 
                 @* UserRole Junction *@
-                <div class="card border-secondary" style="min-width: 100px;">
-                    <div class="card-header bg-secondary text-white py-2">
-                        <i class="bi bi-link me-1"></i> UserRole
+                <div class="entity">
+                    <div class="entity-header junction-header">
+                        <i class="bi bi-link me-1"></i>
+                        <span>UserRole</span>
                     </div>
-                    <div class="card-body py-2 small">
-                        <div class="text-muted">UserId (FK)</div>
-                        <div class="text-muted">RoleId (FK)</div>
+                    <div class="entity-body">
+                        <div class="entity-field fk">UserId (FK)</div>
+                        <div class="entity-field fk">RoleId (FK)</div>
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <i class="bi bi-arrow-right"></i>
-                    <div class="small text-muted">Many-to-Many</div>
+                <div class="connection-container">
+                    <div class="connection-line"></div>
+                    <div class="connection-label">Many-to-Many</div>
                 </div>
 
                 @* Role Entity *@
-                <div class="card border-success" style="min-width: 120px;">
-                    <div class="card-header bg-success text-white py-2">
-                        <i class="bi bi-person-badge me-1"></i> Role
+                <div class="entity">
+                    <div class="entity-header role-header">
+                        <i class="bi bi-person-badge me-1"></i>
+                        <span>Role</span>
                     </div>
-                    <div class="card-body py-2 small">
-                        <div>Name</div>
-                        <div>Description</div>
-                        <div class="text-success">UserRoles</div>
-                        <div class="text-success">RolePermissions</div>
+                    <div class="entity-body">
+                        <div class="entity-field">Name</div>
+                        <div class="entity-field">Description</div>
+                        <div class="entity-field relation">UserRoles</div>
+                        <div class="entity-field relation">RolePermissions</div>
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <i class="bi bi-arrow-right"></i>
-                    <div class="small text-muted">Many-to-Many</div>
+                <div class="connection-container">
+                    <div class="connection-line"></div>
+                    <div class="connection-label">Many-to-Many</div>
                 </div>
 
                 @* RolePermission Junction *@
-                <div class="card border-secondary" style="min-width: 120px;">
-                    <div class="card-header bg-secondary text-white py-2">
-                        <i class="bi bi-link me-1"></i> RolePermission
+                <div class="entity">
+                    <div class="entity-header junction-header">
+                        <i class="bi bi-link me-1"></i>
+                        <span>RolePermission</span>
                     </div>
-                    <div class="card-body py-2 small">
-                        <div class="text-muted">RoleId (FK)</div>
-                        <div class="text-muted">PermissionId (FK)</div>
+                    <div class="entity-body">
+                        <div class="entity-field fk">RoleId (FK)</div>
+                        <div class="entity-field fk">PermissionId (FK)</div>
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <i class="bi bi-arrow-right"></i>
-                    <div class="small text-muted">Many-to-Many</div>
+                <div class="connection-container">
+                    <div class="connection-line"></div>
+                    <div class="connection-label">Many-to-Many</div>
                 </div>
 
                 @* Permission Entity *@
-                <div class="card border-warning" style="min-width: 120px;">
-                    <div class="card-header bg-warning text-dark py-2">
-                        <i class="bi bi-key me-1"></i> Permission
+                <div class="entity">
+                    <div class="entity-header permission-header">
+                        <i class="bi bi-key me-1"></i>
+                        <span>Permission</span>
                     </div>
-                    <div class="card-body py-2 small">
-                        <div>Name</div>
-                        <div>Description</div>
-                        <div class="text-warning">RolePermissions</div>
+                    <div class="entity-body">
+                        <div class="entity-field">Name</div>
+                        <div class="entity-field">Description</div>
+                        <div class="entity-field relation">RolePermissions</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @* Authorization Flow *@
+    @* Authorization Flow Diagram *@
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <h5 class="mb-4">
@@ -180,51 +186,637 @@
                 Authorization Flow
             </h5>
             
-            <div class="row text-center">
-                <div class="col">
-                    <div class="badge bg-primary fs-6 mb-2">1</div>
-                    <div class="p-3 border rounded">
-                        <i class="bi bi-person text-success fs-4"></i>
-                        <h6 class="mt-2">User Request</h6>
+            <div class="flow-diagram">
+                @* Step 1: User Request *@
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-box request-box">
+                        <i class="bi bi-person text-success fs-3"></i>
+                        <h6 class="mt-2 mb-1"><strong>User Request</strong></h6>
                         <small class="text-muted">User sends request to protected endpoint</small>
                     </div>
                 </div>
-                <div class="col-auto d-flex align-items-center">
-                    <i class="bi bi-arrow-right fs-4"></i>
+
+                <div class="flow-arrow">
+                    <i class="bi bi-arrow-down text-success fs-4"></i>
                 </div>
-                <div class="col">
-                    <div class="badge bg-danger fs-6 mb-2">2</div>
-                    <div class="p-3 border rounded">
-                        <i class="bi bi-shield-check text-danger fs-4"></i>
-                        <h6 class="mt-2">Policy Check</h6>
-                        <small class="text-muted">[Authorize(Policy = "...")]</small>
+
+                @* Step 2: Policy Check *@
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-box policy-box">
+                        <i class="bi bi-shield-check text-danger fs-3"></i>
+                        <h6 class="mt-2 mb-1"><strong>Policy Attribute</strong></h6>
+                        <small class="text-muted">[Authorize(Policy = "CanEditPosts")]</small>
                     </div>
                 </div>
-                <div class="col-auto d-flex align-items-center">
-                    <i class="bi bi-arrow-right fs-4"></i>
+
+                <div class="flow-arrow">
+                    <i class="bi bi-arrow-down text-success fs-4"></i>
                 </div>
-                <div class="col">
-                    <div class="badge bg-info fs-6 mb-2">3</div>
-                    <div class="p-3 border rounded">
-                        <i class="bi bi-database text-info fs-4"></i>
-                        <h6 class="mt-2">Database Query</h6>
-                        <small class="text-muted">User → Roles → Permissions</small>
+
+                @* Step 3: Handler *@
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-box handler-box">
+                        <i class="bi bi-gear text-success fs-3"></i>
+                        <h6 class="mt-2 mb-1"><strong>Permission Handler</strong></h6>
+                        <small class="text-muted d-block">Checks if user is authenticated</small>
+                        <small class="text-muted">Extracts UserId from claims</small>
                     </div>
                 </div>
-                <div class="col-auto d-flex align-items-center">
-                    <i class="bi bi-arrow-right fs-4"></i>
+
+                <div class="flow-arrow">
+                    <i class="bi bi-arrow-down text-success fs-4"></i>
                 </div>
-                <div class="col">
-                    <div class="badge bg-warning fs-6 mb-2">4</div>
-                    <div class="p-3 border rounded">
-                        <i class="bi bi-question-circle text-warning fs-4"></i>
-                        <h6 class="mt-2">Has Permission?</h6>
-                        <div class="mt-2">
-                            <span class="badge bg-success me-1"><i class="bi bi-check"></i> Yes: Access</span>
-                            <span class="badge bg-danger"><i class="bi bi-x"></i> No: Denied</span>
+
+                @* Step 4: Database Query *@
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-box database-box">
+                        <i class="bi bi-database text-info fs-3"></i>
+                        <h6 class="mt-2 mb-1"><strong>Database Query</strong></h6>
+                        <small class="text-muted">User → UserRoles → Roles → RolePermissions → Permissions</small>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">
+                    <i class="bi bi-arrow-down text-success fs-4"></i>
+                </div>
+
+                @* Step 5: Decision *@
+                <div class="flow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-box decision-box">
+                        <i class="bi bi-question-circle text-warning fs-3"></i>
+                        <h6 class="mt-2 mb-1"><strong>Has Permission?</strong></h6>
+                    </div>
+                </div>
+
+                @* Decision Branches *@
+                <div class="decision-branches">
+                    <div class="branch">
+                        <i class="bi bi-check-circle text-success fs-3"></i>
+                        <div class="branch-box success-box">
+                            <h6 class="mb-1"><strong>YES</strong></h6>
+                            <small class="d-block">Access Granted</small>
+                            <small>Request proceeds</small>
+                        </div>
+                    </div>
+                    <div class="branch">
+                        <i class="bi bi-x-circle text-danger fs-3"></i>
+                        <div class="branch-box failure-box">
+                            <h6 class="mb-1"><strong>NO</strong></h6>
+                            <small class="d-block">Access Denied</small>
+                            <small>401/403 Response</small>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    @* Admin Management Section *@
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-gear-fill text-warning me-2"></i>
+                Admin Management Operations
+            </h5>
+            
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="admin-card">
+                        <div class="admin-icon bg-success-subtle">
+                            <i class="bi bi-person-plus text-success fs-3"></i>
+                        </div>
+                        <h6 class="mt-3">Assign Role to User</h6>
+                        <div class="admin-flow">
+                            <span class="badge bg-success">Select User</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-success">Select Role</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-success">Save</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="admin-card">
+                        <div class="admin-icon bg-warning-subtle">
+                            <i class="bi bi-people-fill text-warning fs-3"></i>
+                        </div>
+                        <h6 class="mt-3">Update Role Permissions</h6>
+                        <div class="admin-flow">
+                            <span class="badge bg-success">Select Role</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-warning">Edit Permissions</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-success">Save</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="admin-card">
+                        <div class="admin-icon bg-info-subtle">
+                            <i class="bi bi-plus-circle text-info fs-3"></i>
+                        </div>
+                        <h6 class="mt-3">Create New Permission</h6>
+                        <div class="admin-flow">
+                            <span class="badge bg-success">Enter Name</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-info">Add Description</span>
+                            <i class="bi bi-arrow-right text-muted"></i>
+                            <span class="badge bg-success">Create</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Implementation Phases *@
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-list-ol text-info me-2"></i>
+                Implementation Phases
+            </h5>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-success"></div>
+                    <div class="timeline-content">
+                        <div class="alert alert-info mb-0">
+                            <h6 class="mb-2"><strong>Phase 1: Database Models</strong></h6>
+                            <ul class="mb-0 ps-3">
+                                <li><i class="bi bi-check-circle text-info me-1"></i>Create Role, Permission, UserRole, RolePermission models</li>
+                                <li><i class="bi bi-check-circle text-info me-1"></i>Update User model with UserRoles collection</li>
+                                <li><i class="bi bi-check-circle text-info me-1"></i>Configure DbContext relationships</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-success"></div>
+                    <div class="timeline-content">
+                        <div class="alert alert-warning mb-0">
+                            <h6 class="mb-2"><strong>Phase 2: Authorization Infrastructure</strong></h6>
+                            <ul class="mb-0 ps-3">
+                                <li><i class="bi bi-check-circle text-warning me-1"></i>Create PermissionRequirement class</li>
+                                <li><i class="bi bi-check-circle text-warning me-1"></i>Implement PermissionAuthorizationHandler</li>
+                                <li><i class="bi bi-check-circle text-warning me-1"></i>Register policies and handlers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-success"></div>
+                    <div class="timeline-content">
+                        <div class="alert alert-success mb-0">
+                            <h6 class="mb-2"><strong>Phase 3: Controller Implementation</strong></h6>
+                            <ul class="mb-0 ps-3">
+                                <li><i class="bi bi-check-circle text-success me-1"></i>Add authorization attributes to controllers</li>
+                                <li><i class="bi bi-check-circle text-success me-1"></i>Test the authorization system</li>
+                                <li><i class="bi bi-check-circle text-success me-1"></i>Create admin management endpoints</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-warning"></div>
+                    <div class="timeline-content">
+                        <div class="alert alert-secondary mb-0">
+                            <h6 class="mb-2"><strong>Phase 4: Admin Interface</strong></h6>
+                            <ul class="mb-0 ps-3">
+                                <li><i class="bi bi-check-circle text-secondary me-1"></i>Create admin controllers</li>
+                                <li><i class="bi bi-check-circle text-secondary me-1"></i>Implement user role assignment</li>
+                                <li><i class="bi bi-check-circle text-secondary me-1"></i>Add permission management features</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Testing Authorization Section *@
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-flask text-success me-2"></i>
+                Testing Authorization (TestController)
+            </h5>
+            
+            <p class="mb-4">
+                The TestController tests both <strong>roles</strong> AND <strong>permissions</strong> through different mechanisms:
+            </p>
+
+            <div class="row g-4 mb-4">
+                @* Direct Permission Testing *@
+                <div class="col-12 col-md-6">
+                    <div class="card h-100 testing-card">
+                        <div class="card-header d-flex align-items-center">
+                            <div class="avatar-circle bg-success me-3">
+                                <i class="bi bi-key text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Direct Permission Testing</h6>
+                                <small class="text-muted">/api/test/permission/{permissionName}</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    <strong>What it tests:</strong> Direct permission checking
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-gear text-info me-2"></i>
+                                    <strong>How:</strong> Uses PermissionRequirement and IAuthorizationService.AuthorizeAsync()
+                                </li>
+                                <li>
+                                    <i class="bi bi-patch-check text-success me-2"></i>
+                                    <strong>Result:</strong> Tests if user has ANY role containing the specified permission
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @* Policy-Based Testing *@
+                <div class="col-12 col-md-6">
+                    <div class="card h-100 testing-card">
+                        <div class="card-header d-flex align-items-center">
+                            <div class="avatar-circle bg-success me-3">
+                                <i class="bi bi-shield-check text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Policy-Based Testing</h6>
+                                <small class="text-muted">[Authorize(Policy = "...")]</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    <strong>What it tests:</strong> Policies mapped to specific permissions
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-gear text-info me-2"></i>
+                                    <strong>How:</strong> PermissionAuthorizationHandler gets user roles → checks permissions
+                                </li>
+                                <li>
+                                    <i class="bi bi-patch-check text-success me-2"></i>
+                                    <strong>Result:</strong> Grants/denies access based on role-permission mapping
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Policy Configuration *@
+            <h6 class="mt-4 mb-3">
+                <i class="bi bi-code text-warning me-2"></i>
+                Policy Configuration (Program.cs)
+            </h6>
+            
+            <div class="policy-config-diagram p-3 rounded mb-4">
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="badge bg-danger">Policy: "Admin"</span>
+                        <i class="bi bi-arrow-right"></i>
+                        <span class="badge bg-success-subtle text-success border border-success">PermissionRequirement("Admin")</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="badge bg-info">Policy: "Viewer"</span>
+                        <i class="bi bi-arrow-right"></i>
+                        <span class="badge bg-success-subtle text-success border border-success">PermissionRequirement("Viewer")</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="badge bg-success">Policy: "ActiveUser"</span>
+                        <i class="bi bi-arrow-right"></i>
+                        <span class="badge bg-success-subtle text-success border border-success">PermissionRequirement("ActiveUser")</span>
+                    </div>
+                </div>
+            </div>
+
+            @* Example Flow *@
+            <h6 class="mt-4 mb-3">
+                <i class="bi bi-play-fill text-success me-2"></i>
+                Example: GET /api/test/admin
+            </h6>
+
+            <div class="example-flow p-3 rounded mb-4">
+                <div class="stepper">
+                    <div class="stepper-item">
+                        <div class="stepper-icon bg-success">
+                            <i class="bi bi-globe text-white"></i>
+                        </div>
+                        <div class="stepper-content">
+                            <strong>Request</strong>
+                            <small class="d-block text-muted">ASP.NET checks [Authorize(Policy = "Admin")] attribute</small>
+                        </div>
+                    </div>
+                    <div class="stepper-item">
+                        <div class="stepper-icon bg-success">
+                            <i class="bi bi-gear text-white"></i>
+                        </div>
+                        <div class="stepper-content">
+                            <strong>Handler</strong>
+                            <small class="d-block text-muted">PermissionAuthorizationHandler runs</small>
+                        </div>
+                    </div>
+                    <div class="stepper-item">
+                        <div class="stepper-icon bg-success">
+                            <i class="bi bi-database text-white"></i>
+                        </div>
+                        <div class="stepper-content">
+                            <strong>Query</strong>
+                            <small class="d-block text-muted">User → UserRoles → Roles → RolePermissions → Permissions</small>
+                        </div>
+                    </div>
+                    <div class="stepper-item">
+                        <div class="stepper-icon bg-success">
+                            <i class="bi bi-search text-white"></i>
+                        </div>
+                        <div class="stepper-content">
+                            <strong>Check</strong>
+                            <small class="d-block text-muted">Looks for any permission named "Admin"</small>
+                        </div>
+                    </div>
+                    <div class="stepper-item">
+                        <div class="stepper-icon bg-success">
+                            <i class="bi bi-check-circle text-white"></i>
+                        </div>
+                        <div class="stepper-content">
+                            <strong>Result</strong>
+                            <small class="d-block text-muted">If user has ANY role with "Admin" permission → ✅ Access granted</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Connection Summary *@
+            <div class="alert alert-info">
+                <h6 class="mb-3"><strong>The Connection: Roles + Permissions</strong></h6>
+                <div class="row">
+                    <div class="col-12 col-md-4 mb-3 mb-md-0">
+                        <div class="connection-item text-center p-3 rounded">
+                            <i class="bi bi-person-badge text-success fs-3"></i>
+                            <div class="mt-2"><strong>Roles Tested:</strong></div>
+                            <small class="text-muted">Administrator, User, VerifiedUser</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3 mb-md-0">
+                        <div class="connection-item text-center p-3 rounded">
+                            <i class="bi bi-key text-success fs-3"></i>
+                            <div class="mt-2"><strong>Permissions Mapped:</strong></div>
+                            <small class="text-muted">"Admin", "Viewer", "ActiveUser"</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="connection-item text-center p-3 rounded">
+                            <i class="bi bi-link text-success fs-3"></i>
+                            <div class="mt-2"><strong>Access Logic:</strong></div>
+                            <small class="text-muted">User gets access if they have ANY role containing the required permission</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Summary Box *@
+            <div class="summary-box p-3 rounded mt-4">
+                <div class="text-center">
+                    <i class="bi bi-lightbulb text-warning me-2"></i>
+                    <strong>Summary:</strong> When you test <code>/api/test/admin</code>, you're verifying that the user has a role 
+                    (like "Administrator") that contains the "Admin" permission. The same logic applies to all test endpoints.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Access Grant Methods Section *@
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="mb-4">
+                <i class="bi bi-unlock text-success me-2"></i>
+                Three Ways to Grant Access
+            </h5>
+            
+            <p class="mb-4">
+                This authorization system is <strong>flexible</strong> - you can grant access based on <strong>Role</strong>, <strong>Permission</strong>, or <strong>Both</strong>:
+            </p>
+
+            <div class="row g-4 mb-4">
+                @* Method 1: Role-Based *@
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 access-method-card role-method">
+                        <div class="card-header d-flex align-items-center">
+                            <div class="avatar-circle bg-primary me-3">
+                                <i class="bi bi-person-badge text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Role-Based Access</h6>
+                                <small class="text-muted">Check user's assigned roles</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="small mb-3">
+                                Grant access if user has a <strong>specific role</strong> assigned.
+                            </p>
+                            <div class="access-example p-2 rounded">
+                                <small><strong>Example:</strong></small>
+                                <span class="badge bg-primary-subtle text-primary border border-primary d-block mt-1">
+                                    [Authorize(Roles = "Administrator")]
+                                </span>
+                            </div>
+                            <hr>
+                            <small class="text-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                User must have "Administrator" role
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                @* Method 2: Permission-Based *@
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 access-method-card permission-method">
+                        <div class="card-header d-flex align-items-center">
+                            <div class="avatar-circle bg-success me-3">
+                                <i class="bi bi-key text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Permission-Based Access</h6>
+                                <small class="text-muted">Check specific permissions</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="small mb-3">
+                                Grant access if user has ANY role containing the <strong>required permission</strong>.
+                            </p>
+                            <div class="access-example p-2 rounded">
+                                <small><strong>Example:</strong></small>
+                                <span class="badge bg-success-subtle text-success border border-success d-block mt-1">
+                                    [Authorize(Policy = "CanEditPosts")]
+                                </span>
+                            </div>
+                            <hr>
+                            <small class="text-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Any role with "CanEditPosts" permission works
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                @* Method 3: Role + Permission Combined *@
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 access-method-card combined-method">
+                        <div class="card-header d-flex align-items-center">
+                            <div class="avatar-circle bg-info me-3">
+                                <i class="bi bi-link text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Role + Permission</h6>
+                                <small class="text-muted">Combined checking</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="small mb-3">
+                                Grant access if user's role <strong>contains</strong> the mapped permission.
+                            </p>
+                            <div class="access-example p-2 rounded">
+                                <small><strong>Example:</strong></small>
+                                <span class="badge bg-info-subtle text-info border border-info d-block mt-1">
+                                    [Authorize(Policy = "Admin")]
+                                </span>
+                            </div>
+                            <hr>
+                            <small class="text-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                "Administrator" role → has "Admin" permission
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* How It Works Diagram *@
+            <h6 class="mt-4 mb-3">
+                <i class="bi bi-diagram-2 text-info me-2"></i>
+                How the Connection Works
+            </h6>
+
+            <div class="connection-flow-diagram p-4 rounded mb-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                    <div class="flow-entity user-flow">
+                        <i class="bi bi-person text-primary fs-3"></i>
+                        <strong class="d-block">User</strong>
+                        <small>"john.doe"</small>
+                    </div>
+                    
+                    <div class="flow-connector">
+                        <i class="bi bi-arrow-right"></i>
+                        <small class="d-block text-muted">has</small>
+                    </div>
+                    
+                    <div class="flow-entity role-flow">
+                        <i class="bi bi-person-badge text-info fs-3"></i>
+                        <strong class="d-block">Role</strong>
+                        <small>"Administrator"</small>
+                    </div>
+                    
+                    <div class="flow-connector">
+                        <i class="bi bi-arrow-right"></i>
+                        <small class="d-block text-muted">contains</small>
+                    </div>
+                    
+                    <div class="flow-entity permission-flow">
+                        <i class="bi bi-key text-success fs-3"></i>
+                        <strong class="d-block">Permission</strong>
+                        <small>"Admin"</small>
+                    </div>
+                    
+                    <div class="flow-connector">
+                        <i class="bi bi-arrow-right"></i>
+                        <small class="d-block text-muted">grants</small>
+                    </div>
+                    
+                    <div class="flow-entity access-flow">
+                        <i class="bi bi-unlock text-warning fs-3"></i>
+                        <strong class="d-block">Access</strong>
+                        <small class="text-success">✅ Granted</small>
+                    </div>
+                </div>
+            </div>
+
+            @* Practical Examples Table *@
+            <h6 class="mt-4 mb-3">
+                <i class="bi bi-table text-warning me-2"></i>
+                Practical Examples
+            </h6>
+
+            <div class="table-responsive">
+                <table class="table table-hover examples-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>User's Role</th>
+                            <th>Role's Permissions</th>
+                            <th>Policy Required</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Admin accessing admin panel</td>
+                            <td><span class="badge bg-success">Administrator</span></td>
+                            <td><span class="badge bg-success">Admin, Viewer</span></td>
+                            <td><code>"Admin"</code></td>
+                            <td><i class="bi bi-check-circle text-success"></i> Granted</td>
+                        </tr>
+                        <tr>
+                            <td>User viewing content</td>
+                            <td><span class="badge bg-info">User</span></td>
+                            <td><span class="badge bg-success">Viewer</span></td>
+                            <td><code>"Viewer"</code></td>
+                            <td><i class="bi bi-check-circle text-success"></i> Granted</td>
+                        </tr>
+                        <tr>
+                            <td>User trying admin panel</td>
+                            <td><span class="badge bg-info">User</span></td>
+                            <td><span class="badge bg-success">Viewer</span></td>
+                            <td><code>"Admin"</code></td>
+                            <td><i class="bi bi-x-circle text-danger"></i> Denied</td>
+                        </tr>
+                        <tr>
+                            <td>Verified user editing</td>
+                            <td><span class="badge bg-success">VerifiedUser</span></td>
+                            <td><span class="badge bg-success">ActiveUser, Viewer</span></td>
+                            <td><code>"ActiveUser"</code></td>
+                            <td><i class="bi bi-check-circle text-success"></i> Granted</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            @* Key Point Box *@
+            <div class="alert alert-success mt-4">
+                <h6 class="mb-2">
+                    <i class="bi bi-lightbulb me-2"></i>
+                    <strong>Key Point:</strong>
+                </h6>
+                <p class="mb-2">The system is <strong>flexible by design</strong>. You can:</p>
+                <ul class="mb-2">
+                    <li><i class="bi bi-check text-success me-1"></i>Check <strong>roles directly</strong> using [Authorize(Roles = "...")]</li>
+                    <li><i class="bi bi-check text-success me-1"></i>Check <strong>permissions</strong> using policies that map to PermissionRequirement</li>
+                    <li><i class="bi bi-check text-success me-1"></i>Combine both: Assign roles to users, assign permissions to roles, then check permissions</li>
+                </ul>
+                <p class="mb-0">
+                    This means <strong>multiple roles</strong> can share the same permission, and <strong>one role</strong> can have multiple permissions!
+                </p>
             </div>
         </div>
     </div>
@@ -236,23 +828,23 @@
                 <i class="bi bi-star text-warning me-2"></i>
                 Key Takeaways
             </h5>
-            <div class="row justify-content-center">
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <div class="alert alert-success mb-0">
+            <div class="row justify-content-center g-3">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="alert alert-success mb-0 text-center">
                         <i class="bi bi-check-circle me-2"></i>
-                        Dynamic: No code changes needed
+                        <strong>Dynamic:</strong> No code changes needed
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <div class="alert alert-info mb-0">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="alert alert-info mb-0 text-center">
                         <i class="bi bi-people me-2"></i>
-                        Flexible: Multiple roles per user
+                        <strong>Flexible:</strong> Multiple roles per user
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-2">
-                    <div class="alert alert-warning mb-0">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="alert alert-warning mb-0 text-center">
                         <i class="bi bi-lightning me-2"></i>
-                        Real-time: Immediate effect
+                        <strong>Real-time:</strong> Immediate effect
                     </div>
                 </div>
             </div>
