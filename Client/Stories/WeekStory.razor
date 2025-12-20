@@ -1,0 +1,140 @@
+@page "/stories/week"
+@layout StoryLayout
+@using Client.Components.Schedule
+@using MudBlazor
+
+<MudText Typo="Typo.h4" Class="mb-4" Style="color: #495057;">Week Schedule View</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-6" Style="color: #6c757d;">
+    A modern classroom week view displaying 8 subjects spread across 5 days (Monday - Friday).
+    Click on any class to see details.
+</MudText>
+
+<div class="story-container">
+    <MudPaper Elevation="0" Class="pa-4" Style="background: transparent;">
+        <Week ClassroomId="1"
+              DisplayWeekStart="@_displayWeekStart"
+              DisplayWeekStartChanged="HandleWeekChanged"
+              OnEntryClick="HandleEntryClick" />
+    </MudPaper>
+</div>
+
+@if (_lastClickedEntry != null)
+{
+    <MudPaper Class="mt-4 pa-4" Elevation="2">
+        <MudText Typo="Typo.subtitle1" Class="mb-2">Last Clicked Entry:</MudText>
+        <MudText Typo="Typo.body2">
+            <strong>@_lastClickedEntry.SubjectName</strong> on @_lastClickedEntry.Day 
+            at @_lastClickedEntry.StartTime.ToString(@"hh\:mm") - @_lastClickedEntry.EndTime.ToString(@"hh\:mm")
+            in @_lastClickedEntry.RoomNumber with @_lastClickedEntry.TeacherName
+        </MudText>
+    </MudPaper>
+}
+
+<MudDivider Class="my-6" />
+
+<MudText Typo="Typo.h5" Class="mb-4" Style="color: #495057;">Component Features</MudText>
+
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudCard Elevation="2">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Palette" Class="mr-2" />
+                        Visual Design
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudList T="string" Dense="true">
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Color-coded subjects for easy recognition</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Subject icons for quick identification</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Today highlighting with gradient</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Smooth hover animations</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Break and lunch time indicators</MudListItem>
+                </MudList>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudCard Elevation="2">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.TouchApp" Class="mr-2" />
+                        Interactions
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudList T="string" Dense="true">
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Week navigation (previous/next)</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">"This Week" quick navigation</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Click entries for details panel</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Subject legend with hover effects</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Check">Responsive layout for all screens</MudListItem>
+                </MudList>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+<MudDivider Class="my-6" />
+
+<MudText Typo="Typo.h5" Class="mb-4" Style="color: #495057;">Subjects in Schedule</MudText>
+
+<MudGrid>
+    @foreach (var subject in WeekMockData.GetSubjects())
+    {
+        <MudItem xs="6" sm="4" md="3">
+            <MudPaper Class="pa-3 d-flex align-center gap-3" Elevation="1" Style="@($"border-left: 4px solid {subject.Color};")">
+                <MudIcon Icon="@GetIcon(subject.Icon)" Style="@($"color: {subject.Color};")" />
+                <div>
+                    <MudText Typo="Typo.body2" Style="font-weight: 600;">@subject.Name</MudText>
+                    <MudText Typo="Typo.caption" Style="color: #868e96;">@subject.Code</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+    private DateTime _displayWeekStart = GetMondayOfWeek(DateTime.Today);
+    private WeekMockData.ScheduleEntryDto? _lastClickedEntry;
+
+    private static DateTime GetMondayOfWeek(DateTime date)
+    {
+        int diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+        return date.AddDays(-diff).Date;
+    }
+
+    private void HandleWeekChanged(DateTime newWeekStart)
+    {
+        _displayWeekStart = newWeekStart;
+        Console.WriteLine($"Week changed to: {newWeekStart:yyyy-MM-dd}");
+    }
+
+    private void HandleEntryClick(WeekMockData.ScheduleEntryDto entry)
+    {
+        _lastClickedEntry = entry;
+        Console.WriteLine($"Entry clicked: {entry.SubjectName} on {entry.Day}");
+    }
+
+    private string GetIcon(string iconName)
+    {
+        return iconName switch
+        {
+            "Calculate" => Icons.Material.Filled.Calculate,
+            "MenuBook" => Icons.Material.Filled.MenuBook,
+            "Science" => Icons.Material.Filled.Science,
+            "HistoryEdu" => Icons.Material.Filled.HistoryEdu,
+            "Public" => Icons.Material.Filled.Public,
+            "Palette" => Icons.Material.Filled.Palette,
+            "MusicNote" => Icons.Material.Filled.MusicNote,
+            "FitnessCenter" => Icons.Material.Filled.FitnessCenter,
+            _ => Icons.Material.Filled.Book
+        };
+    }
+}

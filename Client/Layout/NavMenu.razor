@@ -1,4 +1,4 @@
-﻿<MudNavMenu Color="@Color.Secondary">
+<MudNavMenu Color="@Color.Secondary">
     @foreach (var item in NavigationItems)
     {
         <MudNavLink Href="@item.Href" 
@@ -19,7 +19,8 @@
         new() { Href = "test-permission-access", Label = "Test Permission Access", Icon = Icons.Material.Filled.Key, Match = NavLinkMatch.Prefix },
         new() { Href = "stories/calendar", Label = "Calendar View", Icon = Icons.Material.Filled.CalendarToday, Match = NavLinkMatch.Prefix },
         new() { Href = "stories/day", Label = "Day", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix },
-        new() { Href = "stories/dayview", Label = "Day View", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix }
+        new() { Href = "stories/dayview", Label = "Day View", Icon = Icons.Material.Filled.Book, Match = NavLinkMatch.Prefix },
+        new() { Href = "stories/week", Label = "Week Schedule", Icon = Icons.Material.Filled.ViewWeek, Match = NavLinkMatch.Prefix }
     };
 
     public class NavItem

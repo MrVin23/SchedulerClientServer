@@ -1,0 +1,162 @@
+@using MudBlazor
+@using Client.Components.Schedule
+
+<div class="week-view-container">
+    @* Header with classroom info and week navigation *@
+    <div class="week-header">
+        <div class="week-header-left">
+            <div class="classroom-info">
+                <MudIcon Icon="@Icons.Material.Filled.Class" Size="Size.Medium" Class="classroom-icon" />
+                <div class="classroom-details">
+                    <MudText Typo="Typo.h6" Class="classroom-name">@Classroom?.Name</MudText>
+                    <MudText Typo="Typo.caption" Class="classroom-grade">@Classroom?.Grade • @Classroom?.Teacher</MudText>
+                </div>
+            </div>
+        </div>
+
+        <div class="week-header-center">
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" 
+                          Size="Size.Medium"
+                          OnClick="NavigateToPreviousWeek"
+                          Class="nav-button" />
+            <div class="week-date-display">
+                <MudText Typo="Typo.h6" Class="week-title">@GetWeekTitle()</MudText>
+                <MudText Typo="Typo.caption" Class="week-subtitle">@GetWeekDateRange()</MudText>
+            </div>
+            <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" 
+                          Size="Size.Medium"
+                          OnClick="NavigateToNextWeek"
+                          Class="nav-button" />
+        </div>
+
+        <div class="week-header-right">
+            <MudButton Variant="Variant.Outlined"
+                      Size="Size.Small"
+                      StartIcon="@Icons.Material.Filled.Today"
+                      OnClick="GoToCurrentWeek"
+                      Class="today-button">
+                This Week
+            </MudButton>
+        </div>
+    </div>
+
+    @* Subject legend *@
+    <div class="subject-legend">
+        @foreach (var subject in Subjects)
+        {
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: @subject.Color;"></div>
+                <MudText Typo="Typo.caption">@subject.Code</MudText>
+            </div>
+        }
+    </div>
+
+    @* Schedule grid *@
+    <div class="schedule-grid">
+        @* Time column *@
+        <div class="time-column">
+            <div class="day-header-cell time-header">
+                <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" />
+            </div>
+            @foreach (var hour in GetHourSlots())
+            {
+                <div class="time-slot">
+                    <MudText Typo="Typo.caption">@hour.ToString(@"hh\:mm")</MudText>
+                </div>
+            }
+        </div>
+
+        @* Day columns *@
+        @foreach (var day in GetWeekDays())
+        {
+            var dayEntries = GetEntriesForDay(day);
+            var isToday = day.Date == DateTime.Today;
+            
+            <div class="day-column @(isToday ? "today-column" : "")">
+                <div class="day-header-cell @(isToday ? "today-header" : "")">
+                    <MudText Typo="Typo.subtitle2" Class="day-name">@day.ToString("ddd")</MudText>
+                    <MudText Typo="Typo.h6" Class="@($"day-number {(isToday ? "today-number" : "")}")">@day.Day</MudText>
+                </div>
+                
+                <div class="day-schedule-area">
+                    @if (IsLoading)
+                    {
+                        <div class="loading-placeholder">
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var entry in dayEntries)
+                        {
+                            var topPosition = CalculateTopPosition(entry.StartTime);
+                            var height = CalculateHeight(entry.DurationMinutes);
+                            
+                            <div class="schedule-entry" 
+                                 style="top: @(topPosition)px; height: @(height)px; background-color: @entry.Color;"
+                                 @onclick="() => HandleEntryClick(entry)">
+                                <div class="entry-content">
+                                    <div class="entry-header">
+                                        <MudIcon Icon="@GetSubjectIcon(entry.Icon)" Size="Size.Small" Class="entry-icon" />
+                                        <MudText Typo="Typo.body2" Class="entry-subject">@entry.SubjectName</MudText>
+                                    </div>
+                                    @if (height > 50)
+                                    {
+                                        <MudText Typo="Typo.caption" Class="entry-time">
+                                            @entry.StartTime.ToString(@"hh\:mm") - @entry.EndTime.ToString(@"hh\:mm")
+                                        </MudText>
+                                        <MudText Typo="Typo.caption" Class="entry-room">@entry.RoomNumber</MudText>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        
+                        @* Show break/lunch indicators *@
+                        @if (dayEntries.Any())
+                        {
+                            <div class="break-indicator" style="top: @(CalculateTopPosition(new TimeSpan(10, 5, 0)))px;">
+                                <MudText Typo="Typo.caption" Class="break-text">Break</MudText>
+                            </div>
+                            <div class="break-indicator lunch-break" style="top: @(CalculateTopPosition(new TimeSpan(12, 0, 0)))px;">
+                                <MudText Typo="Typo.caption" Class="break-text">Lunch</MudText>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Selected entry detail panel *@
+    @if (SelectedEntry != null)
+    {
+        <MudPaper Class="entry-detail-panel" Elevation="3">
+            <div class="detail-header" style="background-color: @SelectedEntry.Color;">
+                <MudIcon Icon="@GetSubjectIcon(SelectedEntry.Icon)" Size="Size.Large" Class="detail-icon" />
+                <MudText Typo="Typo.h6" Class="detail-title">@SelectedEntry.SubjectName</MudText>
+                <MudIconButton Icon="@Icons.Material.Filled.Close" 
+                              Size="Size.Small" 
+                              OnClick="CloseDetailPanel"
+                              Class="close-button" />
+            </div>
+            <div class="detail-content">
+                <div class="detail-row">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@SelectedEntry.TeacherName</MudText>
+                </div>
+                <div class="detail-row">
+                    <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@SelectedEntry.StartTime.ToString(@"hh\:mm") - @SelectedEntry.EndTime.ToString(@"hh\:mm") (@SelectedEntry.DurationMinutes min)</MudText>
+                </div>
+                <div class="detail-row">
+                    <MudIcon Icon="@Icons.Material.Filled.Room" Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@SelectedEntry.RoomNumber</MudText>
+                </div>
+                <div class="detail-row">
+                    <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@SelectedEntry.Day</MudText>
+                </div>
+            </div>
+        </MudPaper>
+    }
+</div>
