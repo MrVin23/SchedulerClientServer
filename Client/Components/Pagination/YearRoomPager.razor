@@ -1,5 +1,6 @@
 @* Html markup for the year room pager *@
 <div class="YearRoomPager">
+    @* Dropdown selection section *@
     <div class="DropdownsSelection">
         <div class="dropdown-group">
             <label class="dropdown-label">Year</label>
@@ -21,9 +22,20 @@
         </div>
         <button class="pager-button">Select</button>
     </div>
-    <div class="Paging Controls">
-        This will include a single title and two simple chevrons FilterYearRoom paging
+    @* Paging controls section *@
+    <div class="paging-controls">
+        <button class="paging-chevron" @onclick="OnPreviousClicked" title="Previous">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <div class="paging-title">
+            <span>@SelectedYear</span>
+            <span>@SelectedRoom</span>
+        </div>
+        <button class="paging-chevron" @onclick="OnNextClicked" title="Next">
+            <i class="bi bi-chevron-right"></i>
+        </button>
     </div>
+    @* Details section *@
     <div class="Details">
         Teacher Name
         Last updated
@@ -134,11 +146,50 @@
     /* ================================
        Paging Controls Section
        ================================ */
-    .Paging.Controls {
+    .paging-controls {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: 1rem;
+    }
+
+    .paging-chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 0;
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-align: center;
+    }
+
+    .paging-chevron:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        transform: scale(1.05);
+    }
+
+    .paging-chevron:active {
+        transform: scale(0.95);
+    }
+
+    .paging-title {
+        display: flex;
         flex-direction: column;
+        align-items: center;
+        gap: 0.125rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #ffffff;
+        min-width: 120px;
+        text-align: center;
     }
 
     /* ================================
@@ -164,5 +215,20 @@
     // Single variables
     public string TeacherName = "John Doe";
     public DateTime LastUpdated = DateTime.Now;
+
+    // Event Callbacks (for parent component integration)
+    [Parameter] public EventCallback OnPrevious { get; set; }
+    [Parameter] public EventCallback OnNext { get; set; }
+
+    // Placeholder methods (no logic, design testing only)
+    private void OnPreviousClicked()
+    {
+        // TODO: Implement previous paging logic
+    }
+
+    private void OnNextClicked()
+    {
+        // TODO: Implement next paging logic
+    }
 }
 
