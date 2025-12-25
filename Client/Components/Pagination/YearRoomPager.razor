@@ -1,0 +1,168 @@
+@* Html markup for the year room pager *@
+<div class="YearRoomPager">
+    <div class="DropdownsSelection">
+        <div class="dropdown-group">
+            <label class="dropdown-label">Year</label>
+            <select class="pager-dropdown" @bind="SelectedYear">
+                @foreach (var year in MockYears)
+                {
+                    <option value="@year">@year</option>
+                }
+            </select>
+        </div>
+        <div class="dropdown-group">
+            <label class="dropdown-label">Room</label>
+            <select class="pager-dropdown" @bind="SelectedRoom">
+                @foreach (var room in MockRooms)
+                {
+                    <option value="@room">@room</option>
+                }
+            </select>
+        </div>
+        <button class="pager-button">Select</button>
+    </div>
+    <div class="Paging Controls">
+        This will include a single title and two simple chevrons FilterYearRoom paging
+    </div>
+    <div class="Details">
+        Teacher Name
+        Last updated
+    </div>
+</div>
+@* Styling *@
+<style>
+    /* ================================
+       Container
+       ================================ */
+    .YearRoomPager {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1rem;
+        margin: 0.5rem;
+        border-radius: var(--app-radius-md, 12px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffffff;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    /* ================================
+       Dropdown Section
+       ================================ */
+    .DropdownsSelection {
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .dropdown-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.075rem;
+    }
+
+    .dropdown-label {
+        font-size: 0.60rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        opacity: 0.9;
+    }
+
+    .pager-dropdown {
+        padding: 0.25rem 2rem 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        color: #334155;
+        background-color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        min-width: 120px;
+        height: fit-content;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.15s ease;
+    }
+
+    .pager-dropdown:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .pager-dropdown:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    /* ================================
+       Button Section
+       ================================ */
+    .pager-button {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: #000000;
+        background-color: #74a8fc;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        min-width: 120px;
+        height: fit-content;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.15s ease;
+    }
+
+    .pager-button:hover {
+        background-color: #2563eb;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .pager-button:active {
+        background-color: #1d4ed8;
+        transform: translateY(1px);
+    }
+
+    .pager-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+    }
+
+    /* ================================
+       Paging Controls Section
+       ================================ */
+    .Paging.Controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    /* ================================
+       Details Section
+       ================================ */
+    .Details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+
+@code {
+    // Info to populate the dropdowns
+    public List<string> MockYears = new List<string> { "2025", "2026", "2027", "2028", "2029", "2030" };
+    public List<string> MockRooms = new List<string> { "Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6" };
+    
+    // Selected values
+    public string SelectedYear { get; set; } = "2025";
+    public string SelectedRoom { get; set; } = "Room 1";
+    
+    // Single variables
+    public string TeacherName = "John Doe";
+    public DateTime LastUpdated = DateTime.Now;
+}
+
