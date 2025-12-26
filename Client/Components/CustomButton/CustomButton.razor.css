@@ -1,0 +1,157 @@
+/* ================================
+   Base Button Styles
+   ================================ */
+.custom-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.custom-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ================================
+   Primary Button
+   ================================ */
+.custom-button.primary {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.custom-button.primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+    transform: translateY(-1px);
+}
+
+.custom-button.primary:active:not(:disabled) {
+    background: linear-gradient(135deg, #4e5fc2 0%, #5e377e 100%);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.custom-button.primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.4);
+}
+
+/* ================================
+   Secondary Button
+   ================================ */
+.custom-button.secondary {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #667eea;
+    background-color: #ffffff;
+    border: 1px solid #667eea;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.custom-button.secondary:hover:not(:disabled) {
+    background-color: #f8f9ff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.custom-button.secondary:active:not(:disabled) {
+    background-color: #eef0ff;
+    transform: translateY(0);
+}
+
+.custom-button.secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* ================================
+   Pager Button (matches YearRoomPager style)
+   ================================ */
+.custom-button.pager {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #000000;
+    background-color: #74a8fc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button.pager:hover:not(:disabled) {
+    background-color: #2563eb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-button.pager:active:not(:disabled) {
+    background-color: #1d4ed8;
+    transform: translateY(1px);
+}
+
+.custom-button.pager:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* ================================
+   Danger Button
+   ================================ */
+.custom-button.danger {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #ffffff;
+    background-color: #ef4444;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.custom-button.danger:hover:not(:disabled) {
+    background-color: #dc2626;
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+    transform: translateY(-1px);
+}
+
+.custom-button.danger:active:not(:disabled) {
+    background-color: #b91c1c;
+    transform: translateY(0);
+}
+
+.custom-button.danger:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+}
+
+/* ================================
+   Ghost Button
+   ================================ */
+.custom-button.ghost {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #667eea;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.custom-button.ghost:hover:not(:disabled) {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.custom-button.ghost:active:not(:disabled) {
+    background-color: rgba(102, 126, 234, 0.2);
+}
+
+.custom-button.ghost:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
