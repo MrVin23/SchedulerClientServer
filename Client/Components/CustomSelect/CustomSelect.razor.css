@@ -1,0 +1,83 @@
+/* ================================
+   Container
+   ================================ */
+.custom-select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.custom-select-container.pager {
+    gap: 0.075rem;
+}
+
+.custom-select-container.primary {
+    gap: 0.375rem;
+}
+
+/* ================================
+   Label
+   ================================ */
+.custom-select-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.custom-select-label.pager {
+    font-size: 0.60rem;
+    opacity: 0.9;
+    color: inherit;
+}
+
+.custom-select-label.primary {
+    font-size: 0.75rem;
+    opacity: 0.85;
+    color: inherit;
+}
+
+/* ================================
+   Select Element
+   ================================ */
+.custom-select {
+    font-size: 0.875rem;
+    color: #334155;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.15s ease;
+}
+
+.custom-select:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.custom-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Pager variant - compact sizing */
+.custom-select.pager {
+    padding: 0.25rem 2rem 0.25rem 0.75rem;
+    min-width: 120px;
+    height: fit-content;
+}
+
+/* Primary variant - standard sizing */
+.custom-select.primary {
+    padding: 0.5rem 2.5rem 0.5rem 0.875rem;
+    min-width: 150px;
+}
+

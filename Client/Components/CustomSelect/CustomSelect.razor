@@ -1,0 +1,23 @@
+@typeparam TItem
+
+<div class="@ContainerCssClass" style="width: @Width;">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@LabelCssClass">@Label</label>
+    }
+    <select class="@SelectCssClass"
+            style="height: @Height;"
+            @bind="SelectedValueString"
+            disabled="@Disabled"
+            @attributes="AdditionalAttributes">
+        @if (!string.IsNullOrEmpty(Placeholder) && SelectedValue == null)
+        {
+            <option value="" disabled selected>@Placeholder</option>
+        }
+        @foreach (var item in Items)
+        {
+            <option value="@ValueFunc(item)">@DisplayFunc(item)</option>
+        }
+    </select>
+</div>
+

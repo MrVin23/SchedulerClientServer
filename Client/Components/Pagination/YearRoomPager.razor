@@ -1,26 +1,22 @@
+@using Client.Components.CustomSelect
+
 @* Html markup for the year room pager *@
 <div class="YearRoomPager">
     @* Dropdown selection section *@
     <div class="FilterSelection">
         <div class="DropdownSelectors">
-            <div class="dropdownAndLabel">
-                <label class="dropdownAndLabel">Year</label>
-                <select class="pager-dropdown" @bind="SelectedYear">
-                    @foreach (var year in MockYears)
-                    {
-                        <option value="@year">@year</option>
-                    }
-                </select>
-            </div>
-            <div class="dropdownAndLabel">
-                <label class="dropdownAndLabel">Room</label>
-                <select class="pager-dropdown" @bind="SelectedRoom">
-                    @foreach (var room in MockRooms)
-                    {
-                        <option value="@room">@room</option>
-                    }
-                </select>
-            </div>
+            <CustomSelect TItem="string"
+                          Label="Year"
+                          Items="@MockYears"
+                          @bind-SelectedValue="SelectedYear"
+                          SelectType="CustomSelectType.Pager"
+                          Placeholder="" />
+            <CustomSelect TItem="string"
+                          Label="Room"
+                          Items="@MockRooms"
+                          @bind-SelectedValue="SelectedRoom"
+                          SelectType="CustomSelectType.Pager"
+                          Placeholder="" />
         </div>
         <button class="pager-button">Select</button>
     </div>
@@ -80,51 +76,10 @@
         flex-direction: column;
     }
 
-    .dropdownAndLabel {
-        display: flex;
-        flex-direction: column;
-        gap: 0.075rem;
-    }
-
-    .dropdownAndLabel {
-        font-size: 0.60rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        opacity: 0.9;
-    }
-
     .DropdownSelectors {
         display: flex;
         flex-direction: row;
         gap: 0.25rem;
-    }
-
-    .pager-dropdown {
-        padding: 0.25rem 2rem 0.25rem 0.75rem;
-        font-size: 0.875rem;
-        color: #334155;
-        background-color: #ffffff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        min-width: 120px;
-        height: fit-content;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.5rem center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.15s ease;
-    }
-
-    .pager-dropdown:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .pager-dropdown:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
     }
 
     /* ================================
@@ -244,8 +199,8 @@
     public List<string> MockRooms = new List<string> { "Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6" };
     
     // Selected values
-    public string SelectedYear { get; set; } = "Year 1";
-    public string SelectedRoom { get; set; } = "Room 1";
+    public string? SelectedYear { get; set; } = "Year 1";
+    public string? SelectedRoom { get; set; } = "Room 1";
     
     // Mock data for details section
     public string TeacherName = "John Doe";
