@@ -1,0 +1,13 @@
+<div class="paging-button-wrapper">
+    <button class="@ButtonCssClass"
+            disabled="@Disabled"
+            @onclick="HandleClick"
+            @attributes="AdditionalAttributes">
+        <i class="@IconClass"></i>
+    </button>
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <span class="paging-tooltip @TooltipPositionClass">@Title</span>
+    }
+</div>
+
