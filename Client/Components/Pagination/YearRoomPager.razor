@@ -1,24 +1,26 @@
 @* Html markup for the year room pager *@
 <div class="YearRoomPager">
     @* Dropdown selection section *@
-    <div class="DropdownsSelection">
-        <div class="dropdown-group">
-            <label class="dropdown-label">Year</label>
-            <select class="pager-dropdown" @bind="SelectedYear">
-                @foreach (var year in MockYears)
-                {
-                    <option value="@year">@year</option>
-                }
-            </select>
-        </div>
-        <div class="dropdown-group">
-            <label class="dropdown-label">Room</label>
-            <select class="pager-dropdown" @bind="SelectedRoom">
-                @foreach (var room in MockRooms)
-                {
-                    <option value="@room">@room</option>
-                }
-            </select>
+    <div class="FilterSelection">
+        <div class="DropdownSelectors">
+            <div class="dropdownAndLabel">
+                <label class="dropdownAndLabel">Year</label>
+                <select class="pager-dropdown" @bind="SelectedYear">
+                    @foreach (var year in MockYears)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+            </div>
+            <div class="dropdownAndLabel">
+                <label class="dropdownAndLabel">Room</label>
+                <select class="pager-dropdown" @bind="SelectedRoom">
+                    @foreach (var room in MockRooms)
+                    {
+                        <option value="@room">@room</option>
+                    }
+                </select>
+            </div>
         </div>
         <button class="pager-button">Select</button>
     </div>
@@ -36,9 +38,19 @@
         </button>
     </div>
     @* Details section *@
-    <div class="Details">
-        Teacher Name
-        Last updated
+    <div class="details">
+        <div class="detail-row">
+            <span class="detail-label">Teacher:</span>
+            <span class="detail-value">@TeacherName</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Updated:</span>
+            <span class="detail-value">@LastUpdated.ToString("dd MMM yyyy")</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Total Number of Rooms:</span>
+            <span class="detail-value">@TotalRooms</span>
+        </div>
     </div>
 </div>
 @* Styling *@
@@ -52,7 +64,6 @@
         margin: 0.5rem;
         border-radius: var(--app-radius-md, 12px);
         display: flex;
-        justify-content: space-between;
         align-items: center;
         color: #ffffff;
         flex-direction: row;
@@ -62,25 +73,31 @@
     /* ================================
        Dropdown Section
        ================================ */
-    .DropdownsSelection {
+    .FilterSelection {
         display: flex;
         gap: 0.25rem;
         align-items: center;
         flex-direction: column;
     }
 
-    .dropdown-group {
+    .dropdownAndLabel {
         display: flex;
         flex-direction: column;
         gap: 0.075rem;
     }
 
-    .dropdown-label {
+    .dropdownAndLabel {
         font-size: 0.60rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         opacity: 0.9;
+    }
+
+    .DropdownSelectors {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25rem;
     }
 
     .pager-dropdown {
@@ -122,7 +139,7 @@
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        min-width: 120px;
+        width: 100%;
         height: fit-content;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.15s ease;
@@ -149,7 +166,9 @@
     .paging-controls {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 1rem;
+        flex: 1;
     }
 
     .paging-chevron {
@@ -195,26 +214,43 @@
     /* ================================
        Details Section
        ================================ */
-    .Details {
+    .details {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
         flex-direction: column;
+        gap: 0.25rem;
+        align-items: flex-end;
+    }
+
+    .detail-row {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+
+    .detail-label {
+        opacity: 0.7;
+        font-weight: 400;
+    }
+
+    .detail-value {
+        font-weight: 600;
     }
 </style>
 
 @code {
     // Info to populate the dropdowns
-    public List<string> MockYears = new List<string> { "2025", "2026", "2027", "2028", "2029", "2030" };
+    public List<string> MockYears = new List<string> { "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6" };
     public List<string> MockRooms = new List<string> { "Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6" };
     
     // Selected values
-    public string SelectedYear { get; set; } = "2025";
+    public string SelectedYear { get; set; } = "Year 1";
     public string SelectedRoom { get; set; } = "Room 1";
     
-    // Single variables
+    // Mock data for details section
     public string TeacherName = "John Doe";
     public DateTime LastUpdated = DateTime.Now;
+    public int TotalRooms = 6;
 
     // Event Callbacks (for parent component integration)
     [Parameter] public EventCallback OnPrevious { get; set; }

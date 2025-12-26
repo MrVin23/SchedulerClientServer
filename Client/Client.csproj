@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Watch Include="**\*.razor.css" Exclude="**\obj\**\*;**\bin\**\*" />
+    <Watch Include="**\*.razor" Exclude="obj\**\*;bin\**\*" />
+    <Watch Include="**\*.razor.css" Exclude="obj\**\*;bin\**\*" />
+    <Watch Include="**\*.cs" Exclude="obj\**\*;bin\**\*" />
   </ItemGroup>
 
 </Project>
