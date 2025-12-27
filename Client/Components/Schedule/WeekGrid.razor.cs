@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Client.Enums;
 
 namespace Client.Components.Schedule;
 
@@ -138,9 +139,14 @@ public class WeekGridEntry
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
-    /// Background color for the entry (CSS color value)
+    /// Subject type - uses predefined color and icon when set
     /// </summary>
-    public string Color { get; set; } = "#667eea";
+    public SubjectEnums? SubjectType { get; set; }
+
+    /// <summary>
+    /// Background color override (CSS color value). If null, uses SubjectType color.
+    /// </summary>
+    public string? Color { get; set; }
 }
 
 

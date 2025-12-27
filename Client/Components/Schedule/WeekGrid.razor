@@ -41,7 +41,8 @@
                     var height = CalculateHeight(entry.StartTime, entry.EndTime);
 
                     <SubjectEntry Title="@entry.Title"
-                                  Color="@entry.Color"
+                                  SubjectType="@entry.SubjectType"
+                                  ColorOverride="@entry.Color"
                                   StartTime="@entry.StartTime"
                                   EndTime="@entry.EndTime"
                                   TopPx="@top"

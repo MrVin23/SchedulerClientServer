@@ -2,6 +2,7 @@
 @layout CleanLayout
 @using Client.Components.Schedule
 @using Client.Components.Pagination
+@using Client.Enums
 
 <YearRoomPager/>
 
@@ -16,33 +17,53 @@
     private List<WeekGridEntry> MockEntries = new()
     {
         // Monday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", Color = "#667eea" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 30, 0), EndTime = new TimeSpan(10, 30, 0), Title = "English", Color = "#f59e0b" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 0, 0), EndTime = new TimeSpan(12, 0, 0), Title = "Science", Color = "#10b981" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "History", Color = "#8b5cf6" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "English", SubjectType = SubjectEnums.English },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "History", SubjectType = SubjectEnums.History },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Geography", SubjectType = SubjectEnums.Geography },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Art", SubjectType = SubjectEnums.Art },
 
         // Tuesday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 30, 0), Title = "Science", Color = "#10b981" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0), Title = "Art", Color = "#ec4899" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 30, 0), EndTime = new TimeSpan(12, 30, 0), Title = "Mathematics", Color = "#667eea" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 30, 0), EndTime = new TimeSpan(14, 30, 0), Title = "PE", Color = "#ef4444" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Art", SubjectType = SubjectEnums.Art },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "English", SubjectType = SubjectEnums.English },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "History", SubjectType = SubjectEnums.History },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "PE", SubjectType = SubjectEnums.PE },
 
         // Wednesday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(8, 30, 0), EndTime = new TimeSpan(9, 30, 0), Title = "English", Color = "#f59e0b" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 30, 0), Title = "Mathematics", Color = "#667eea" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(12, 0, 0), EndTime = new TimeSpan(13, 0, 0), Title = "Music", Color = "#06b6d4" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 30, 0), EndTime = new TimeSpan(14, 30, 0), Title = "Geography", Color = "#84cc16" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "English", SubjectType = SubjectEnums.English },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Music", SubjectType = SubjectEnums.Music },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Art", SubjectType = SubjectEnums.Art },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Geography", SubjectType = SubjectEnums.Geography },
 
         // Thursday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "History", Color = "#8b5cf6" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(9, 30, 0), EndTime = new TimeSpan(10, 30, 0), Title = "Science", Color = "#10b981" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(11, 0, 0), EndTime = new TimeSpan(12, 30, 0), Title = "English", Color = "#f59e0b" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "Art", Color = "#ec4899" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "History", SubjectType = SubjectEnums.History },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "English", SubjectType = SubjectEnums.English },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Music", SubjectType = SubjectEnums.Music },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "PE", SubjectType = SubjectEnums.PE },
 
         // Friday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 30, 0), Title = "Mathematics", Color = "#667eea" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0), Title = "PE", Color = "#ef4444" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(11, 30, 0), EndTime = new TimeSpan(12, 30, 0), Title = "Music", Color = "#06b6d4" },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "Science", Color = "#10b981" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "PE", SubjectType = SubjectEnums.PE },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Music", SubjectType = SubjectEnums.Music },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "English", SubjectType = SubjectEnums.English },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "History", SubjectType = SubjectEnums.History },
     };
 }

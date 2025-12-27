@@ -1,8 +1,14 @@
 @* Subject Entry Component *@
-<div class="subject-entry @ThemeClass"
+<div class="subject-entry @ThemeClass @EntryTypeClass"
      style="@PositionStyle background-color: @Color;">
     <div class="entry-content">
-        <span class="entry-title">@Title</span>
+        <div class="entry-header">
+            @if (ShowIcon && !string.IsNullOrEmpty(Icon))
+            {
+                <i class="@Icon entry-icon"></i>
+            }
+            <span class="entry-title">@Title</span>
+        </div>
         @if (ShowTime)
         {
             <span class="entry-time">

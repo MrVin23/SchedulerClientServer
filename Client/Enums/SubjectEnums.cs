@@ -14,6 +14,7 @@ namespace Client.Enums
         Art,
         Music,
         PE,
+        BreakTime,
         Other
     }
 }
