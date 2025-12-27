@@ -1,0 +1,80 @@
+/* ================================
+   Container
+   ================================ */
+.YearRoomPager {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: var(--app-radius-md, 12px);
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+/* ================================
+   Dropdown Section
+   ================================ */
+.FilterSelection {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.DropdownSelectors {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+}
+
+/* ================================
+   Paging Controls Section
+   ================================ */
+.paging-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.paging-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* ================================
+   Details Section
+   ================================ */
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-end;
+}
+
+.detail-row {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.detail-label {
+    opacity: 0.7;
+    font-weight: 400;
+}
+
+.detail-value {
+    font-weight: 600;
+}
+

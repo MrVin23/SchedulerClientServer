@@ -42,6 +42,10 @@
             <span class="detail-value">@TeacherName</span>
         </div>
         <div class="detail-row">
+            <span class="detail-label">Week:</span>
+            <span class="detail-value">Week @CurrentWeekOfMonth</span>
+        </div>
+        <div class="detail-row">
             <span class="detail-label">Updated:</span>
             <span class="detail-value">@LastUpdated.ToString("dd MMM yyyy")</span>
         </div>
@@ -51,116 +55,3 @@
         </div>
     </div>
 </div>
-@* Styling *@
-<style>
-    /* ================================
-       Container
-       ================================ */
-    .YearRoomPager {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1rem;
-        margin: 0.5rem;
-        border-radius: var(--app-radius-md, 12px);
-        display: flex;
-        align-items: center;
-        color: #ffffff;
-        flex-direction: row;
-        gap: 1rem;
-    }
-
-    /* ================================
-       Dropdown Section
-       ================================ */
-    .FilterSelection {
-        display: flex;
-        gap: 0.25rem;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .DropdownSelectors {
-        display: flex;
-        flex-direction: row;
-        gap: 0.25rem;
-    }
-
-    /* ================================
-       Paging Controls Section
-       ================================ */
-    .paging-controls {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        flex: 1;
-    }
-
-    .paging-title {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.125rem;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #ffffff;
-        min-width: 120px;
-        text-align: center;
-    }
-
-    /* ================================
-       Details Section
-       ================================ */
-    .details {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        align-items: flex-end;
-    }
-
-    .detail-row {
-        display: flex;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        line-height: 1.2;
-    }
-
-    .detail-label {
-        opacity: 0.7;
-        font-weight: 400;
-    }
-
-    .detail-value {
-        font-weight: 600;
-    }
-</style>
-
-@code {
-    // Info to populate the dropdowns
-    public List<string> MockYears = new List<string> { "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6" };
-    public List<string> MockRooms = new List<string> { "Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6" };
-    
-    // Selected values
-    public string? SelectedYear { get; set; } = "Year 1";
-    public string? SelectedRoom { get; set; } = "Room 1";
-    
-    // Mock data for details section
-    public string TeacherName = "John Doe";
-    public DateTime LastUpdated = DateTime.Now;
-    public int TotalRooms = 6;
-
-    // Event Callbacks (for parent component integration)
-    [Parameter] public EventCallback OnPrevious { get; set; }
-    [Parameter] public EventCallback OnNext { get; set; }
-
-    // Placeholder methods (no logic, design testing only)
-    private void OnPreviousClicked()
-    {
-        // TODO: Implement previous paging logic
-    }
-
-    private void OnNextClicked()
-    {
-        // TODO: Implement next paging logic
-    }
-}
-
