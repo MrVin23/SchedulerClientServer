@@ -143,3 +143,4 @@ public class WeekGridEntry
     public string Color { get; set; } = "#667eea";
 }
 
+
