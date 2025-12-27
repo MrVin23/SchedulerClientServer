@@ -1,0 +1,58 @@
+@* Weekly schedule grid component *@
+<div class="week-grid @ThemeClass">
+    @* Time column *@
+    <div class="time-column">
+        <div class="corner-cell">
+            <i class="bi bi-clock"></i>
+        </div>
+        @foreach (var slot in TimeSlots)
+        {
+            <div class="time-slot" style="height: @(SlotHeightPx)px;">
+                <span class="time-label">@slot.ToString(@"hh\:mm")</span>
+            </div>
+        }
+    </div>
+
+    @* Day columns *@
+    @foreach (var day in WeekDays)
+    {
+        var isToday = day.Date == DateTime.Today;
+        var dayEntries = GetEntriesForDay(day);
+
+        <div class="day-column @(isToday ? "today" : "")">
+            <div class="day-header @(isToday ? "today" : "")">
+                <span class="day-name">@day.ToString("ddd")</span>
+                <span class="day-number">@day.Day</span>
+            </div>
+
+            <div class="day-body" style="height: @(TotalGridHeight)px;">
+                @* Grid lines for each time slot *@
+                @foreach (var slot in TimeSlots)
+                {
+                    <div class="grid-line" style="top: @(CalculateTopPosition(slot))px;"></div>
+                }
+
+                @* Schedule entries *@
+                @foreach (var entry in dayEntries)
+                {
+                    var top = CalculateTopPosition(entry.StartTime);
+                    var height = CalculateHeight(entry.StartTime, entry.EndTime);
+
+                    <div class="schedule-entry"
+                         style="top: @(top)px; height: @(height)px; background-color: @entry.Color;">
+                        <div class="entry-content">
+                            <span class="entry-title">@entry.Title</span>
+                            @if (height > 40)
+                            {
+                                <span class="entry-time">
+                                    @entry.StartTime.ToString(@"hh\:mm") - @entry.EndTime.ToString(@"hh\:mm")
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+

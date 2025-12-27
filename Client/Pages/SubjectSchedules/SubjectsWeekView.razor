@@ -1,4 +1,48 @@
 @page "/subjects-week-view"
 @layout CleanLayout
+@using Client.Components.Schedule
+@using Client.Components.Pagination
 
 <YearRoomPager/>
+
+<WeekGrid Entries="@MockEntries"
+          WeekOf="DateTime.Today"
+          DarkMode="true"
+          SlotIntervalMinutes="30"
+          DayStartTime="@(new TimeSpan(8, 0, 0))"
+          DayEndTime="@(new TimeSpan(15, 0, 0))" />
+
+@code {
+    private List<WeekGridEntry> MockEntries = new()
+    {
+        // Monday
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", Color = "#667eea" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 30, 0), EndTime = new TimeSpan(10, 30, 0), Title = "English", Color = "#f59e0b" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 0, 0), EndTime = new TimeSpan(12, 0, 0), Title = "Science", Color = "#10b981" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "History", Color = "#8b5cf6" },
+
+        // Tuesday
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 30, 0), Title = "Science", Color = "#10b981" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0), Title = "Art", Color = "#ec4899" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 30, 0), EndTime = new TimeSpan(12, 30, 0), Title = "Mathematics", Color = "#667eea" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 30, 0), EndTime = new TimeSpan(14, 30, 0), Title = "PE", Color = "#ef4444" },
+
+        // Wednesday
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(8, 30, 0), EndTime = new TimeSpan(9, 30, 0), Title = "English", Color = "#f59e0b" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 30, 0), Title = "Mathematics", Color = "#667eea" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(12, 0, 0), EndTime = new TimeSpan(13, 0, 0), Title = "Music", Color = "#06b6d4" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 30, 0), EndTime = new TimeSpan(14, 30, 0), Title = "Geography", Color = "#84cc16" },
+
+        // Thursday
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "History", Color = "#8b5cf6" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(9, 30, 0), EndTime = new TimeSpan(10, 30, 0), Title = "Science", Color = "#10b981" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(11, 0, 0), EndTime = new TimeSpan(12, 30, 0), Title = "English", Color = "#f59e0b" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "Art", Color = "#ec4899" },
+
+        // Friday
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 30, 0), Title = "Mathematics", Color = "#667eea" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(11, 0, 0), Title = "PE", Color = "#ef4444" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(11, 30, 0), EndTime = new TimeSpan(12, 30, 0), Title = "Music", Color = "#06b6d4" },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Friday, StartTime = new TimeSpan(13, 0, 0), EndTime = new TimeSpan(14, 0, 0), Title = "Science", Color = "#10b981" },
+    };
+}
