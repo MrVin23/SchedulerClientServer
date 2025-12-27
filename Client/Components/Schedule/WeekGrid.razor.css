@@ -59,10 +59,6 @@
     border-top: 1px solid #f1f5f9;
 }
 
-.week-grid.light-mode .schedule-entry {
-    color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
 
 /* ================================
    Dark Mode
@@ -114,10 +110,6 @@
     border-top: 1px solid #293548;
 }
 
-.week-grid.dark-mode .schedule-entry {
-    color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
 
 /* ================================
    Time Column
@@ -198,45 +190,5 @@
     pointer-events: none;
 }
 
-/* ================================
-   Schedule Entries
-   ================================ */
-.schedule-entry {
-    position: absolute;
-    left: 2px;
-    right: 2px;
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: default;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.schedule-entry:hover {
-    transform: scale(1.02);
-    z-index: 10;
-}
-
-.entry-content {
-    display: flex;
-    flex-direction: column;
-    padding: 0.25rem 0.375rem;
-    height: 100%;
-    overflow: hidden;
-}
-
-.entry-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.entry-time {
-    font-size: 0.625rem;
-    opacity: 0.85;
-    margin-top: auto;
-}
 
 

@@ -1,3 +1,5 @@
+@using Client.Components.Schedule
+
 @* Weekly schedule grid component *@
 <div class="week-grid @ThemeClass">
     @* Time column *@
@@ -38,18 +40,13 @@
                     var top = CalculateTopPosition(entry.StartTime);
                     var height = CalculateHeight(entry.StartTime, entry.EndTime);
 
-                    <div class="schedule-entry"
-                         style="top: @(top)px; height: @(height)px; background-color: @entry.Color;">
-                        <div class="entry-content">
-                            <span class="entry-title">@entry.Title</span>
-                            @if (height > 40)
-                            {
-                                <span class="entry-time">
-                                    @entry.StartTime.ToString(@"hh\:mm") - @entry.EndTime.ToString(@"hh\:mm")
-                                </span>
-                            }
-                        </div>
-                    </div>
+                    <SubjectEntry Title="@entry.Title"
+                                  Color="@entry.Color"
+                                  StartTime="@entry.StartTime"
+                                  EndTime="@entry.EndTime"
+                                  TopPx="@top"
+                                  HeightPx="@height"
+                                  DarkMode="@DarkMode" />
                 }
             </div>
         </div>

@@ -1,0 +1,13 @@
+@* Subject Entry Component *@
+<div class="subject-entry @ThemeClass"
+     style="@PositionStyle background-color: @Color;">
+    <div class="entry-content">
+        <span class="entry-title">@Title</span>
+        @if (ShowTime)
+        {
+            <span class="entry-time">
+                @StartTime.ToString(@"hh\:mm") - @EndTime.ToString(@"hh\:mm")
+            </span>
+        }
+    </div>
+</div>

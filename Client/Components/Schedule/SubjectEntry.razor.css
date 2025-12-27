@@ -1,0 +1,68 @@
+/* ================================
+   Subject Entry Base Styles
+   ================================ */
+.subject-entry {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.subject-entry:hover {
+    transform: scale(1.02);
+    z-index: 10;
+}
+
+/* ================================
+   Light Mode
+   ================================ */
+.subject-entry.light-mode {
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.subject-entry.light-mode:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ================================
+   Dark Mode
+   ================================ */
+.subject-entry.dark-mode {
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.subject-entry.dark-mode:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ================================
+   Entry Content
+   ================================ */
+.entry-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.375rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.entry-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.entry-time {
+    font-size: 0.625rem;
+    opacity: 0.85;
+    margin-top: auto;
+}
+
