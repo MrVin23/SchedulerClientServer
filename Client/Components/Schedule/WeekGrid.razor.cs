@@ -61,6 +61,20 @@ public partial class WeekGrid : ComponentBase
 
     private string ThemeClass => DarkMode ? "dark-mode" : "light-mode";
 
+    private int CurrentWeekOfMonth
+    {
+        get
+        {
+            var today = DateTime.Today;
+            var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+            var firstDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
+            // Adjust for Monday as first day of week
+            if (firstDayOfWeek == 0) firstDayOfWeek = 7;
+            var dayOfMonth = today.Day;
+            return (dayOfMonth + firstDayOfWeek - 2) / 7 + 1;
+        }
+    }
+
     private IEnumerable<TimeSpan> TimeSlots
     {
         get
@@ -111,6 +125,45 @@ public partial class WeekGrid : ComponentBase
     {
         return Entries.Where(e => e.DayOfWeek == day.DayOfWeek);
     }
+
+    /// <summary>
+    /// Groups entries by time slot (same start and end time)
+    /// </summary>
+    private IEnumerable<List<WeekGridEntry>> GetGroupedEntriesForDay(DateTime day)
+    {
+        return GetEntriesForDay(day)
+            .GroupBy(e => new { e.StartTime, e.EndTime })
+            .Select(g => g.ToList());
+    }
+
+    /// <summary>
+    /// Gets the main entry for display (the one for current week, or first if none match)
+    /// </summary>
+    private WeekGridEntry GetMainEntry(List<WeekGridEntry> group)
+    {
+        // First try to find an entry for the current week
+        var currentWeekEntry = group.FirstOrDefault(e => 
+            e.WeeksOfMonth.Contains(0) || e.WeeksOfMonth.Contains(CurrentWeekOfMonth));
+        
+        return currentWeekEntry ?? group.First();
+    }
+
+    /// <summary>
+    /// Gets alternate entries (not the main one) converted to AlternateWeekEntry
+    /// </summary>
+    private List<AlternateWeekEntry> GetAlternateEntries(List<WeekGridEntry> group, WeekGridEntry mainEntry)
+    {
+        return group
+            .Where(e => e != mainEntry)
+            .Select(e => new AlternateWeekEntry
+            {
+                Title = e.Title,
+                SubjectType = e.SubjectType,
+                ColorOverride = e.Color,
+                WeeksOfMonth = e.WeeksOfMonth
+            })
+            .ToList();
+    }
 }
 
 /// <summary>
@@ -147,6 +200,11 @@ public class WeekGridEntry
     /// Background color override (CSS color value). If null, uses SubjectType color.
     /// </summary>
     public string? Color { get; set; }
+
+    /// <summary>
+    /// Weeks of the month this entry occurs (0 = every week, 1-4 = specific weeks)
+    /// </summary>
+    public List<int> WeeksOfMonth { get; set; } = new() { 0 };
 }
 
 

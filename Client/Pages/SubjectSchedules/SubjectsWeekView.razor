@@ -16,19 +16,25 @@
 @code {
     private List<WeekGridEntry> MockEntries = new()
     {
-        // Monday
+        // Monday - with card stacks for alternating subjects
         new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "English", SubjectType = SubjectEnums.English },
+        // 9:05-10:05 slot: English on weeks 1,3 OR History on weeks 2,4 (STACKED)
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "English", SubjectType = SubjectEnums.English, WeeksOfMonth = new() { 1, 3 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "History", SubjectType = SubjectEnums.History, WeeksOfMonth = new() { 2, 4 } },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Science", SubjectType = SubjectEnums.Science },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "History", SubjectType = SubjectEnums.History },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Geography", SubjectType = SubjectEnums.Geography },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "Geography", SubjectType = SubjectEnums.Geography },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Music", SubjectType = SubjectEnums.Music },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Art", SubjectType = SubjectEnums.Art },
+        // 13:45-14:45 slot: Art on weeks 1,2 OR PE on weeks 3,4 (STACKED)
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Art", SubjectType = SubjectEnums.Art, WeeksOfMonth = new() { 1, 2 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Monday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "PE", SubjectType = SubjectEnums.PE, WeeksOfMonth = new() { 3, 4 } },
 
         // Tuesday
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Science", SubjectType = SubjectEnums.Science },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Art", SubjectType = SubjectEnums.Art },
+        // 8:00-9:00 slot: Maths on weeks 1,3 OR Art on weeks 2,4 (YOUR EXAMPLE)
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths, WeeksOfMonth = new() { 1, 3 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "Art", SubjectType = SubjectEnums.Art, WeeksOfMonth = new() { 2, 4 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Science", SubjectType = SubjectEnums.Science },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "English", SubjectType = SubjectEnums.English },
@@ -36,15 +42,19 @@
         new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Tuesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "PE", SubjectType = SubjectEnums.PE },
 
-        // Wednesday
+        // Wednesday - with card stacks
         new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "English", SubjectType = SubjectEnums.English },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths },
+        // 9:05-10:05 slot: Maths on weeks 1,2 OR Science on weeks 3,4 (STACKED)
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Mathematics", SubjectType = SubjectEnums.Maths, WeeksOfMonth = new() { 1, 2 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(9, 5, 0), EndTime = new TimeSpan(10, 5, 0), Title = "Science", SubjectType = SubjectEnums.Science, WeeksOfMonth = new() { 3, 4 } },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(10, 10, 0), EndTime = new TimeSpan(11, 10, 0), Title = "Music", SubjectType = SubjectEnums.Music },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(11, 10, 0), EndTime = new TimeSpan(11, 45, 0), Title = "Morning Break", SubjectType = SubjectEnums.BreakTime },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "Science", SubjectType = SubjectEnums.Science },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(11, 45, 0), EndTime = new TimeSpan(12, 45, 0), Title = "History", SubjectType = SubjectEnums.History },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(12, 50, 0), EndTime = new TimeSpan(13, 15, 0), Title = "Art", SubjectType = SubjectEnums.Art },
         new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 15, 0), EndTime = new TimeSpan(13, 45, 0), Title = "Lunch Break", SubjectType = SubjectEnums.BreakTime },
-        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Geography", SubjectType = SubjectEnums.Geography },
+        // 13:45-14:45 slot: Geography on weeks 1,3 OR Biology on weeks 2,4 (STACKED)
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Geography", SubjectType = SubjectEnums.Geography, WeeksOfMonth = new() { 1, 3 } },
+        new WeekGridEntry { DayOfWeek = DayOfWeek.Wednesday, StartTime = new TimeSpan(13, 45, 0), EndTime = new TimeSpan(14, 45, 0), Title = "Biology", SubjectType = SubjectEnums.Biology, WeeksOfMonth = new() { 2, 4 } },
 
         // Thursday
         new WeekGridEntry { DayOfWeek = DayOfWeek.Thursday, StartTime = new TimeSpan(8, 0, 0), EndTime = new TimeSpan(9, 0, 0), Title = "History", SubjectType = SubjectEnums.History },

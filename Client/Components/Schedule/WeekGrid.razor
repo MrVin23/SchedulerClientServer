@@ -34,20 +34,25 @@
                     <div class="grid-line" style="top: @(CalculateTopPosition(slot))px;"></div>
                 }
 
-                @* Schedule entries *@
-                @foreach (var entry in dayEntries)
+                @* Schedule entries (grouped by time slot) *@
+                @foreach (var group in GetGroupedEntriesForDay(day))
                 {
-                    var top = CalculateTopPosition(entry.StartTime);
-                    var height = CalculateHeight(entry.StartTime, entry.EndTime);
+                    var mainEntry = GetMainEntry(group);
+                    var alternates = GetAlternateEntries(group, mainEntry);
+                    var top = CalculateTopPosition(mainEntry.StartTime);
+                    var height = CalculateHeight(mainEntry.StartTime, mainEntry.EndTime);
 
-                    <SubjectEntry Title="@entry.Title"
-                                  SubjectType="@entry.SubjectType"
-                                  ColorOverride="@entry.Color"
-                                  StartTime="@entry.StartTime"
-                                  EndTime="@entry.EndTime"
+                    <SubjectEntry Title="@mainEntry.Title"
+                                  SubjectType="@mainEntry.SubjectType"
+                                  ColorOverride="@mainEntry.Color"
+                                  StartTime="@mainEntry.StartTime"
+                                  EndTime="@mainEntry.EndTime"
                                   TopPx="@top"
                                   HeightPx="@height"
-                                  DarkMode="@DarkMode" />
+                                  DarkMode="@DarkMode"
+                                  WeeksOfMonth="@mainEntry.WeeksOfMonth"
+                                  CurrentWeekOfMonth="@CurrentWeekOfMonth"
+                                  AlternateWeekEntries="@alternates" />
                 }
             </div>
         </div>

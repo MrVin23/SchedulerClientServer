@@ -71,12 +71,91 @@ public partial class SubjectEntry : ComponentBase
     [Parameter]
     public bool? ShowTimeOverride { get; set; }
 
+    /// <summary>
+    /// Weeks of the month this entry occurs (0 = every week, 1-4 = specific weeks)
+    /// </summary>
+    [Parameter]
+    public List<int> WeeksOfMonth { get; set; } = new() { 0 };
+
+    /// <summary>
+    /// Current week of the month (1-4) for determining active card
+    /// </summary>
+    [Parameter]
+    public int CurrentWeekOfMonth { get; set; } = GetCurrentWeekOfMonth();
+
+    /// <summary>
+    /// Alternate entries for other weeks at the same time slot (for card stack display)
+    /// </summary>
+    [Parameter]
+    public List<AlternateWeekEntry> AlternateWeekEntries { get; set; } = new();
+
     // Computed properties
     private string ThemeClass => DarkMode ? "dark-mode" : "light-mode";
     private string EntryTypeClass => SubjectType == SubjectEnums.BreakTime ? "break-time" : "";
     private bool ShowTime => ShowTimeOverride ?? (HeightPx ?? 60) > 40;
     private string Color => ColorOverride ?? GetSubjectColor(SubjectType);
     private string Icon => IconOverride ?? GetSubjectIcon(SubjectType);
+
+    // Card stack properties
+    private bool HasAlternateWeeks => AlternateWeekEntries.Count > 0;
+    
+    /// <summary>
+    /// Formatted string of weeks for the active entry (e.g., "Week 1, 3")
+    /// </summary>
+    private string ActiveWeeksDisplay
+    {
+        get
+        {
+            if (WeeksOfMonth.Count == 0 || (WeeksOfMonth.Count == 1 && WeeksOfMonth[0] == 0))
+            {
+                return string.Empty;
+            }
+            var weeks = WeeksOfMonth.Where(w => w > 0).OrderBy(w => w);
+            return $"Week {string.Join(", ", weeks)}";
+        }
+    }
+
+    private List<StackedCardInfo> InactiveWeekEntries
+    {
+        get
+        {
+            // Get all alternate entries that are NOT for the current week
+            return AlternateWeekEntries
+                .Where(e => !e.WeeksOfMonth.Contains(CurrentWeekOfMonth))
+                .Select(e => new StackedCardInfo
+                {
+                    WeeksDisplay = FormatWeeks(e.WeeksOfMonth),
+                    Title = e.Title,
+                    Color = e.ColorOverride ?? GetSubjectColor(e.SubjectType)
+                })
+                .OrderBy(e => e.Title)
+                .ToList();
+        }
+    }
+
+    private static string FormatWeeks(List<int> weeks)
+    {
+        if (weeks.Count == 0) return string.Empty;
+        var validWeeks = weeks.Where(w => w > 0).OrderBy(w => w);
+        return $"Week {string.Join(", ", validWeeks)}";
+    }
+
+    private string GetAltColor(string baseColor)
+    {
+        // Return a slightly darker/muted version for stacked cards
+        return $"color-mix(in srgb, {baseColor} 70%, #000000 30%)";
+    }
+
+    private static int GetCurrentWeekOfMonth()
+    {
+        var today = DateTime.Today;
+        var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+        var firstDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
+        // Adjust for Monday as first day of week
+        if (firstDayOfWeek == 0) firstDayOfWeek = 7;
+        var dayOfMonth = today.Day;
+        return (dayOfMonth + firstDayOfWeek - 2) / 7 + 1;
+    }
 
     private string PositionStyle
     {
@@ -165,4 +244,25 @@ public partial class SubjectEntry : ComponentBase
     }
 
     #endregion
+}
+
+/// <summary>
+/// Represents an alternate week entry for the card stack
+/// </summary>
+public class AlternateWeekEntry
+{
+    public string Title { get; set; } = string.Empty;
+    public SubjectEnums? SubjectType { get; set; }
+    public string? ColorOverride { get; set; }
+    public List<int> WeeksOfMonth { get; set; } = new();
+}
+
+/// <summary>
+/// Internal class for rendering stacked card info
+/// </summary>
+internal class StackedCardInfo
+{
+    public string WeeksDisplay { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
 }
